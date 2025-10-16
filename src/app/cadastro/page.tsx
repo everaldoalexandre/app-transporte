@@ -1,12 +1,13 @@
 import { MenuNavigationCompleto } from "@/components/MenuNavbar";
+import { Cadastro } from "@/components/Cadastro";
 
 export default function Home() {
   return (
     <div className="font-sans grid min-h-screen bg-gray-100">
       <main className="flex flex-col row-start-2 justify-items-center items-center sm:items-start">
         <MenuNavigationCompleto/>
-        <div className="flex items-center justify-center w-full pt-26">
-          <h1>HOME</h1>
+        <div className="flex items-center justify-center w-full mt-6">
+          <Cadastro/>
         </div>
         <footer className="flex items-center justify-center w-full h-10 border-t mt-6">
           <p className="text-sm text-gray-500 font-bold">
