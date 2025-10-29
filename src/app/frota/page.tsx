@@ -1,5 +1,5 @@
-import DemandasTable from "@/components/DemandasTable";
 import { MenuCompletoSession } from "@/components/MenuNavbar";
+import VeiculosTable from "@/components/VeiculosTable";
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
       <main className="flex flex-col row-start-2 justify-items-center items-center sm:items-start">
         <MenuCompletoSession/>
         <div className="flex items-center justify-center w-full pt-26">
-          <DemandasTable/>
+          <VeiculosTable/>
         </div>
         <footer className="flex items-center justify-center w-full h-10 border-t mt-6">
           <p className="text-sm text-gray-500 font-bold">

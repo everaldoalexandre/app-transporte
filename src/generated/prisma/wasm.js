@@ -105,15 +105,65 @@ exports.Prisma.DemandasScalarFieldEnum = {
   contato: 'contato',
   statusDemanda: 'statusDemanda',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  veiculoId: 'veiculoId'
+};
+
+exports.Prisma.VeiculosScalarFieldEnum = {
+  id: 'id',
+  placaVeiculo: 'placaVeiculo',
+  chassiVeiculo: 'chassiVeiculo',
+  renavamVeiculo: 'renavamVeiculo',
+  proprietarioVeiculo: 'proprietarioVeiculo',
+  crlvVeiculo: 'crlvVeiculo',
+  userId: 'userId'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  createdAt: 'createdAt',
+  emailVerified: 'emailVerified',
+  image: 'image',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  providerId: 'providerId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  scope: 'scope',
   password: 'password',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -134,7 +184,11 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Demandas: 'Demandas',
-  User: 'User'
+  Veiculos: 'Veiculos',
+  User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification'
 };
 /**
  * Create the Client
@@ -183,13 +237,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Demandas {\n  id                    Int      @id @default(autoincrement())\n  emailSolicitante      String   @unique\n  demandaDetalhe        String?\n  pessoaSolicitante     String\n  secretariaSolicitante String\n  destino               String\n  dataHoraIda           String?\n  dataHoraVolta         String?\n  origem                String\n  contato               String\n  statusDemanda         String   @default(\"aguardando\")\n  createdAt             DateTime @default(now())\n  updatedAt             DateTime @updatedAt\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  password  String\n  createdAt DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "2273d83dcbf5255e901ac6a6b5f3097541022b28d713287adf00c4019ccce008",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Demandas {\n  id                    String   @id @default(uuid())\n  emailSolicitante      String   @unique\n  demandaDetalhe        String?\n  pessoaSolicitante     String\n  secretariaSolicitante String\n  destino               String\n  dataHoraIda           String?\n  dataHoraVolta         String?\n  origem                String\n  contato               String\n  statusDemanda         String   @default(\"Aguardando\")\n  createdAt             DateTime @default(now())\n  updatedAt             DateTime @updatedAt\n\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  veiculoId String?\n  veiculo   Veiculos? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)\n}\n\nmodel Veiculos {\n  id                  String @id @default(uuid())\n  placaVeiculo        String\n  chassiVeiculo       String\n  renavamVeiculo      String\n  proprietarioVeiculo String\n  crlvVeiculo         String\n\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  demandas Demandas[]\n}\n\nmodel User {\n  id            String   @id @default(uuid())\n  name          String\n  email         String   @unique\n  createdAt     DateTime @default(now())\n  emailVerified Boolean  @default(false)\n  image         String?\n  updatedAt     DateTime @default(now()) @updatedAt\n\n  sessions Session[]\n  accounts Account[]\n  veiculos Veiculos[]\n  demandas Demandas[]\n\n  @@map(\"user\")\n}\n\nmodel Session {\n  id        String   @id @default(uuid())\n  expiresAt DateTime\n  token     String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  ipAddress String?\n  userAgent String?\n  userId    String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id @default(uuid())\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime  @default(now())\n  updatedAt             DateTime  @updatedAt\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String   @id @default(uuid())\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @default(now()) @updatedAt\n\n  @@map(\"verification\")\n}\n",
+  "inlineSchemaHash": "9c0bb608978815d415e8df65e92ea585d4c6d603cdc3d2c67fb1ad94dc69c0cd",
   "copyEngine": false
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Demandas\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"emailSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"demandaDetalhe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pessoaSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"secretariaSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"destino\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dataHoraIda\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dataHoraVolta\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"origem\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contato\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"statusDemanda\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Demandas\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"demandaDetalhe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pessoaSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"secretariaSolicitante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"destino\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dataHoraIda\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dataHoraVolta\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"origem\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contato\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"statusDemanda\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DemandasToUser\"},{\"name\":\"veiculoId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"veiculo\",\"kind\":\"object\",\"type\":\"Veiculos\",\"relationName\":\"DemandasToVeiculos\"}],\"dbName\":null},\"Veiculos\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"placaVeiculo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chassiVeiculo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"renavamVeiculo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proprietarioVeiculo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"crlvVeiculo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVeiculos\"},{\"name\":\"demandas\",\"kind\":\"object\",\"type\":\"Demandas\",\"relationName\":\"DemandasToVeiculos\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"sessions\",\"kind\":\"object\",\"type\":\"Session\",\"relationName\":\"SessionToUser\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"veiculos\",\"kind\":\"object\",\"type\":\"Veiculos\",\"relationName\":\"UserToVeiculos\"},{\"name\":\"demandas\",\"kind\":\"object\",\"type\":\"Demandas\",\"relationName\":\"DemandasToUser\"}],\"dbName\":\"user\"},\"Session\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ipAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userAgent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SessionToUser\"}],\"dbName\":\"session\"},\"Account\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"accessToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"refreshToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accessTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"refreshTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"scope\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"account\"},\"Verification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"verification\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 config.compilerWasm = undefined

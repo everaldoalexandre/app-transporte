@@ -6,6 +6,7 @@ import { Label } from "./ui/label";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { authClient } from "@/lib/auth-client";
 
 export function Cadastro({
     className,
@@ -29,12 +30,12 @@ export function Cadastro({
             return;
         }
             
-        /*await authClient.signUp.email({
+        await authClient.signUp.email({
             
             email,
             password,
             name,
-            callbackURL: "/",
+            callbackURL: "/demandas",
         },{
             onRequest(){
 
@@ -53,7 +54,7 @@ export function Cadastro({
                 toast.success("Registration completed successfully!");
                 window.location.href = "/"
             }
-        });*/
+        });
     }
     return (
         <Card className="w-full max-w-sm">

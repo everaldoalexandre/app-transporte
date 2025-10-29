@@ -6,6 +6,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter } from "./ui/card";
+import { authClient } from "@/lib/auth-client";
 
 export function Login({
   className,
@@ -22,10 +23,10 @@ export function Login({
       return
     }
 
-    /*await authClient.signIn.email({
+    await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/",
+      callbackURL: "/demandas",
     }, {
       onRequest() {
         
@@ -43,7 +44,7 @@ export function Login({
         setEmail('');
         setPassword('');
       }
-    })*/
+    })
   }
 
   return (

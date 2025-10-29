@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Check, Eraser, FileText, MoreHorizontal, X } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
+import { DropMenu } from "./StatusDemanda";
 
 export type Demandas = {
     id: number;
@@ -248,8 +249,22 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
                     <div className='flex flex-col gap-2 w-1/3 justify-items-start'>
-                        <p><span>Motorista: </span></p>
-                        <p><span>Placa: </span></p>
+                        <p><span>Motorista: </span>
+                        <Input 
+                        type="text"
+                        value={contatoEdit}
+                        onChange={(e) => setContatoEdit(e.target.value)}
+                        placeholder='Contato'
+                        className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
+                        <p><span>Placa: </span>
+                        <Input 
+                        type="text"
+                        value={contatoEdit}
+                        onChange={(e) => setContatoEdit(e.target.value)}
+                        placeholder='Contato'
+                        className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
+                        <p><span>Status: </span>
+                        <DropMenu statusDemanda={statusDemanda} setStatusDemanda={setStatusDemanda}/></p>
                     </div>
                     
                     <div className='flex flex-col gap-2 w-1/3 justify-items-start'>

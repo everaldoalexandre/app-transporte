@@ -1,11 +1,25 @@
 import { PrismaClient } from '@/generated/prisma';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
 export async function GET () {
   try {
-    const demandas = await prisma.demandas.findMany();
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+
+    if (!session?.user?.id) {
+      return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
+    }
+
+    const userId = session.user.id
+
+    const demandas = await prisma.demandas.findMany({
+      where: { userId }
+    });
     return new Response(JSON.stringify(demandas), { status: 200 });
   } catch (error) {
     console.error('Error fetching demandas:', error);
@@ -65,9 +79,9 @@ export async function DELETE (request: Request) {
       where: { id },
     });
 
-    return NextResponse.json({ message: 'Task deleted successfully' });
+    return NextResponse.json({ message: 'Demanda deletada com sucesso' });
   } catch (error) {
     console.error('Error deleting task:', error);
-    return NextResponse.json({ error: 'Internal error while deleting task' }, { status: 500 });
+    return NextResponse.json({ error: 'Erro interno ao deletar a demanda' }, { status: 500 });
   }
 }
