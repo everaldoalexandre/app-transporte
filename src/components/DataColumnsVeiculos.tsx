@@ -9,16 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Input } from "./ui/input";
 import { ActionsCellVeiculos} from "@/components/ActionsCellVeiculos"
 import { NovoVeiculo } from "./NovoVeiculo";
-
-export type Veiculos = {
-  id: number;
-  placaVeiculo: string;
-  chassiVeiculo: string;
-  renavamVeiculo: string;
-  proprietarioVeiculo: string;
-  crlvVeiculo: string;
-  statusVeiculo: string;
-};
+import { Veiculos } from "@/generated/prisma";
 
 export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
@@ -39,14 +30,14 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
         try {
             const response = await fetch('/api/veiculo', { cache: 'no-store' });
             if (!response.ok) {
-                console.error('Failed to fetch demandas:', response.statusText);
+                console.error('Falha ao buscar veiculos:', response.statusText);
                 return;
             }
             const data = await response.json();
             setVeiculos(data);
             
         } catch (error) {
-            console.error('Error fetching veiculos:', error);
+            console.error('Erro o buscar veiculos:', error);
         }
     }
 

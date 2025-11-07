@@ -2,20 +2,7 @@
 
 import { useState } from 'react';
 import { DataTableDemo } from './DataColumns';
-
-type Demandas = {
-    id: number;
-    emailSolicitante: string;
-    demandaDetalhe: string;
-    pessoaSolicitante: string;
-    secretariaSolicitante: string;
-    destino: string;
-    dataHoraIda: string;
-    dataHoraVolta: string;
-    origem: string;
-    contato: string;
-    statusDemanda: string;
-};
+import { Demandas } from '@/generated/prisma';
 
 export default function DemandasTable() {
     const [demandas, setDemandas] = useState<Demandas[]> ([]);

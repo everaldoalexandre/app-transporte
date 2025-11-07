@@ -19,7 +19,7 @@ export function Login({
     e.preventDefault()
 
     if (!email || !password) {
-      toast.error("Please fill in all fields.")
+      toast.error("Por favor, preencha todos os campos")
       return
     }
 
@@ -34,12 +34,12 @@ export function Login({
       onError(ctx) {
 
         if (ctx?.error?.code?.includes('INVALID_EMAIL_OR_PASSWORD')){
-          toast.error("Error logging in. Please check your credentials.")
+          toast.error("Erro ao efetuar login. Verifique suas credenciais.")
         }
       },
       onSuccess() {
         
-        toast.success("Login successful!")
+        toast.success("Login bem-sucedido! Redirecionando...")
 
         setEmail('');
         setPassword('');

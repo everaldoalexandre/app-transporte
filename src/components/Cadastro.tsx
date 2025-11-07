@@ -21,12 +21,12 @@ export function Cadastro({
         e.preventDefault();
 
         if (!email || !password || !passwordconfirmation || !name) {
-            toast.error('Please fill in all fields.')
+            toast.error('Por favor, preencha todos os campos.')
             return;
         }
 
         if (password !== passwordconfirmation) {
-            toast.error('The passwords do not match.')
+            toast.error('As senhas não coincidem.')
             return;
         }
             
@@ -42,16 +42,16 @@ export function Cadastro({
             },
             onError(ctx) {
                 if (ctx?.error?.code?.includes('USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL')) {
-                    toast.error('This email is already registered. Try using another email.');
+                    toast.error('Este endereço de e-mail já está cadastrado. Tente usar outro endereço de e-mail.');
                 } else if (ctx?.error?.code?.includes('PASSWORD_TOO_SHORT')) {
-                    toast.error('Your password must be at least 8 characters long.');
+                    toast.error('Sua senha deve ter pelo menos 8 caracteres.');
                 } else {
-                    toast.error('Failed to register. Please try again.');
+                    toast.error('Falha ao efetuar o cadastro. Tente novamente.');
                 }
                 console.log(ctx)
             },
             onSuccess(){
-                toast.success("Registration completed successfully!");
+                toast.success("Cadastro concluído com sucesso!");
                 window.location.href = "/"
             }
         });

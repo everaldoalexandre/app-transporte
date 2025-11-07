@@ -27,7 +27,7 @@ export function DemandaInternaForm({
 
         if (!emailSolicitante || !demandaDetalhe || !pessoaSolicitante || !secretariaSolicitante || !destino || !dataIda || !horaIda
             || !dataVolta || !horaVolta || !origem) {
-            toast.error('Please fill in all fields.')
+            toast.error('Por favor, preencha todos os campos.')
             return;
         }
     }

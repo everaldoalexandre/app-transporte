@@ -23,7 +23,7 @@ model Demandas {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
-  userId String
+  userId                String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   veiculoId String?
@@ -38,10 +38,14 @@ model Veiculos {
   proprietarioVeiculo String
   crlvVeiculo         String
 
-  userId String
+  userId              String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   demandas Demandas[]
+}
+model Secretarias {
+  id  String @id @default(uuid())
+  nome String
 }
 
 model User {

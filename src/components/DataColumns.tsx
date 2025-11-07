@@ -8,20 +8,7 @@ import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMe
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
-
-export type Demandas = {
-    id: number;
-    emailSolicitante: string;
-    demandaDetalhe: string;
-    pessoaSolicitante: string;
-    secretariaSolicitante: string;
-    destino: string;
-    dataHoraIda: string;
-    dataHoraVolta: string;
-    origem: string;
-    contato: string;
-    statusDemanda: string;
-};
+import { Demandas } from "@/generated/prisma";
 
 
 export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
@@ -42,14 +29,14 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
         try {
             const response = await fetch('/api/transporte', { cache: 'no-store' });
             if (!response.ok) {
-                console.error('Failed to fetch demandas:', response.statusText);
+                console.error('Falha ao buscar demandas:', response.statusText);
                 return;
             }
             const data = await response.json();
             setDemandas(data);
             
         } catch (error) {
-            console.error('Error fetching demandas:', error);
+            console.error('Erro ao buscar demandas:', error);
         }
     }
 

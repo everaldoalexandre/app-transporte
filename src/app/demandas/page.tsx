@@ -1,20 +1,24 @@
+import AppSidebar from "@/components/AppSidebar";
 import DemandasTable from "@/components/DemandasTable";
-import { MenuCompletoSession } from "@/components/MenuNavbar";
+import { Separator } from "@/components/ui/separator";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Home() {
   return (
-    <div className="font-sans grid min-h-screen bg-gray-100">
-      <main className="flex flex-col row-start-2 justify-items-center items-center sm:items-start">
-        <MenuCompletoSession/>
-        <div className="flex items-center justify-center w-full pt-26">
-          <DemandasTable/>
-        </div>
-        <footer className="flex items-center justify-center w-full h-10 border-t mt-6">
-          <p className="text-sm text-gray-500 font-bold">
-            &copy; 2025 - Developed Everaldo Alexandre
-          </p>
-        </footer>
-      </main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex  items-center gap-2 px-4 sm:items-start">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+              />
+          </div>
+        </header>
+      </SidebarInset>
+      <DemandasTable/>
+    </SidebarProvider>
   );
 }

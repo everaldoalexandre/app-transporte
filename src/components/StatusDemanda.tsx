@@ -23,7 +23,7 @@ export function DropMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Status</Button>
+        <Button variant="outline">{statusDemanda}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Status Demanda</DropdownMenuLabel>

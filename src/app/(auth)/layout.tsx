@@ -19,8 +19,8 @@ export default async function Layout({children,}: {children: React.ReactNode}) {
     headers: await headers()
   })
 
-  if (!userSession){
-    redirect('/login');
+  if (userSession){
+    redirect('/demandas');
   }
 
   return (

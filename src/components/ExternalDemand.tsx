@@ -28,7 +28,7 @@ export function DemandaExternaForm({
 
         if (!emailSolicitante || !demandaDetalhe || !pessoaSolicitante || !secretariaSolicitante || !destino || !dataHoraIda
             || !dataHoraVolta || !origem) {
-            toast.error('Please fill in all fields.')
+            toast.error('Por favor, preencha todos os campos.')
             return;
         }
 
@@ -70,7 +70,7 @@ export function DemandaExternaForm({
             }
         } catch (error) {
             toast.error('Erro ao adicionar demanda externa.');
-            console.error('Error adding external demand:', error);
+            console.error('Erro ao adicionar demanda externa:', error);
         }
     }
     return (
