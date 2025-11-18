@@ -41,7 +41,18 @@ model Veiculos {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  demandas Demandas[]
+  demandas    Demandas[]
+  secretarias Secretarias[]
+}
+
+model Secretarias {
+  id   String @id @default(uuid())
+  nome String
+
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  veiculoId String?
+  veiculo   Veiculos? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
 }
 
 model User {
@@ -53,10 +64,11 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
-  sessions Session[]
-  accounts Account[]
-  veiculos Veiculos[]
-  demandas Demandas[]
+  sessions    Session[]
+  accounts    Account[]
+  veiculos    Veiculos[]
+  demandas    Demandas[]
+  secretarias Secretarias[]
 
   @@map("user")
 }

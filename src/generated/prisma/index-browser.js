@@ -148,6 +148,13 @@ exports.Prisma.VeiculosScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.SecretariasScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  userId: 'userId',
+  veiculoId: 'veiculoId'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -213,6 +220,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Demandas: 'Demandas',
   Veiculos: 'Veiculos',
+  Secretarias: 'Secretarias',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
