@@ -21,7 +21,7 @@ export default async function LoginForm() {
         </div>
         <footer className="flex items-center justify-center w-full border-t mt-6">
           <p className="text-sm text-gray-500 font-bold">
-            &copy; 2025 - Developed Everaldo Alexandre
+            &copy; 2025 - Desenvolvido por Everaldo Alexandre
           </p>
         </footer>
       </main>

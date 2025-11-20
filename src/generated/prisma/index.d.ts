@@ -1407,12 +1407,10 @@ export namespace Prisma {
 
   export type VeiculosCountOutputType = {
     demandas: number
-    secretarias: number
   }
 
   export type VeiculosCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     demandas?: boolean | VeiculosCountOutputTypeCountDemandasArgs
-    secretarias?: boolean | VeiculosCountOutputTypeCountSecretariasArgs
   }
 
   // Custom InputTypes
@@ -1433,11 +1431,53 @@ export namespace Prisma {
     where?: DemandasWhereInput
   }
 
+
   /**
-   * VeiculosCountOutputType without action
+   * Count Type SecretariasCountOutputType
    */
-  export type VeiculosCountOutputTypeCountSecretariasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SecretariasWhereInput
+
+  export type SecretariasCountOutputType = {
+    Veiculos: number
+    Demandas: number
+    Users: number
+  }
+
+  export type SecretariasCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Veiculos?: boolean | SecretariasCountOutputTypeCountVeiculosArgs
+    Demandas?: boolean | SecretariasCountOutputTypeCountDemandasArgs
+    Users?: boolean | SecretariasCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SecretariasCountOutputType without action
+   */
+  export type SecretariasCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SecretariasCountOutputType
+     */
+    select?: SecretariasCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SecretariasCountOutputType without action
+   */
+  export type SecretariasCountOutputTypeCountVeiculosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VeiculosWhereInput
+  }
+
+  /**
+   * SecretariasCountOutputType without action
+   */
+  export type SecretariasCountOutputTypeCountDemandasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DemandasWhereInput
+  }
+
+  /**
+   * SecretariasCountOutputType without action
+   */
+  export type SecretariasCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -1450,7 +1490,6 @@ export namespace Prisma {
     accounts: number
     veiculos: number
     demandas: number
-    secretarias: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1458,7 +1497,6 @@ export namespace Prisma {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     veiculos?: boolean | UserCountOutputTypeCountVeiculosArgs
     demandas?: boolean | UserCountOutputTypeCountDemandasArgs
-    secretarias?: boolean | UserCountOutputTypeCountSecretariasArgs
   }
 
   // Custom InputTypes
@@ -1500,13 +1538,6 @@ export namespace Prisma {
     where?: DemandasWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSecretariasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SecretariasWhereInput
-  }
-
 
   /**
    * Models
@@ -1538,6 +1569,7 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     veiculoId: string | null
+    secretariasId: string | null
   }
 
   export type DemandasMaxAggregateOutputType = {
@@ -1556,6 +1588,7 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     veiculoId: string | null
+    secretariasId: string | null
   }
 
   export type DemandasCountAggregateOutputType = {
@@ -1574,6 +1607,7 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     veiculoId: number
+    secretariasId: number
     _all: number
   }
 
@@ -1594,6 +1628,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     veiculoId?: true
+    secretariasId?: true
   }
 
   export type DemandasMaxAggregateInputType = {
@@ -1612,6 +1647,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     veiculoId?: true
+    secretariasId?: true
   }
 
   export type DemandasCountAggregateInputType = {
@@ -1630,6 +1666,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     veiculoId?: true
+    secretariasId?: true
     _all?: true
   }
 
@@ -1721,6 +1758,7 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     veiculoId: string | null
+    secretariasId: string | null
     _count: DemandasCountAggregateOutputType | null
     _min: DemandasMinAggregateOutputType | null
     _max: DemandasMaxAggregateOutputType | null
@@ -1756,8 +1794,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     veiculoId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["demandas"]>
 
   export type DemandasSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1776,8 +1816,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     veiculoId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["demandas"]>
 
   export type DemandasSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1796,8 +1838,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     veiculoId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["demandas"]>
 
   export type DemandasSelectScalar = {
@@ -1816,20 +1860,24 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     veiculoId?: boolean
+    secretariasId?: boolean
   }
 
-  export type DemandasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "userId" | "veiculoId", ExtArgs["result"]["demandas"]>
+  export type DemandasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "userId" | "veiculoId" | "secretariasId", ExtArgs["result"]["demandas"]>
   export type DemandasInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }
   export type DemandasIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }
   export type DemandasIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demandas$veiculoArgs<ExtArgs>
+    secretarias?: boolean | Demandas$secretariasArgs<ExtArgs>
   }
 
   export type $DemandasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1837,6 +1885,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       veiculo: Prisma.$VeiculosPayload<ExtArgs> | null
+      secretarias: Prisma.$SecretariasPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1854,6 +1903,7 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       veiculoId: string | null
+      secretariasId: string | null
     }, ExtArgs["result"]["demandas"]>
     composites: {}
   }
@@ -2250,6 +2300,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     veiculo<T extends Demandas$veiculoArgs<ExtArgs> = {}>(args?: Subset<T, Demandas$veiculoArgs<ExtArgs>>): Prisma__VeiculosClient<$Result.GetResult<Prisma.$VeiculosPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    secretarias<T extends Demandas$secretariasArgs<ExtArgs> = {}>(args?: Subset<T, Demandas$secretariasArgs<ExtArgs>>): Prisma__SecretariasClient<$Result.GetResult<Prisma.$SecretariasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2294,6 +2345,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Demandas", 'DateTime'>
     readonly userId: FieldRef<"Demandas", 'String'>
     readonly veiculoId: FieldRef<"Demandas", 'String'>
+    readonly secretariasId: FieldRef<"Demandas", 'String'>
   }
     
 
@@ -2709,6 +2761,25 @@ export namespace Prisma {
   }
 
   /**
+   * Demandas.secretarias
+   */
+  export type Demandas$secretariasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Secretarias
+     */
+    select?: SecretariasSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Secretarias
+     */
+    omit?: SecretariasOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SecretariasInclude<ExtArgs> | null
+    where?: SecretariasWhereInput
+  }
+
+  /**
    * Demandas without action
    */
   export type DemandasDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2745,6 +2816,7 @@ export namespace Prisma {
     proprietarioVeiculo: string | null
     crlvVeiculo: string | null
     userId: string | null
+    secretariasId: string | null
   }
 
   export type VeiculosMaxAggregateOutputType = {
@@ -2755,6 +2827,7 @@ export namespace Prisma {
     proprietarioVeiculo: string | null
     crlvVeiculo: string | null
     userId: string | null
+    secretariasId: string | null
   }
 
   export type VeiculosCountAggregateOutputType = {
@@ -2765,6 +2838,7 @@ export namespace Prisma {
     proprietarioVeiculo: number
     crlvVeiculo: number
     userId: number
+    secretariasId: number
     _all: number
   }
 
@@ -2777,6 +2851,7 @@ export namespace Prisma {
     proprietarioVeiculo?: true
     crlvVeiculo?: true
     userId?: true
+    secretariasId?: true
   }
 
   export type VeiculosMaxAggregateInputType = {
@@ -2787,6 +2862,7 @@ export namespace Prisma {
     proprietarioVeiculo?: true
     crlvVeiculo?: true
     userId?: true
+    secretariasId?: true
   }
 
   export type VeiculosCountAggregateInputType = {
@@ -2797,6 +2873,7 @@ export namespace Prisma {
     proprietarioVeiculo?: true
     crlvVeiculo?: true
     userId?: true
+    secretariasId?: true
     _all?: true
   }
 
@@ -2880,6 +2957,7 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     userId: string
+    secretariasId: string | null
     _count: VeiculosCountAggregateOutputType | null
     _min: VeiculosMinAggregateOutputType | null
     _max: VeiculosMaxAggregateOutputType | null
@@ -2907,6 +2985,7 @@ export namespace Prisma {
     proprietarioVeiculo?: boolean
     crlvVeiculo?: boolean
     userId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     demandas?: boolean | Veiculos$demandasArgs<ExtArgs>
     secretarias?: boolean | Veiculos$secretariasArgs<ExtArgs>
@@ -2921,7 +3000,9 @@ export namespace Prisma {
     proprietarioVeiculo?: boolean
     crlvVeiculo?: boolean
     userId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    secretarias?: boolean | Veiculos$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["veiculos"]>
 
   export type VeiculosSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2932,7 +3013,9 @@ export namespace Prisma {
     proprietarioVeiculo?: boolean
     crlvVeiculo?: boolean
     userId?: boolean
+    secretariasId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    secretarias?: boolean | Veiculos$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["veiculos"]>
 
   export type VeiculosSelectScalar = {
@@ -2943,9 +3026,10 @@ export namespace Prisma {
     proprietarioVeiculo?: boolean
     crlvVeiculo?: boolean
     userId?: boolean
+    secretariasId?: boolean
   }
 
-  export type VeiculosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "placaVeiculo" | "chassiVeiculo" | "renavamVeiculo" | "proprietarioVeiculo" | "crlvVeiculo" | "userId", ExtArgs["result"]["veiculos"]>
+  export type VeiculosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "placaVeiculo" | "chassiVeiculo" | "renavamVeiculo" | "proprietarioVeiculo" | "crlvVeiculo" | "userId" | "secretariasId", ExtArgs["result"]["veiculos"]>
   export type VeiculosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     demandas?: boolean | Veiculos$demandasArgs<ExtArgs>
@@ -2954,9 +3038,11 @@ export namespace Prisma {
   }
   export type VeiculosIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    secretarias?: boolean | Veiculos$secretariasArgs<ExtArgs>
   }
   export type VeiculosIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    secretarias?: boolean | Veiculos$secretariasArgs<ExtArgs>
   }
 
   export type $VeiculosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2964,7 +3050,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       demandas: Prisma.$DemandasPayload<ExtArgs>[]
-      secretarias: Prisma.$SecretariasPayload<ExtArgs>[]
+      secretarias: Prisma.$SecretariasPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2974,6 +3060,7 @@ export namespace Prisma {
       proprietarioVeiculo: string
       crlvVeiculo: string
       userId: string
+      secretariasId: string | null
     }, ExtArgs["result"]["veiculos"]>
     composites: {}
   }
@@ -3370,7 +3457,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     demandas<T extends Veiculos$demandasArgs<ExtArgs> = {}>(args?: Subset<T, Veiculos$demandasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemandasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    secretarias<T extends Veiculos$secretariasArgs<ExtArgs> = {}>(args?: Subset<T, Veiculos$secretariasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretariasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    secretarias<T extends Veiculos$secretariasArgs<ExtArgs> = {}>(args?: Subset<T, Veiculos$secretariasArgs<ExtArgs>>): Prisma__SecretariasClient<$Result.GetResult<Prisma.$SecretariasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3407,6 +3494,7 @@ export namespace Prisma {
     readonly proprietarioVeiculo: FieldRef<"Veiculos", 'String'>
     readonly crlvVeiculo: FieldRef<"Veiculos", 'String'>
     readonly userId: FieldRef<"Veiculos", 'String'>
+    readonly secretariasId: FieldRef<"Veiculos", 'String'>
   }
     
 
@@ -3843,11 +3931,6 @@ export namespace Prisma {
      */
     include?: SecretariasInclude<ExtArgs> | null
     where?: SecretariasWhereInput
-    orderBy?: SecretariasOrderByWithRelationInput | SecretariasOrderByWithRelationInput[]
-    cursor?: SecretariasWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SecretariasScalarFieldEnum | SecretariasScalarFieldEnum[]
   }
 
   /**
@@ -3882,22 +3965,16 @@ export namespace Prisma {
   export type SecretariasMinAggregateOutputType = {
     id: string | null
     nome: string | null
-    userId: string | null
-    veiculoId: string | null
   }
 
   export type SecretariasMaxAggregateOutputType = {
     id: string | null
     nome: string | null
-    userId: string | null
-    veiculoId: string | null
   }
 
   export type SecretariasCountAggregateOutputType = {
     id: number
     nome: number
-    userId: number
-    veiculoId: number
     _all: number
   }
 
@@ -3905,22 +3982,16 @@ export namespace Prisma {
   export type SecretariasMinAggregateInputType = {
     id?: true
     nome?: true
-    userId?: true
-    veiculoId?: true
   }
 
   export type SecretariasMaxAggregateInputType = {
     id?: true
     nome?: true
-    userId?: true
-    veiculoId?: true
   }
 
   export type SecretariasCountAggregateInputType = {
     id?: true
     nome?: true
-    userId?: true
-    veiculoId?: true
     _all?: true
   }
 
@@ -3999,8 +4070,6 @@ export namespace Prisma {
   export type SecretariasGroupByOutputType = {
     id: string
     nome: string
-    userId: string
-    veiculoId: string | null
     _count: SecretariasCountAggregateOutputType | null
     _min: SecretariasMinAggregateOutputType | null
     _max: SecretariasMaxAggregateOutputType | null
@@ -4023,62 +4092,47 @@ export namespace Prisma {
   export type SecretariasSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nome?: boolean
-    userId?: boolean
-    veiculoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
+    Veiculos?: boolean | Secretarias$VeiculosArgs<ExtArgs>
+    Demandas?: boolean | Secretarias$DemandasArgs<ExtArgs>
+    Users?: boolean | Secretarias$UsersArgs<ExtArgs>
+    _count?: boolean | SecretariasCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["secretarias"]>
 
   export type SecretariasSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nome?: boolean
-    userId?: boolean
-    veiculoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
   }, ExtArgs["result"]["secretarias"]>
 
   export type SecretariasSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nome?: boolean
-    userId?: boolean
-    veiculoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
   }, ExtArgs["result"]["secretarias"]>
 
   export type SecretariasSelectScalar = {
     id?: boolean
     nome?: boolean
-    userId?: boolean
-    veiculoId?: boolean
   }
 
-  export type SecretariasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "userId" | "veiculoId", ExtArgs["result"]["secretarias"]>
+  export type SecretariasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome", ExtArgs["result"]["secretarias"]>
   export type SecretariasInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
+    Veiculos?: boolean | Secretarias$VeiculosArgs<ExtArgs>
+    Demandas?: boolean | Secretarias$DemandasArgs<ExtArgs>
+    Users?: boolean | Secretarias$UsersArgs<ExtArgs>
+    _count?: boolean | SecretariasCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SecretariasIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
-  }
-  export type SecretariasIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    veiculo?: boolean | Secretarias$veiculoArgs<ExtArgs>
-  }
+  export type SecretariasIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SecretariasIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $SecretariasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Secretarias"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      veiculo: Prisma.$VeiculosPayload<ExtArgs> | null
+      Veiculos: Prisma.$VeiculosPayload<ExtArgs>[]
+      Demandas: Prisma.$DemandasPayload<ExtArgs>[]
+      Users: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       nome: string
-      userId: string
-      veiculoId: string | null
     }, ExtArgs["result"]["secretarias"]>
     composites: {}
   }
@@ -4473,8 +4527,9 @@ export namespace Prisma {
    */
   export interface Prisma__SecretariasClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    veiculo<T extends Secretarias$veiculoArgs<ExtArgs> = {}>(args?: Subset<T, Secretarias$veiculoArgs<ExtArgs>>): Prisma__VeiculosClient<$Result.GetResult<Prisma.$VeiculosPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Veiculos<T extends Secretarias$VeiculosArgs<ExtArgs> = {}>(args?: Subset<T, Secretarias$VeiculosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VeiculosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Demandas<T extends Secretarias$DemandasArgs<ExtArgs> = {}>(args?: Subset<T, Secretarias$DemandasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemandasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Users<T extends Secretarias$UsersArgs<ExtArgs> = {}>(args?: Subset<T, Secretarias$UsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4506,8 +4561,6 @@ export namespace Prisma {
   interface SecretariasFieldRefs {
     readonly id: FieldRef<"Secretarias", 'String'>
     readonly nome: FieldRef<"Secretarias", 'String'>
-    readonly userId: FieldRef<"Secretarias", 'String'>
-    readonly veiculoId: FieldRef<"Secretarias", 'String'>
   }
     
 
@@ -4757,10 +4810,6 @@ export namespace Prisma {
      */
     data: SecretariasCreateManyInput | SecretariasCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SecretariasIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4831,10 +4880,6 @@ export namespace Prisma {
      * Limit how many Secretarias to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SecretariasIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4904,9 +4949,9 @@ export namespace Prisma {
   }
 
   /**
-   * Secretarias.veiculo
+   * Secretarias.Veiculos
    */
-  export type Secretarias$veiculoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Secretarias$VeiculosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Veiculos
      */
@@ -4920,6 +4965,59 @@ export namespace Prisma {
      */
     include?: VeiculosInclude<ExtArgs> | null
     where?: VeiculosWhereInput
+    orderBy?: VeiculosOrderByWithRelationInput | VeiculosOrderByWithRelationInput[]
+    cursor?: VeiculosWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VeiculosScalarFieldEnum | VeiculosScalarFieldEnum[]
+  }
+
+  /**
+   * Secretarias.Demandas
+   */
+  export type Secretarias$DemandasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demandas
+     */
+    select?: DemandasSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demandas
+     */
+    omit?: DemandasOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DemandasInclude<ExtArgs> | null
+    where?: DemandasWhereInput
+    orderBy?: DemandasOrderByWithRelationInput | DemandasOrderByWithRelationInput[]
+    cursor?: DemandasWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DemandasScalarFieldEnum | DemandasScalarFieldEnum[]
+  }
+
+  /**
+   * Secretarias.Users
+   */
+  export type Secretarias$UsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -4959,6 +5057,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     updatedAt: Date | null
+    secretariasId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -4969,6 +5068,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     updatedAt: Date | null
+    secretariasId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -4979,6 +5079,7 @@ export namespace Prisma {
     emailVerified: number
     image: number
     updatedAt: number
+    secretariasId: number
     _all: number
   }
 
@@ -4991,6 +5092,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     updatedAt?: true
+    secretariasId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -5001,6 +5103,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     updatedAt?: true
+    secretariasId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -5011,6 +5114,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     updatedAt?: true
+    secretariasId?: true
     _all?: true
   }
 
@@ -5094,6 +5198,7 @@ export namespace Prisma {
     emailVerified: boolean
     image: string | null
     updatedAt: Date
+    secretariasId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -5121,6 +5226,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     updatedAt?: boolean
+    secretariasId?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     veiculos?: boolean | User$veiculosArgs<ExtArgs>
@@ -5137,6 +5243,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     updatedAt?: boolean
+    secretariasId?: boolean
+    secretarias?: boolean | User$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5147,6 +5255,8 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     updatedAt?: boolean
+    secretariasId?: boolean
+    secretarias?: boolean | User$secretariasArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -5157,9 +5267,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     updatedAt?: boolean
+    secretariasId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "createdAt" | "emailVerified" | "image" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "createdAt" | "emailVerified" | "image" | "updatedAt" | "secretariasId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -5168,8 +5279,12 @@ export namespace Prisma {
     secretarias?: boolean | User$secretariasArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    secretarias?: boolean | User$secretariasArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    secretarias?: boolean | User$secretariasArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -5178,7 +5293,7 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       veiculos: Prisma.$VeiculosPayload<ExtArgs>[]
       demandas: Prisma.$DemandasPayload<ExtArgs>[]
-      secretarias: Prisma.$SecretariasPayload<ExtArgs>[]
+      secretarias: Prisma.$SecretariasPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5188,6 +5303,7 @@ export namespace Prisma {
       emailVerified: boolean
       image: string | null
       updatedAt: Date
+      secretariasId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -5586,7 +5702,7 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     veiculos<T extends User$veiculosArgs<ExtArgs> = {}>(args?: Subset<T, User$veiculosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VeiculosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     demandas<T extends User$demandasArgs<ExtArgs> = {}>(args?: Subset<T, User$demandasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemandasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    secretarias<T extends User$secretariasArgs<ExtArgs> = {}>(args?: Subset<T, User$secretariasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SecretariasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    secretarias<T extends User$secretariasArgs<ExtArgs> = {}>(args?: Subset<T, User$secretariasArgs<ExtArgs>>): Prisma__SecretariasClient<$Result.GetResult<Prisma.$SecretariasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5623,6 +5739,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly image: FieldRef<"User", 'String'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly secretariasId: FieldRef<"User", 'String'>
   }
     
 
@@ -5872,6 +5989,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5942,6 +6063,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6123,11 +6248,6 @@ export namespace Prisma {
      */
     include?: SecretariasInclude<ExtArgs> | null
     where?: SecretariasWhereInput
-    orderBy?: SecretariasOrderByWithRelationInput | SecretariasOrderByWithRelationInput[]
-    cursor?: SecretariasWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SecretariasScalarFieldEnum | SecretariasScalarFieldEnum[]
   }
 
   /**
@@ -9445,7 +9565,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    veiculoId: 'veiculoId'
+    veiculoId: 'veiculoId',
+    secretariasId: 'secretariasId'
   };
 
   export type DemandasScalarFieldEnum = (typeof DemandasScalarFieldEnum)[keyof typeof DemandasScalarFieldEnum]
@@ -9458,7 +9579,8 @@ export namespace Prisma {
     renavamVeiculo: 'renavamVeiculo',
     proprietarioVeiculo: 'proprietarioVeiculo',
     crlvVeiculo: 'crlvVeiculo',
-    userId: 'userId'
+    userId: 'userId',
+    secretariasId: 'secretariasId'
   };
 
   export type VeiculosScalarFieldEnum = (typeof VeiculosScalarFieldEnum)[keyof typeof VeiculosScalarFieldEnum]
@@ -9466,9 +9588,7 @@ export namespace Prisma {
 
   export const SecretariasScalarFieldEnum: {
     id: 'id',
-    nome: 'nome',
-    userId: 'userId',
-    veiculoId: 'veiculoId'
+    nome: 'nome'
   };
 
   export type SecretariasScalarFieldEnum = (typeof SecretariasScalarFieldEnum)[keyof typeof SecretariasScalarFieldEnum]
@@ -9481,7 +9601,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     emailVerified: 'emailVerified',
     image: 'image',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    secretariasId: 'secretariasId'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -9632,8 +9753,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demandas"> | Date | string
     userId?: StringFilter<"Demandas"> | string
     veiculoId?: StringNullableFilter<"Demandas"> | string | null
+    secretariasId?: StringNullableFilter<"Demandas"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     veiculo?: XOR<VeiculosNullableScalarRelationFilter, VeiculosWhereInput> | null
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }
 
   export type DemandasOrderByWithRelationInput = {
@@ -9652,8 +9775,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     veiculoId?: SortOrderInput | SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     veiculo?: VeiculosOrderByWithRelationInput
+    secretarias?: SecretariasOrderByWithRelationInput
   }
 
   export type DemandasWhereUniqueInput = Prisma.AtLeast<{
@@ -9675,8 +9800,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demandas"> | Date | string
     userId?: StringFilter<"Demandas"> | string
     veiculoId?: StringNullableFilter<"Demandas"> | string | null
+    secretariasId?: StringNullableFilter<"Demandas"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     veiculo?: XOR<VeiculosNullableScalarRelationFilter, VeiculosWhereInput> | null
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }, "id" | "emailSolicitante">
 
   export type DemandasOrderByWithAggregationInput = {
@@ -9695,6 +9822,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     veiculoId?: SortOrderInput | SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     _count?: DemandasCountOrderByAggregateInput
     _max?: DemandasMaxOrderByAggregateInput
     _min?: DemandasMinOrderByAggregateInput
@@ -9719,6 +9847,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Demandas"> | Date | string
     userId?: StringWithAggregatesFilter<"Demandas"> | string
     veiculoId?: StringNullableWithAggregatesFilter<"Demandas"> | string | null
+    secretariasId?: StringNullableWithAggregatesFilter<"Demandas"> | string | null
   }
 
   export type VeiculosWhereInput = {
@@ -9732,9 +9861,10 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFilter<"Veiculos"> | string
     crlvVeiculo?: StringFilter<"Veiculos"> | string
     userId?: StringFilter<"Veiculos"> | string
+    secretariasId?: StringNullableFilter<"Veiculos"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     demandas?: DemandasListRelationFilter
-    secretarias?: SecretariasListRelationFilter
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }
 
   export type VeiculosOrderByWithRelationInput = {
@@ -9745,9 +9875,10 @@ export namespace Prisma {
     proprietarioVeiculo?: SortOrder
     crlvVeiculo?: SortOrder
     userId?: SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     demandas?: DemandasOrderByRelationAggregateInput
-    secretarias?: SecretariasOrderByRelationAggregateInput
+    secretarias?: SecretariasOrderByWithRelationInput
   }
 
   export type VeiculosWhereUniqueInput = Prisma.AtLeast<{
@@ -9761,9 +9892,10 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFilter<"Veiculos"> | string
     crlvVeiculo?: StringFilter<"Veiculos"> | string
     userId?: StringFilter<"Veiculos"> | string
+    secretariasId?: StringNullableFilter<"Veiculos"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     demandas?: DemandasListRelationFilter
-    secretarias?: SecretariasListRelationFilter
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }, "id">
 
   export type VeiculosOrderByWithAggregationInput = {
@@ -9774,6 +9906,7 @@ export namespace Prisma {
     proprietarioVeiculo?: SortOrder
     crlvVeiculo?: SortOrder
     userId?: SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     _count?: VeiculosCountOrderByAggregateInput
     _max?: VeiculosMaxOrderByAggregateInput
     _min?: VeiculosMinOrderByAggregateInput
@@ -9790,6 +9923,7 @@ export namespace Prisma {
     proprietarioVeiculo?: StringWithAggregatesFilter<"Veiculos"> | string
     crlvVeiculo?: StringWithAggregatesFilter<"Veiculos"> | string
     userId?: StringWithAggregatesFilter<"Veiculos"> | string
+    secretariasId?: StringNullableWithAggregatesFilter<"Veiculos"> | string | null
   }
 
   export type SecretariasWhereInput = {
@@ -9798,38 +9932,33 @@ export namespace Prisma {
     NOT?: SecretariasWhereInput | SecretariasWhereInput[]
     id?: StringFilter<"Secretarias"> | string
     nome?: StringFilter<"Secretarias"> | string
-    userId?: StringFilter<"Secretarias"> | string
-    veiculoId?: StringNullableFilter<"Secretarias"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    veiculo?: XOR<VeiculosNullableScalarRelationFilter, VeiculosWhereInput> | null
+    Veiculos?: VeiculosListRelationFilter
+    Demandas?: DemandasListRelationFilter
+    Users?: UserListRelationFilter
   }
 
   export type SecretariasOrderByWithRelationInput = {
     id?: SortOrder
     nome?: SortOrder
-    userId?: SortOrder
-    veiculoId?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
-    veiculo?: VeiculosOrderByWithRelationInput
+    Veiculos?: VeiculosOrderByRelationAggregateInput
+    Demandas?: DemandasOrderByRelationAggregateInput
+    Users?: UserOrderByRelationAggregateInput
   }
 
   export type SecretariasWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    nome?: string
     AND?: SecretariasWhereInput | SecretariasWhereInput[]
     OR?: SecretariasWhereInput[]
     NOT?: SecretariasWhereInput | SecretariasWhereInput[]
-    nome?: StringFilter<"Secretarias"> | string
-    userId?: StringFilter<"Secretarias"> | string
-    veiculoId?: StringNullableFilter<"Secretarias"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    veiculo?: XOR<VeiculosNullableScalarRelationFilter, VeiculosWhereInput> | null
-  }, "id">
+    Veiculos?: VeiculosListRelationFilter
+    Demandas?: DemandasListRelationFilter
+    Users?: UserListRelationFilter
+  }, "id" | "nome">
 
   export type SecretariasOrderByWithAggregationInput = {
     id?: SortOrder
     nome?: SortOrder
-    userId?: SortOrder
-    veiculoId?: SortOrderInput | SortOrder
     _count?: SecretariasCountOrderByAggregateInput
     _max?: SecretariasMaxOrderByAggregateInput
     _min?: SecretariasMinOrderByAggregateInput
@@ -9841,8 +9970,6 @@ export namespace Prisma {
     NOT?: SecretariasScalarWhereWithAggregatesInput | SecretariasScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Secretarias"> | string
     nome?: StringWithAggregatesFilter<"Secretarias"> | string
-    userId?: StringWithAggregatesFilter<"Secretarias"> | string
-    veiculoId?: StringNullableWithAggregatesFilter<"Secretarias"> | string | null
   }
 
   export type UserWhereInput = {
@@ -9856,11 +9983,12 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    secretariasId?: StringNullableFilter<"User"> | string | null
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     veiculos?: VeiculosListRelationFilter
     demandas?: DemandasListRelationFilter
-    secretarias?: SecretariasListRelationFilter
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -9871,11 +9999,12 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     veiculos?: VeiculosOrderByRelationAggregateInput
     demandas?: DemandasOrderByRelationAggregateInput
-    secretarias?: SecretariasOrderByRelationAggregateInput
+    secretarias?: SecretariasOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -9889,11 +10018,12 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    secretariasId?: StringNullableFilter<"User"> | string | null
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     veiculos?: VeiculosListRelationFilter
     demandas?: DemandasListRelationFilter
-    secretarias?: SecretariasListRelationFilter
+    secretarias?: XOR<SecretariasNullableScalarRelationFilter, SecretariasWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -9904,6 +10034,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
+    secretariasId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -9920,6 +10051,7 @@ export namespace Prisma {
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    secretariasId?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type SessionWhereInput = {
@@ -10160,6 +10292,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDemandasInput
     veiculo?: VeiculosCreateNestedOneWithoutDemandasInput
+    secretarias?: SecretariasCreateNestedOneWithoutDemandasInput
   }
 
   export type DemandasUncheckedCreateInput = {
@@ -10178,6 +10311,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     veiculoId?: string | null
+    secretariasId?: string | null
   }
 
   export type DemandasUpdateInput = {
@@ -10196,6 +10330,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDemandasNestedInput
     veiculo?: VeiculosUpdateOneWithoutDemandasNestedInput
+    secretarias?: SecretariasUpdateOneWithoutDemandasNestedInput
   }
 
   export type DemandasUncheckedUpdateInput = {
@@ -10214,6 +10349,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DemandasCreateManyInput = {
@@ -10232,6 +10368,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     veiculoId?: string | null
+    secretariasId?: string | null
   }
 
   export type DemandasUpdateManyMutationInput = {
@@ -10266,6 +10403,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VeiculosCreateInput = {
@@ -10277,7 +10415,7 @@ export namespace Prisma {
     crlvVeiculo: string
     user: UserCreateNestedOneWithoutVeiculosInput
     demandas?: DemandasCreateNestedManyWithoutVeiculoInput
-    secretarias?: SecretariasCreateNestedManyWithoutVeiculoInput
+    secretarias?: SecretariasCreateNestedOneWithoutVeiculosInput
   }
 
   export type VeiculosUncheckedCreateInput = {
@@ -10288,8 +10426,8 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     userId: string
+    secretariasId?: string | null
     demandas?: DemandasUncheckedCreateNestedManyWithoutVeiculoInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutVeiculoInput
   }
 
   export type VeiculosUpdateInput = {
@@ -10301,7 +10439,7 @@ export namespace Prisma {
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutVeiculosNestedInput
     demandas?: DemandasUpdateManyWithoutVeiculoNestedInput
-    secretarias?: SecretariasUpdateManyWithoutVeiculoNestedInput
+    secretarias?: SecretariasUpdateOneWithoutVeiculosNestedInput
   }
 
   export type VeiculosUncheckedUpdateInput = {
@@ -10312,8 +10450,8 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     demandas?: DemandasUncheckedUpdateManyWithoutVeiculoNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutVeiculoNestedInput
   }
 
   export type VeiculosCreateManyInput = {
@@ -10324,6 +10462,7 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     userId: string
+    secretariasId?: string | null
   }
 
   export type VeiculosUpdateManyMutationInput = {
@@ -10343,41 +10482,44 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SecretariasCreateInput = {
     id?: string
     nome: string
-    user: UserCreateNestedOneWithoutSecretariasInput
-    veiculo?: VeiculosCreateNestedOneWithoutSecretariasInput
+    Veiculos?: VeiculosCreateNestedManyWithoutSecretariasInput
+    Demandas?: DemandasCreateNestedManyWithoutSecretariasInput
+    Users?: UserCreateNestedManyWithoutSecretariasInput
   }
 
   export type SecretariasUncheckedCreateInput = {
     id?: string
     nome: string
-    userId: string
-    veiculoId?: string | null
+    Veiculos?: VeiculosUncheckedCreateNestedManyWithoutSecretariasInput
+    Demandas?: DemandasUncheckedCreateNestedManyWithoutSecretariasInput
+    Users?: UserUncheckedCreateNestedManyWithoutSecretariasInput
   }
 
   export type SecretariasUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutSecretariasNestedInput
-    veiculo?: VeiculosUpdateOneWithoutSecretariasNestedInput
+    Veiculos?: VeiculosUpdateManyWithoutSecretariasNestedInput
+    Demandas?: DemandasUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUpdateManyWithoutSecretariasNestedInput
   }
 
   export type SecretariasUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+    Veiculos?: VeiculosUncheckedUpdateManyWithoutSecretariasNestedInput
+    Demandas?: DemandasUncheckedUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUncheckedUpdateManyWithoutSecretariasNestedInput
   }
 
   export type SecretariasCreateManyInput = {
     id?: string
     nome: string
-    userId: string
-    veiculoId?: string | null
   }
 
   export type SecretariasUpdateManyMutationInput = {
@@ -10388,8 +10530,6 @@ export namespace Prisma {
   export type SecretariasUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateInput = {
@@ -10404,7 +10544,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculosCreateNestedManyWithoutUserInput
     demandas?: DemandasCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasCreateNestedManyWithoutUserInput
+    secretarias?: SecretariasCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -10415,11 +10555,11 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculosUncheckedCreateNestedManyWithoutUserInput
     demandas?: DemandasUncheckedCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -10434,7 +10574,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUpdateManyWithoutUserNestedInput
     demandas?: DemandasUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUpdateManyWithoutUserNestedInput
+    secretarias?: SecretariasUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -10445,11 +10585,11 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
     demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -10460,6 +10600,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -10480,6 +10621,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionCreateInput = {
@@ -10783,6 +10925,11 @@ export namespace Prisma {
     isNot?: VeiculosWhereInput | null
   }
 
+  export type SecretariasNullableScalarRelationFilter = {
+    is?: SecretariasWhereInput | null
+    isNot?: SecretariasWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -10804,6 +10951,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     veiculoId?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type DemandasMaxOrderByAggregateInput = {
@@ -10822,6 +10970,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     veiculoId?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type DemandasMinOrderByAggregateInput = {
@@ -10840,6 +10989,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     veiculoId?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -10898,17 +11048,7 @@ export namespace Prisma {
     none?: DemandasWhereInput
   }
 
-  export type SecretariasListRelationFilter = {
-    every?: SecretariasWhereInput
-    some?: SecretariasWhereInput
-    none?: SecretariasWhereInput
-  }
-
   export type DemandasOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SecretariasOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10920,6 +11060,7 @@ export namespace Prisma {
     proprietarioVeiculo?: SortOrder
     crlvVeiculo?: SortOrder
     userId?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type VeiculosMaxOrderByAggregateInput = {
@@ -10930,6 +11071,7 @@ export namespace Prisma {
     proprietarioVeiculo?: SortOrder
     crlvVeiculo?: SortOrder
     userId?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type VeiculosMinOrderByAggregateInput = {
@@ -10940,27 +11082,42 @@ export namespace Prisma {
     proprietarioVeiculo?: SortOrder
     crlvVeiculo?: SortOrder
     userId?: SortOrder
+    secretariasId?: SortOrder
+  }
+
+  export type VeiculosListRelationFilter = {
+    every?: VeiculosWhereInput
+    some?: VeiculosWhereInput
+    none?: VeiculosWhereInput
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type VeiculosOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type SecretariasCountOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    userId?: SortOrder
-    veiculoId?: SortOrder
   }
 
   export type SecretariasMaxOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    userId?: SortOrder
-    veiculoId?: SortOrder
   }
 
   export type SecretariasMinOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    userId?: SortOrder
-    veiculoId?: SortOrder
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -10980,21 +11137,11 @@ export namespace Prisma {
     none?: AccountWhereInput
   }
 
-  export type VeiculosListRelationFilter = {
-    every?: VeiculosWhereInput
-    some?: VeiculosWhereInput
-    none?: VeiculosWhereInput
-  }
-
   export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VeiculosOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11006,6 +11153,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     updatedAt?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -11016,6 +11164,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     updatedAt?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -11026,6 +11175,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     updatedAt?: SortOrder
+    secretariasId?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -11181,6 +11331,12 @@ export namespace Prisma {
     connect?: VeiculosWhereUniqueInput
   }
 
+  export type SecretariasCreateNestedOneWithoutDemandasInput = {
+    create?: XOR<SecretariasCreateWithoutDemandasInput, SecretariasUncheckedCreateWithoutDemandasInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutDemandasInput
+    connect?: SecretariasWhereUniqueInput
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -11211,6 +11367,16 @@ export namespace Prisma {
     update?: XOR<XOR<VeiculosUpdateToOneWithWhereWithoutDemandasInput, VeiculosUpdateWithoutDemandasInput>, VeiculosUncheckedUpdateWithoutDemandasInput>
   }
 
+  export type SecretariasUpdateOneWithoutDemandasNestedInput = {
+    create?: XOR<SecretariasCreateWithoutDemandasInput, SecretariasUncheckedCreateWithoutDemandasInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutDemandasInput
+    upsert?: SecretariasUpsertWithoutDemandasInput
+    disconnect?: SecretariasWhereInput | boolean
+    delete?: SecretariasWhereInput | boolean
+    connect?: SecretariasWhereUniqueInput
+    update?: XOR<XOR<SecretariasUpdateToOneWithWhereWithoutDemandasInput, SecretariasUpdateWithoutDemandasInput>, SecretariasUncheckedUpdateWithoutDemandasInput>
+  }
+
   export type UserCreateNestedOneWithoutVeiculosInput = {
     create?: XOR<UserCreateWithoutVeiculosInput, UserUncheckedCreateWithoutVeiculosInput>
     connectOrCreate?: UserCreateOrConnectWithoutVeiculosInput
@@ -11224,11 +11390,10 @@ export namespace Prisma {
     connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
   }
 
-  export type SecretariasCreateNestedManyWithoutVeiculoInput = {
-    create?: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput> | SecretariasCreateWithoutVeiculoInput[] | SecretariasUncheckedCreateWithoutVeiculoInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculoInput | SecretariasCreateOrConnectWithoutVeiculoInput[]
-    createMany?: SecretariasCreateManyVeiculoInputEnvelope
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
+  export type SecretariasCreateNestedOneWithoutVeiculosInput = {
+    create?: XOR<SecretariasCreateWithoutVeiculosInput, SecretariasUncheckedCreateWithoutVeiculosInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculosInput
+    connect?: SecretariasWhereUniqueInput
   }
 
   export type DemandasUncheckedCreateNestedManyWithoutVeiculoInput = {
@@ -11236,13 +11401,6 @@ export namespace Prisma {
     connectOrCreate?: DemandasCreateOrConnectWithoutVeiculoInput | DemandasCreateOrConnectWithoutVeiculoInput[]
     createMany?: DemandasCreateManyVeiculoInputEnvelope
     connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
-  }
-
-  export type SecretariasUncheckedCreateNestedManyWithoutVeiculoInput = {
-    create?: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput> | SecretariasCreateWithoutVeiculoInput[] | SecretariasUncheckedCreateWithoutVeiculoInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculoInput | SecretariasCreateOrConnectWithoutVeiculoInput[]
-    createMany?: SecretariasCreateManyVeiculoInputEnvelope
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutVeiculosNestedInput = {
@@ -11267,18 +11425,14 @@ export namespace Prisma {
     deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
   }
 
-  export type SecretariasUpdateManyWithoutVeiculoNestedInput = {
-    create?: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput> | SecretariasCreateWithoutVeiculoInput[] | SecretariasUncheckedCreateWithoutVeiculoInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculoInput | SecretariasCreateOrConnectWithoutVeiculoInput[]
-    upsert?: SecretariasUpsertWithWhereUniqueWithoutVeiculoInput | SecretariasUpsertWithWhereUniqueWithoutVeiculoInput[]
-    createMany?: SecretariasCreateManyVeiculoInputEnvelope
-    set?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    disconnect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    delete?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    update?: SecretariasUpdateWithWhereUniqueWithoutVeiculoInput | SecretariasUpdateWithWhereUniqueWithoutVeiculoInput[]
-    updateMany?: SecretariasUpdateManyWithWhereWithoutVeiculoInput | SecretariasUpdateManyWithWhereWithoutVeiculoInput[]
-    deleteMany?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
+  export type SecretariasUpdateOneWithoutVeiculosNestedInput = {
+    create?: XOR<SecretariasCreateWithoutVeiculosInput, SecretariasUncheckedCreateWithoutVeiculosInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculosInput
+    upsert?: SecretariasUpsertWithoutVeiculosInput
+    disconnect?: SecretariasWhereInput | boolean
+    delete?: SecretariasWhereInput | boolean
+    connect?: SecretariasWhereUniqueInput
+    update?: XOR<XOR<SecretariasUpdateToOneWithWhereWithoutVeiculosInput, SecretariasUpdateWithoutVeiculosInput>, SecretariasUncheckedUpdateWithoutVeiculosInput>
   }
 
   export type DemandasUncheckedUpdateManyWithoutVeiculoNestedInput = {
@@ -11295,48 +11449,130 @@ export namespace Prisma {
     deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
   }
 
-  export type SecretariasUncheckedUpdateManyWithoutVeiculoNestedInput = {
-    create?: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput> | SecretariasCreateWithoutVeiculoInput[] | SecretariasUncheckedCreateWithoutVeiculoInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutVeiculoInput | SecretariasCreateOrConnectWithoutVeiculoInput[]
-    upsert?: SecretariasUpsertWithWhereUniqueWithoutVeiculoInput | SecretariasUpsertWithWhereUniqueWithoutVeiculoInput[]
-    createMany?: SecretariasCreateManyVeiculoInputEnvelope
-    set?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    disconnect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    delete?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    update?: SecretariasUpdateWithWhereUniqueWithoutVeiculoInput | SecretariasUpdateWithWhereUniqueWithoutVeiculoInput[]
-    updateMany?: SecretariasUpdateManyWithWhereWithoutVeiculoInput | SecretariasUpdateManyWithWhereWithoutVeiculoInput[]
-    deleteMany?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
+  export type VeiculosCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput> | VeiculosCreateWithoutSecretariasInput[] | VeiculosUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput | VeiculosCreateOrConnectWithoutSecretariasInput[]
+    createMany?: VeiculosCreateManySecretariasInputEnvelope
+    connect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
   }
 
-  export type UserCreateNestedOneWithoutSecretariasInput = {
-    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput
-    connect?: UserWhereUniqueInput
+  export type DemandasCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput> | DemandasCreateWithoutSecretariasInput[] | DemandasUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: DemandasCreateOrConnectWithoutSecretariasInput | DemandasCreateOrConnectWithoutSecretariasInput[]
+    createMany?: DemandasCreateManySecretariasInputEnvelope
+    connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
   }
 
-  export type VeiculosCreateNestedOneWithoutSecretariasInput = {
-    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput>
-    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput
-    connect?: VeiculosWhereUniqueInput
+  export type UserCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput> | UserCreateWithoutSecretariasInput[] | UserUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput | UserCreateOrConnectWithoutSecretariasInput[]
+    createMany?: UserCreateManySecretariasInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutSecretariasNestedInput = {
-    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput
-    upsert?: UserUpsertWithoutSecretariasInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSecretariasInput, UserUpdateWithoutSecretariasInput>, UserUncheckedUpdateWithoutSecretariasInput>
+  export type VeiculosUncheckedCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput> | VeiculosCreateWithoutSecretariasInput[] | VeiculosUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput | VeiculosCreateOrConnectWithoutSecretariasInput[]
+    createMany?: VeiculosCreateManySecretariasInputEnvelope
+    connect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
   }
 
-  export type VeiculosUpdateOneWithoutSecretariasNestedInput = {
-    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput>
-    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput
-    upsert?: VeiculosUpsertWithoutSecretariasInput
-    disconnect?: VeiculosWhereInput | boolean
-    delete?: VeiculosWhereInput | boolean
-    connect?: VeiculosWhereUniqueInput
-    update?: XOR<XOR<VeiculosUpdateToOneWithWhereWithoutSecretariasInput, VeiculosUpdateWithoutSecretariasInput>, VeiculosUncheckedUpdateWithoutSecretariasInput>
+  export type DemandasUncheckedCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput> | DemandasCreateWithoutSecretariasInput[] | DemandasUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: DemandasCreateOrConnectWithoutSecretariasInput | DemandasCreateOrConnectWithoutSecretariasInput[]
+    createMany?: DemandasCreateManySecretariasInputEnvelope
+    connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutSecretariasInput = {
+    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput> | UserCreateWithoutSecretariasInput[] | UserUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput | UserCreateOrConnectWithoutSecretariasInput[]
+    createMany?: UserCreateManySecretariasInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type VeiculosUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput> | VeiculosCreateWithoutSecretariasInput[] | VeiculosUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput | VeiculosCreateOrConnectWithoutSecretariasInput[]
+    upsert?: VeiculosUpsertWithWhereUniqueWithoutSecretariasInput | VeiculosUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: VeiculosCreateManySecretariasInputEnvelope
+    set?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    disconnect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    delete?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    connect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    update?: VeiculosUpdateWithWhereUniqueWithoutSecretariasInput | VeiculosUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: VeiculosUpdateManyWithWhereWithoutSecretariasInput | VeiculosUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
+  }
+
+  export type DemandasUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput> | DemandasCreateWithoutSecretariasInput[] | DemandasUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: DemandasCreateOrConnectWithoutSecretariasInput | DemandasCreateOrConnectWithoutSecretariasInput[]
+    upsert?: DemandasUpsertWithWhereUniqueWithoutSecretariasInput | DemandasUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: DemandasCreateManySecretariasInputEnvelope
+    set?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    disconnect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    delete?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    update?: DemandasUpdateWithWhereUniqueWithoutSecretariasInput | DemandasUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: DemandasUpdateManyWithWhereWithoutSecretariasInput | DemandasUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput> | UserCreateWithoutSecretariasInput[] | UserUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput | UserCreateOrConnectWithoutSecretariasInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutSecretariasInput | UserUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: UserCreateManySecretariasInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutSecretariasInput | UserUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutSecretariasInput | UserUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type VeiculosUncheckedUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput> | VeiculosCreateWithoutSecretariasInput[] | VeiculosUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: VeiculosCreateOrConnectWithoutSecretariasInput | VeiculosCreateOrConnectWithoutSecretariasInput[]
+    upsert?: VeiculosUpsertWithWhereUniqueWithoutSecretariasInput | VeiculosUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: VeiculosCreateManySecretariasInputEnvelope
+    set?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    disconnect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    delete?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    connect?: VeiculosWhereUniqueInput | VeiculosWhereUniqueInput[]
+    update?: VeiculosUpdateWithWhereUniqueWithoutSecretariasInput | VeiculosUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: VeiculosUpdateManyWithWhereWithoutSecretariasInput | VeiculosUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
+  }
+
+  export type DemandasUncheckedUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput> | DemandasCreateWithoutSecretariasInput[] | DemandasUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: DemandasCreateOrConnectWithoutSecretariasInput | DemandasCreateOrConnectWithoutSecretariasInput[]
+    upsert?: DemandasUpsertWithWhereUniqueWithoutSecretariasInput | DemandasUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: DemandasCreateManySecretariasInputEnvelope
+    set?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    disconnect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    delete?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
+    update?: DemandasUpdateWithWhereUniqueWithoutSecretariasInput | DemandasUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: DemandasUpdateManyWithWhereWithoutSecretariasInput | DemandasUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutSecretariasNestedInput = {
+    create?: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput> | UserCreateWithoutSecretariasInput[] | UserUncheckedCreateWithoutSecretariasInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutSecretariasInput | UserCreateOrConnectWithoutSecretariasInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutSecretariasInput | UserUpsertWithWhereUniqueWithoutSecretariasInput[]
+    createMany?: UserCreateManySecretariasInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutSecretariasInput | UserUpdateWithWhereUniqueWithoutSecretariasInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutSecretariasInput | UserUpdateManyWithWhereWithoutSecretariasInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type SessionCreateNestedManyWithoutUserInput = {
@@ -11367,11 +11603,10 @@ export namespace Prisma {
     connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
   }
 
-  export type SecretariasCreateNestedManyWithoutUserInput = {
-    create?: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput> | SecretariasCreateWithoutUserInput[] | SecretariasUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutUserInput | SecretariasCreateOrConnectWithoutUserInput[]
-    createMany?: SecretariasCreateManyUserInputEnvelope
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
+  export type SecretariasCreateNestedOneWithoutUsersInput = {
+    create?: XOR<SecretariasCreateWithoutUsersInput, SecretariasUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutUsersInput
+    connect?: SecretariasWhereUniqueInput
   }
 
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
@@ -11400,13 +11635,6 @@ export namespace Prisma {
     connectOrCreate?: DemandasCreateOrConnectWithoutUserInput | DemandasCreateOrConnectWithoutUserInput[]
     createMany?: DemandasCreateManyUserInputEnvelope
     connect?: DemandasWhereUniqueInput | DemandasWhereUniqueInput[]
-  }
-
-  export type SecretariasUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput> | SecretariasCreateWithoutUserInput[] | SecretariasUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutUserInput | SecretariasCreateOrConnectWithoutUserInput[]
-    createMany?: SecretariasCreateManyUserInputEnvelope
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -11469,18 +11697,14 @@ export namespace Prisma {
     deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
   }
 
-  export type SecretariasUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput> | SecretariasCreateWithoutUserInput[] | SecretariasUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutUserInput | SecretariasCreateOrConnectWithoutUserInput[]
-    upsert?: SecretariasUpsertWithWhereUniqueWithoutUserInput | SecretariasUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SecretariasCreateManyUserInputEnvelope
-    set?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    disconnect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    delete?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    update?: SecretariasUpdateWithWhereUniqueWithoutUserInput | SecretariasUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SecretariasUpdateManyWithWhereWithoutUserInput | SecretariasUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
+  export type SecretariasUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<SecretariasCreateWithoutUsersInput, SecretariasUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SecretariasCreateOrConnectWithoutUsersInput
+    upsert?: SecretariasUpsertWithoutUsersInput
+    disconnect?: SecretariasWhereInput | boolean
+    delete?: SecretariasWhereInput | boolean
+    connect?: SecretariasWhereUniqueInput
+    update?: XOR<XOR<SecretariasUpdateToOneWithWhereWithoutUsersInput, SecretariasUpdateWithoutUsersInput>, SecretariasUncheckedUpdateWithoutUsersInput>
   }
 
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -11537,20 +11761,6 @@ export namespace Prisma {
     update?: DemandasUpdateWithWhereUniqueWithoutUserInput | DemandasUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DemandasUpdateManyWithWhereWithoutUserInput | DemandasUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DemandasScalarWhereInput | DemandasScalarWhereInput[]
-  }
-
-  export type SecretariasUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput> | SecretariasCreateWithoutUserInput[] | SecretariasUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SecretariasCreateOrConnectWithoutUserInput | SecretariasCreateOrConnectWithoutUserInput[]
-    upsert?: SecretariasUpsertWithWhereUniqueWithoutUserInput | SecretariasUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SecretariasCreateManyUserInputEnvelope
-    set?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    disconnect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    delete?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    connect?: SecretariasWhereUniqueInput | SecretariasWhereUniqueInput[]
-    update?: SecretariasUpdateWithWhereUniqueWithoutUserInput | SecretariasUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SecretariasUpdateManyWithWhereWithoutUserInput | SecretariasUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -11743,7 +11953,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculosCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasCreateNestedManyWithoutUserInput
+    secretarias?: SecretariasCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutDemandasInput = {
@@ -11754,10 +11964,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculosUncheckedCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDemandasInput = {
@@ -11773,7 +11983,7 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     user: UserCreateNestedOneWithoutVeiculosInput
-    secretarias?: SecretariasCreateNestedManyWithoutVeiculoInput
+    secretarias?: SecretariasCreateNestedOneWithoutVeiculosInput
   }
 
   export type VeiculosUncheckedCreateWithoutDemandasInput = {
@@ -11784,12 +11994,31 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     userId: string
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutVeiculoInput
+    secretariasId?: string | null
   }
 
   export type VeiculosCreateOrConnectWithoutDemandasInput = {
     where: VeiculosWhereUniqueInput
     create: XOR<VeiculosCreateWithoutDemandasInput, VeiculosUncheckedCreateWithoutDemandasInput>
+  }
+
+  export type SecretariasCreateWithoutDemandasInput = {
+    id?: string
+    nome: string
+    Veiculos?: VeiculosCreateNestedManyWithoutSecretariasInput
+    Users?: UserCreateNestedManyWithoutSecretariasInput
+  }
+
+  export type SecretariasUncheckedCreateWithoutDemandasInput = {
+    id?: string
+    nome: string
+    Veiculos?: VeiculosUncheckedCreateNestedManyWithoutSecretariasInput
+    Users?: UserUncheckedCreateNestedManyWithoutSecretariasInput
+  }
+
+  export type SecretariasCreateOrConnectWithoutDemandasInput = {
+    where: SecretariasWhereUniqueInput
+    create: XOR<SecretariasCreateWithoutDemandasInput, SecretariasUncheckedCreateWithoutDemandasInput>
   }
 
   export type UserUpsertWithoutDemandasInput = {
@@ -11814,7 +12043,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUpdateManyWithoutUserNestedInput
+    secretarias?: SecretariasUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDemandasInput = {
@@ -11825,10 +12054,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VeiculosUpsertWithoutDemandasInput = {
@@ -11850,7 +12079,7 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutVeiculosNestedInput
-    secretarias?: SecretariasUpdateManyWithoutVeiculoNestedInput
+    secretarias?: SecretariasUpdateOneWithoutVeiculosNestedInput
   }
 
   export type VeiculosUncheckedUpdateWithoutDemandasInput = {
@@ -11861,7 +12090,32 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    secretarias?: SecretariasUncheckedUpdateManyWithoutVeiculoNestedInput
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SecretariasUpsertWithoutDemandasInput = {
+    update: XOR<SecretariasUpdateWithoutDemandasInput, SecretariasUncheckedUpdateWithoutDemandasInput>
+    create: XOR<SecretariasCreateWithoutDemandasInput, SecretariasUncheckedCreateWithoutDemandasInput>
+    where?: SecretariasWhereInput
+  }
+
+  export type SecretariasUpdateToOneWithWhereWithoutDemandasInput = {
+    where?: SecretariasWhereInput
+    data: XOR<SecretariasUpdateWithoutDemandasInput, SecretariasUncheckedUpdateWithoutDemandasInput>
+  }
+
+  export type SecretariasUpdateWithoutDemandasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Veiculos?: VeiculosUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUpdateManyWithoutSecretariasNestedInput
+  }
+
+  export type SecretariasUncheckedUpdateWithoutDemandasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Veiculos?: VeiculosUncheckedUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUncheckedUpdateManyWithoutSecretariasNestedInput
   }
 
   export type UserCreateWithoutVeiculosInput = {
@@ -11875,7 +12129,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     demandas?: DemandasCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasCreateNestedManyWithoutUserInput
+    secretarias?: SecretariasCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutVeiculosInput = {
@@ -11886,10 +12140,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     demandas?: DemandasUncheckedCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVeiculosInput = {
@@ -11912,6 +12166,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDemandasInput
+    secretarias?: SecretariasCreateNestedOneWithoutDemandasInput
   }
 
   export type DemandasUncheckedCreateWithoutVeiculoInput = {
@@ -11929,6 +12184,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    secretariasId?: string | null
   }
 
   export type DemandasCreateOrConnectWithoutVeiculoInput = {
@@ -11941,26 +12197,23 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SecretariasCreateWithoutVeiculoInput = {
+  export type SecretariasCreateWithoutVeiculosInput = {
     id?: string
     nome: string
-    user: UserCreateNestedOneWithoutSecretariasInput
+    Demandas?: DemandasCreateNestedManyWithoutSecretariasInput
+    Users?: UserCreateNestedManyWithoutSecretariasInput
   }
 
-  export type SecretariasUncheckedCreateWithoutVeiculoInput = {
+  export type SecretariasUncheckedCreateWithoutVeiculosInput = {
     id?: string
     nome: string
-    userId: string
+    Demandas?: DemandasUncheckedCreateNestedManyWithoutSecretariasInput
+    Users?: UserUncheckedCreateNestedManyWithoutSecretariasInput
   }
 
-  export type SecretariasCreateOrConnectWithoutVeiculoInput = {
+  export type SecretariasCreateOrConnectWithoutVeiculosInput = {
     where: SecretariasWhereUniqueInput
-    create: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput>
-  }
-
-  export type SecretariasCreateManyVeiculoInputEnvelope = {
-    data: SecretariasCreateManyVeiculoInput | SecretariasCreateManyVeiculoInput[]
-    skipDuplicates?: boolean
+    create: XOR<SecretariasCreateWithoutVeiculosInput, SecretariasUncheckedCreateWithoutVeiculosInput>
   }
 
   export type UserUpsertWithoutVeiculosInput = {
@@ -11985,7 +12238,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     demandas?: DemandasUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUpdateManyWithoutUserNestedInput
+    secretarias?: SecretariasUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVeiculosInput = {
@@ -11996,10 +12249,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DemandasUpsertWithWhereUniqueWithoutVeiculoInput = {
@@ -12037,32 +12290,110 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demandas"> | Date | string
     userId?: StringFilter<"Demandas"> | string
     veiculoId?: StringNullableFilter<"Demandas"> | string | null
+    secretariasId?: StringNullableFilter<"Demandas"> | string | null
   }
 
-  export type SecretariasUpsertWithWhereUniqueWithoutVeiculoInput = {
-    where: SecretariasWhereUniqueInput
-    update: XOR<SecretariasUpdateWithoutVeiculoInput, SecretariasUncheckedUpdateWithoutVeiculoInput>
-    create: XOR<SecretariasCreateWithoutVeiculoInput, SecretariasUncheckedCreateWithoutVeiculoInput>
+  export type SecretariasUpsertWithoutVeiculosInput = {
+    update: XOR<SecretariasUpdateWithoutVeiculosInput, SecretariasUncheckedUpdateWithoutVeiculosInput>
+    create: XOR<SecretariasCreateWithoutVeiculosInput, SecretariasUncheckedCreateWithoutVeiculosInput>
+    where?: SecretariasWhereInput
   }
 
-  export type SecretariasUpdateWithWhereUniqueWithoutVeiculoInput = {
-    where: SecretariasWhereUniqueInput
-    data: XOR<SecretariasUpdateWithoutVeiculoInput, SecretariasUncheckedUpdateWithoutVeiculoInput>
+  export type SecretariasUpdateToOneWithWhereWithoutVeiculosInput = {
+    where?: SecretariasWhereInput
+    data: XOR<SecretariasUpdateWithoutVeiculosInput, SecretariasUncheckedUpdateWithoutVeiculosInput>
   }
 
-  export type SecretariasUpdateManyWithWhereWithoutVeiculoInput = {
-    where: SecretariasScalarWhereInput
-    data: XOR<SecretariasUpdateManyMutationInput, SecretariasUncheckedUpdateManyWithoutVeiculoInput>
+  export type SecretariasUpdateWithoutVeiculosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Demandas?: DemandasUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUpdateManyWithoutSecretariasNestedInput
   }
 
-  export type SecretariasScalarWhereInput = {
-    AND?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
-    OR?: SecretariasScalarWhereInput[]
-    NOT?: SecretariasScalarWhereInput | SecretariasScalarWhereInput[]
-    id?: StringFilter<"Secretarias"> | string
-    nome?: StringFilter<"Secretarias"> | string
-    userId?: StringFilter<"Secretarias"> | string
-    veiculoId?: StringNullableFilter<"Secretarias"> | string | null
+  export type SecretariasUncheckedUpdateWithoutVeiculosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Demandas?: DemandasUncheckedUpdateManyWithoutSecretariasNestedInput
+    Users?: UserUncheckedUpdateManyWithoutSecretariasNestedInput
+  }
+
+  export type VeiculosCreateWithoutSecretariasInput = {
+    id?: string
+    placaVeiculo: string
+    chassiVeiculo: string
+    renavamVeiculo: string
+    proprietarioVeiculo: string
+    crlvVeiculo: string
+    user: UserCreateNestedOneWithoutVeiculosInput
+    demandas?: DemandasCreateNestedManyWithoutVeiculoInput
+  }
+
+  export type VeiculosUncheckedCreateWithoutSecretariasInput = {
+    id?: string
+    placaVeiculo: string
+    chassiVeiculo: string
+    renavamVeiculo: string
+    proprietarioVeiculo: string
+    crlvVeiculo: string
+    userId: string
+    demandas?: DemandasUncheckedCreateNestedManyWithoutVeiculoInput
+  }
+
+  export type VeiculosCreateOrConnectWithoutSecretariasInput = {
+    where: VeiculosWhereUniqueInput
+    create: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput>
+  }
+
+  export type VeiculosCreateManySecretariasInputEnvelope = {
+    data: VeiculosCreateManySecretariasInput | VeiculosCreateManySecretariasInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DemandasCreateWithoutSecretariasInput = {
+    id?: string
+    emailSolicitante: string
+    demandaDetalhe?: string | null
+    pessoaSolicitante: string
+    secretariaSolicitante: string
+    destino: string
+    dataHoraIda?: string | null
+    dataHoraVolta?: string | null
+    origem: string
+    contato: string
+    statusDemanda?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDemandasInput
+    veiculo?: VeiculosCreateNestedOneWithoutDemandasInput
+  }
+
+  export type DemandasUncheckedCreateWithoutSecretariasInput = {
+    id?: string
+    emailSolicitante: string
+    demandaDetalhe?: string | null
+    pessoaSolicitante: string
+    secretariaSolicitante: string
+    destino: string
+    dataHoraIda?: string | null
+    dataHoraVolta?: string | null
+    origem: string
+    contato: string
+    statusDemanda?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    veiculoId?: string | null
+  }
+
+  export type DemandasCreateOrConnectWithoutSecretariasInput = {
+    where: DemandasWhereUniqueInput
+    create: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput>
+  }
+
+  export type DemandasCreateManySecretariasInputEnvelope = {
+    data: DemandasCreateManySecretariasInput | DemandasCreateManySecretariasInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutSecretariasInput = {
@@ -12098,103 +12429,85 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput>
   }
 
-  export type VeiculosCreateWithoutSecretariasInput = {
-    id?: string
-    placaVeiculo: string
-    chassiVeiculo: string
-    renavamVeiculo: string
-    proprietarioVeiculo: string
-    crlvVeiculo: string
-    user: UserCreateNestedOneWithoutVeiculosInput
-    demandas?: DemandasCreateNestedManyWithoutVeiculoInput
+  export type UserCreateManySecretariasInputEnvelope = {
+    data: UserCreateManySecretariasInput | UserCreateManySecretariasInput[]
+    skipDuplicates?: boolean
   }
 
-  export type VeiculosUncheckedCreateWithoutSecretariasInput = {
-    id?: string
-    placaVeiculo: string
-    chassiVeiculo: string
-    renavamVeiculo: string
-    proprietarioVeiculo: string
-    crlvVeiculo: string
-    userId: string
-    demandas?: DemandasUncheckedCreateNestedManyWithoutVeiculoInput
-  }
-
-  export type VeiculosCreateOrConnectWithoutSecretariasInput = {
+  export type VeiculosUpsertWithWhereUniqueWithoutSecretariasInput = {
     where: VeiculosWhereUniqueInput
-    create: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput>
-  }
-
-  export type UserUpsertWithoutSecretariasInput = {
-    update: XOR<UserUpdateWithoutSecretariasInput, UserUncheckedUpdateWithoutSecretariasInput>
-    create: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSecretariasInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSecretariasInput, UserUncheckedUpdateWithoutSecretariasInput>
-  }
-
-  export type UserUpdateWithoutSecretariasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    veiculos?: VeiculosUpdateManyWithoutUserNestedInput
-    demandas?: DemandasUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSecretariasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type VeiculosUpsertWithoutSecretariasInput = {
     update: XOR<VeiculosUpdateWithoutSecretariasInput, VeiculosUncheckedUpdateWithoutSecretariasInput>
     create: XOR<VeiculosCreateWithoutSecretariasInput, VeiculosUncheckedCreateWithoutSecretariasInput>
-    where?: VeiculosWhereInput
   }
 
-  export type VeiculosUpdateToOneWithWhereWithoutSecretariasInput = {
-    where?: VeiculosWhereInput
+  export type VeiculosUpdateWithWhereUniqueWithoutSecretariasInput = {
+    where: VeiculosWhereUniqueInput
     data: XOR<VeiculosUpdateWithoutSecretariasInput, VeiculosUncheckedUpdateWithoutSecretariasInput>
   }
 
-  export type VeiculosUpdateWithoutSecretariasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    placaVeiculo?: StringFieldUpdateOperationsInput | string
-    chassiVeiculo?: StringFieldUpdateOperationsInput | string
-    renavamVeiculo?: StringFieldUpdateOperationsInput | string
-    proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
-    crlvVeiculo?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutVeiculosNestedInput
-    demandas?: DemandasUpdateManyWithoutVeiculoNestedInput
+  export type VeiculosUpdateManyWithWhereWithoutSecretariasInput = {
+    where: VeiculosScalarWhereInput
+    data: XOR<VeiculosUpdateManyMutationInput, VeiculosUncheckedUpdateManyWithoutSecretariasInput>
   }
 
-  export type VeiculosUncheckedUpdateWithoutSecretariasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    placaVeiculo?: StringFieldUpdateOperationsInput | string
-    chassiVeiculo?: StringFieldUpdateOperationsInput | string
-    renavamVeiculo?: StringFieldUpdateOperationsInput | string
-    proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
-    crlvVeiculo?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    demandas?: DemandasUncheckedUpdateManyWithoutVeiculoNestedInput
+  export type VeiculosScalarWhereInput = {
+    AND?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
+    OR?: VeiculosScalarWhereInput[]
+    NOT?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
+    id?: StringFilter<"Veiculos"> | string
+    placaVeiculo?: StringFilter<"Veiculos"> | string
+    chassiVeiculo?: StringFilter<"Veiculos"> | string
+    renavamVeiculo?: StringFilter<"Veiculos"> | string
+    proprietarioVeiculo?: StringFilter<"Veiculos"> | string
+    crlvVeiculo?: StringFilter<"Veiculos"> | string
+    userId?: StringFilter<"Veiculos"> | string
+    secretariasId?: StringNullableFilter<"Veiculos"> | string | null
+  }
+
+  export type DemandasUpsertWithWhereUniqueWithoutSecretariasInput = {
+    where: DemandasWhereUniqueInput
+    update: XOR<DemandasUpdateWithoutSecretariasInput, DemandasUncheckedUpdateWithoutSecretariasInput>
+    create: XOR<DemandasCreateWithoutSecretariasInput, DemandasUncheckedCreateWithoutSecretariasInput>
+  }
+
+  export type DemandasUpdateWithWhereUniqueWithoutSecretariasInput = {
+    where: DemandasWhereUniqueInput
+    data: XOR<DemandasUpdateWithoutSecretariasInput, DemandasUncheckedUpdateWithoutSecretariasInput>
+  }
+
+  export type DemandasUpdateManyWithWhereWithoutSecretariasInput = {
+    where: DemandasScalarWhereInput
+    data: XOR<DemandasUpdateManyMutationInput, DemandasUncheckedUpdateManyWithoutSecretariasInput>
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutSecretariasInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutSecretariasInput, UserUncheckedUpdateWithoutSecretariasInput>
+    create: XOR<UserCreateWithoutSecretariasInput, UserUncheckedCreateWithoutSecretariasInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutSecretariasInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutSecretariasInput, UserUncheckedUpdateWithoutSecretariasInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutSecretariasInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutSecretariasInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    emailVerified?: BoolFilter<"User"> | boolean
+    image?: StringNullableFilter<"User"> | string | null
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    secretariasId?: StringNullableFilter<"User"> | string | null
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -12275,7 +12588,7 @@ export namespace Prisma {
     proprietarioVeiculo: string
     crlvVeiculo: string
     demandas?: DemandasCreateNestedManyWithoutVeiculoInput
-    secretarias?: SecretariasCreateNestedManyWithoutVeiculoInput
+    secretarias?: SecretariasCreateNestedOneWithoutVeiculosInput
   }
 
   export type VeiculosUncheckedCreateWithoutUserInput = {
@@ -12285,8 +12598,8 @@ export namespace Prisma {
     renavamVeiculo: string
     proprietarioVeiculo: string
     crlvVeiculo: string
+    secretariasId?: string | null
     demandas?: DemandasUncheckedCreateNestedManyWithoutVeiculoInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutVeiculoInput
   }
 
   export type VeiculosCreateOrConnectWithoutUserInput = {
@@ -12314,6 +12627,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     veiculo?: VeiculosCreateNestedOneWithoutDemandasInput
+    secretarias?: SecretariasCreateNestedOneWithoutDemandasInput
   }
 
   export type DemandasUncheckedCreateWithoutUserInput = {
@@ -12331,6 +12645,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     veiculoId?: string | null
+    secretariasId?: string | null
   }
 
   export type DemandasCreateOrConnectWithoutUserInput = {
@@ -12343,26 +12658,23 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SecretariasCreateWithoutUserInput = {
+  export type SecretariasCreateWithoutUsersInput = {
     id?: string
     nome: string
-    veiculo?: VeiculosCreateNestedOneWithoutSecretariasInput
+    Veiculos?: VeiculosCreateNestedManyWithoutSecretariasInput
+    Demandas?: DemandasCreateNestedManyWithoutSecretariasInput
   }
 
-  export type SecretariasUncheckedCreateWithoutUserInput = {
+  export type SecretariasUncheckedCreateWithoutUsersInput = {
     id?: string
     nome: string
-    veiculoId?: string | null
+    Veiculos?: VeiculosUncheckedCreateNestedManyWithoutSecretariasInput
+    Demandas?: DemandasUncheckedCreateNestedManyWithoutSecretariasInput
   }
 
-  export type SecretariasCreateOrConnectWithoutUserInput = {
+  export type SecretariasCreateOrConnectWithoutUsersInput = {
     where: SecretariasWhereUniqueInput
-    create: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput>
-  }
-
-  export type SecretariasCreateManyUserInputEnvelope = {
-    data: SecretariasCreateManyUserInput | SecretariasCreateManyUserInput[]
-    skipDuplicates?: boolean
+    create: XOR<SecretariasCreateWithoutUsersInput, SecretariasUncheckedCreateWithoutUsersInput>
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -12446,19 +12758,6 @@ export namespace Prisma {
     data: XOR<VeiculosUpdateManyMutationInput, VeiculosUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type VeiculosScalarWhereInput = {
-    AND?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
-    OR?: VeiculosScalarWhereInput[]
-    NOT?: VeiculosScalarWhereInput | VeiculosScalarWhereInput[]
-    id?: StringFilter<"Veiculos"> | string
-    placaVeiculo?: StringFilter<"Veiculos"> | string
-    chassiVeiculo?: StringFilter<"Veiculos"> | string
-    renavamVeiculo?: StringFilter<"Veiculos"> | string
-    proprietarioVeiculo?: StringFilter<"Veiculos"> | string
-    crlvVeiculo?: StringFilter<"Veiculos"> | string
-    userId?: StringFilter<"Veiculos"> | string
-  }
-
   export type DemandasUpsertWithWhereUniqueWithoutUserInput = {
     where: DemandasWhereUniqueInput
     update: XOR<DemandasUpdateWithoutUserInput, DemandasUncheckedUpdateWithoutUserInput>
@@ -12475,20 +12774,29 @@ export namespace Prisma {
     data: XOR<DemandasUpdateManyMutationInput, DemandasUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type SecretariasUpsertWithWhereUniqueWithoutUserInput = {
-    where: SecretariasWhereUniqueInput
-    update: XOR<SecretariasUpdateWithoutUserInput, SecretariasUncheckedUpdateWithoutUserInput>
-    create: XOR<SecretariasCreateWithoutUserInput, SecretariasUncheckedCreateWithoutUserInput>
+  export type SecretariasUpsertWithoutUsersInput = {
+    update: XOR<SecretariasUpdateWithoutUsersInput, SecretariasUncheckedUpdateWithoutUsersInput>
+    create: XOR<SecretariasCreateWithoutUsersInput, SecretariasUncheckedCreateWithoutUsersInput>
+    where?: SecretariasWhereInput
   }
 
-  export type SecretariasUpdateWithWhereUniqueWithoutUserInput = {
-    where: SecretariasWhereUniqueInput
-    data: XOR<SecretariasUpdateWithoutUserInput, SecretariasUncheckedUpdateWithoutUserInput>
+  export type SecretariasUpdateToOneWithWhereWithoutUsersInput = {
+    where?: SecretariasWhereInput
+    data: XOR<SecretariasUpdateWithoutUsersInput, SecretariasUncheckedUpdateWithoutUsersInput>
   }
 
-  export type SecretariasUpdateManyWithWhereWithoutUserInput = {
-    where: SecretariasScalarWhereInput
-    data: XOR<SecretariasUpdateManyMutationInput, SecretariasUncheckedUpdateManyWithoutUserInput>
+  export type SecretariasUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Veiculos?: VeiculosUpdateManyWithoutSecretariasNestedInput
+    Demandas?: DemandasUpdateManyWithoutSecretariasNestedInput
+  }
+
+  export type SecretariasUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    Veiculos?: VeiculosUncheckedUpdateManyWithoutSecretariasNestedInput
+    Demandas?: DemandasUncheckedUpdateManyWithoutSecretariasNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -12502,7 +12810,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculosCreateNestedManyWithoutUserInput
     demandas?: DemandasCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasCreateNestedManyWithoutUserInput
+    secretarias?: SecretariasCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -12513,10 +12821,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculosUncheckedCreateNestedManyWithoutUserInput
     demandas?: DemandasUncheckedCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -12546,7 +12854,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUpdateManyWithoutUserNestedInput
     demandas?: DemandasUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUpdateManyWithoutUserNestedInput
+    secretarias?: SecretariasUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -12557,10 +12865,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
     demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -12574,7 +12882,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     veiculos?: VeiculosCreateNestedManyWithoutUserInput
     demandas?: DemandasCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasCreateNestedManyWithoutUserInput
+    secretarias?: SecretariasCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -12585,10 +12893,10 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     updatedAt?: Date | string
+    secretariasId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculosUncheckedCreateNestedManyWithoutUserInput
     demandas?: DemandasUncheckedCreateNestedManyWithoutUserInput
-    secretarias?: SecretariasUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -12618,7 +12926,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUpdateManyWithoutUserNestedInput
     demandas?: DemandasUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUpdateManyWithoutUserNestedInput
+    secretarias?: SecretariasUpdateOneWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -12629,10 +12937,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
     demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DemandasCreateManyVeiculoInput = {
@@ -12650,12 +12958,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-  }
-
-  export type SecretariasCreateManyVeiculoInput = {
-    id?: string
-    nome: string
-    userId: string
+    secretariasId?: string | null
   }
 
   export type DemandasUpdateWithoutVeiculoInput = {
@@ -12673,6 +12976,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    secretarias?: SecretariasUpdateOneWithoutDemandasNestedInput
   }
 
   export type DemandasUncheckedUpdateWithoutVeiculoInput = {
@@ -12690,6 +12994,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DemandasUncheckedUpdateManyWithoutVeiculoInput = {
@@ -12707,24 +13012,169 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type SecretariasUpdateWithoutVeiculoInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutSecretariasNestedInput
+  export type VeiculosCreateManySecretariasInput = {
+    id?: string
+    placaVeiculo: string
+    chassiVeiculo: string
+    renavamVeiculo: string
+    proprietarioVeiculo: string
+    crlvVeiculo: string
+    userId: string
   }
 
-  export type SecretariasUncheckedUpdateWithoutVeiculoInput = {
+  export type DemandasCreateManySecretariasInput = {
+    id?: string
+    emailSolicitante: string
+    demandaDetalhe?: string | null
+    pessoaSolicitante: string
+    secretariaSolicitante: string
+    destino: string
+    dataHoraIda?: string | null
+    dataHoraVolta?: string | null
+    origem: string
+    contato: string
+    statusDemanda?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    veiculoId?: string | null
+  }
+
+  export type UserCreateManySecretariasInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    emailVerified?: boolean
+    image?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type VeiculosUpdateWithoutSecretariasInput = {
     id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
+    placaVeiculo?: StringFieldUpdateOperationsInput | string
+    chassiVeiculo?: StringFieldUpdateOperationsInput | string
+    renavamVeiculo?: StringFieldUpdateOperationsInput | string
+    proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
+    crlvVeiculo?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutVeiculosNestedInput
+    demandas?: DemandasUpdateManyWithoutVeiculoNestedInput
+  }
+
+  export type VeiculosUncheckedUpdateWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    placaVeiculo?: StringFieldUpdateOperationsInput | string
+    chassiVeiculo?: StringFieldUpdateOperationsInput | string
+    renavamVeiculo?: StringFieldUpdateOperationsInput | string
+    proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
+    crlvVeiculo?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    demandas?: DemandasUncheckedUpdateManyWithoutVeiculoNestedInput
+  }
+
+  export type VeiculosUncheckedUpdateManyWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    placaVeiculo?: StringFieldUpdateOperationsInput | string
+    chassiVeiculo?: StringFieldUpdateOperationsInput | string
+    renavamVeiculo?: StringFieldUpdateOperationsInput | string
+    proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
+    crlvVeiculo?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type SecretariasUncheckedUpdateManyWithoutVeiculoInput = {
+  export type DemandasUpdateWithoutSecretariasInput = {
     id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
+    emailSolicitante?: StringFieldUpdateOperationsInput | string
+    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
+    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
+    destino?: StringFieldUpdateOperationsInput | string
+    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
+    contato?: StringFieldUpdateOperationsInput | string
+    statusDemanda?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    veiculo?: VeiculosUpdateOneWithoutDemandasNestedInput
+  }
+
+  export type DemandasUncheckedUpdateWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailSolicitante?: StringFieldUpdateOperationsInput | string
+    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
+    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
+    destino?: StringFieldUpdateOperationsInput | string
+    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
+    contato?: StringFieldUpdateOperationsInput | string
+    statusDemanda?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DemandasUncheckedUpdateManyWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailSolicitante?: StringFieldUpdateOperationsInput | string
+    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
+    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
+    destino?: StringFieldUpdateOperationsInput | string
+    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    origem?: StringFieldUpdateOperationsInput | string
+    contato?: StringFieldUpdateOperationsInput | string
+    statusDemanda?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    veiculos?: VeiculosUpdateManyWithoutUserNestedInput
+    demandas?: DemandasUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    veiculos?: VeiculosUncheckedUpdateManyWithoutUserNestedInput
+    demandas?: DemandasUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutSecretariasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionCreateManyUserInput = {
@@ -12759,6 +13209,7 @@ export namespace Prisma {
     renavamVeiculo: string
     proprietarioVeiculo: string
     crlvVeiculo: string
+    secretariasId?: string | null
   }
 
   export type DemandasCreateManyUserInput = {
@@ -12776,12 +13227,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     veiculoId?: string | null
-  }
-
-  export type SecretariasCreateManyUserInput = {
-    id?: string
-    nome: string
-    veiculoId?: string | null
+    secretariasId?: string | null
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -12867,7 +13313,7 @@ export namespace Prisma {
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     demandas?: DemandasUpdateManyWithoutVeiculoNestedInput
-    secretarias?: SecretariasUpdateManyWithoutVeiculoNestedInput
+    secretarias?: SecretariasUpdateOneWithoutVeiculosNestedInput
   }
 
   export type VeiculosUncheckedUpdateWithoutUserInput = {
@@ -12877,8 +13323,8 @@ export namespace Prisma {
     renavamVeiculo?: StringFieldUpdateOperationsInput | string
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
     demandas?: DemandasUncheckedUpdateManyWithoutVeiculoNestedInput
-    secretarias?: SecretariasUncheckedUpdateManyWithoutVeiculoNestedInput
   }
 
   export type VeiculosUncheckedUpdateManyWithoutUserInput = {
@@ -12888,6 +13334,7 @@ export namespace Prisma {
     renavamVeiculo?: StringFieldUpdateOperationsInput | string
     proprietarioVeiculo?: StringFieldUpdateOperationsInput | string
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DemandasUpdateWithoutUserInput = {
@@ -12905,6 +13352,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     veiculo?: VeiculosUpdateOneWithoutDemandasNestedInput
+    secretarias?: SecretariasUpdateOneWithoutDemandasNestedInput
   }
 
   export type DemandasUncheckedUpdateWithoutUserInput = {
@@ -12922,6 +13370,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DemandasUncheckedUpdateManyWithoutUserInput = {
@@ -12939,24 +13388,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SecretariasUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    veiculo?: VeiculosUpdateOneWithoutSecretariasNestedInput
-  }
-
-  export type SecretariasUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SecretariasUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
+    secretariasId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

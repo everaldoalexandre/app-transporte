@@ -139,7 +139,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
+              Colunas <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -212,7 +212,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Não encontramos veículos.
                 </TableCell>
               </TableRow>
             )}
@@ -221,8 +221,10 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredRowModel().rows.length} - Veículos
+        </div>
+        <div className="text-sm text-muted-foreground flex-1">
+          {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
         </div>
         <div className="space-x-2">
           <Button
@@ -231,7 +233,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -239,7 +241,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Próximo
           </Button>
         </div>
       </div>

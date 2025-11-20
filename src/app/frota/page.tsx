@@ -9,17 +9,19 @@ export default function Home() {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="flex  items-center gap-2 px-4 sm:items-start">
+          <header className="flex items-star gap-2 transition-[width,height] duration-200 ease-in-out group-has-data-[collapsible=icon]/sidebar-wrapper:justify-center">
+            <div className="flex fixed w-full items-start gap-2 px-4 sm:items-start sm:px-10">
               <SidebarTrigger className="-ml-1" />
               <Separator
                 orientation="vertical"
                 className="mr-2 data-[orientation=vertical]:h-4"
                 />
             </div>
+            <div className=" mt-6 ">
+            <VeiculosTable />
+            </div>
           </header>
         </SidebarInset> 
-      <VeiculosTable />
       </SidebarProvider>
     </main>
       

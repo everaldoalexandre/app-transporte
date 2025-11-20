@@ -28,6 +28,9 @@ model Demandas {
 
   veiculoId String?
   veiculo   Veiculos? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
+
+  secretariasId String?
+  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
 }
 
 model Veiculos {
@@ -41,18 +44,18 @@ model Veiculos {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  demandas    Demandas[]
-  secretarias Secretarias[]
+  demandas      Demandas[]
+  secretariasId String?
+  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
 }
 
 model Secretarias {
   id   String @id @default(uuid())
-  nome String
+  nome String @unique
 
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  veiculoId String?
-  veiculo   Veiculos? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
+  Veiculos Veiculos[]
+  Demandas Demandas[]
+  Users    User[]
 }
 
 model User {
@@ -64,11 +67,13 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
-  sessions    Session[]
-  accounts    Account[]
-  veiculos    Veiculos[]
-  demandas    Demandas[]
-  secretarias Secretarias[]
+  sessions Session[]
+  accounts Account[]
+  veiculos Veiculos[]
+  demandas Demandas[]
+
+  secretariasId String?
+  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
 
   @@map("user")
 }

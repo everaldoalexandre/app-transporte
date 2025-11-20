@@ -4,7 +4,7 @@ import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFiltered
 import { Button } from "./ui/button";
 import { ArrowUpDown, ChevronDown} from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "./ui/dropdown-menu";
+import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "./ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
@@ -27,7 +27,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
 
   async function fetchDemandas() {
         try {
-            const response = await fetch('/api/transporte', { cache: 'no-store' });
+            const response = await fetch('/api/demanda', { cache: 'no-store' });
             if (!response.ok) {
                 console.error('Falha ao buscar demandas:', response.statusText);
                 return;
@@ -157,7 +157,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
+              Colunas <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -224,7 +224,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Não encontramos demandas.
                 </TableCell>
               </TableRow>
             )}
@@ -233,17 +233,19 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredRowModel().rows.length} - Demandas.
         </div>
-        <div className="space-x-2">
+        <div className="text-sm text-muted-foreground flex-1">
+          {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+        </div>
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -251,7 +253,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Próximo
           </Button>
         </div>
       </div>

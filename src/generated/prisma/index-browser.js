@@ -135,7 +135,8 @@ exports.Prisma.DemandasScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  veiculoId: 'veiculoId'
+  veiculoId: 'veiculoId',
+  secretariasId: 'secretariasId'
 };
 
 exports.Prisma.VeiculosScalarFieldEnum = {
@@ -145,14 +146,13 @@ exports.Prisma.VeiculosScalarFieldEnum = {
   renavamVeiculo: 'renavamVeiculo',
   proprietarioVeiculo: 'proprietarioVeiculo',
   crlvVeiculo: 'crlvVeiculo',
-  userId: 'userId'
+  userId: 'userId',
+  secretariasId: 'secretariasId'
 };
 
 exports.Prisma.SecretariasScalarFieldEnum = {
   id: 'id',
-  nome: 'nome',
-  userId: 'userId',
-  veiculoId: 'veiculoId'
+  nome: 'nome'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -162,7 +162,8 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   emailVerified: 'emailVerified',
   image: 'image',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  secretariasId: 'secretariasId'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {

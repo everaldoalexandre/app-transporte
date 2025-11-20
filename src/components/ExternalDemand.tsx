@@ -27,7 +27,7 @@ export function DemandaExternaForm({
         e.preventDefault();
 
         if (!emailSolicitante || !demandaDetalhe || !pessoaSolicitante || !secretariaSolicitante || !destino || !dataHoraIda
-            || !dataHoraVolta || !origem) {
+            || !dataHoraVolta || !origem || !contato) {
             toast.error('Por favor, preencha todos os campos.')
             return;
         }
@@ -45,7 +45,7 @@ export function DemandaExternaForm({
                 contato,
                 statusDemanda
             };
-            const response = await fetch('/api/transporte', {
+            const response = await fetch('/api/demanda', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,11 +66,11 @@ export function DemandaExternaForm({
                 setContato('');
                 setStatusDemanda('Aguardando');
             } else {
-                toast.error('Erro ao adicionar demanda externa.');
+                toast.error('Erro ao solicitar demanda.');
             }
         } catch (error) {
-            toast.error('Erro ao adicionar demanda externa.');
-            console.error('Erro ao adicionar demanda externa:', error);
+            toast.error('Erro ao solicitar demanda.');
+            console.error('Erro ao solicitar demanda:', error);
         }
     }
     return (
@@ -108,7 +108,7 @@ export function DemandaExternaForm({
                                 className="border rounded-md p-2"
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label htmlFor="pessoaSolicitante">Solicitante</Label>
                                 <Input
                                 id="pessoaSolicitante"
@@ -119,7 +119,7 @@ export function DemandaExternaForm({
                                 className="border rounded-md p-2"
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label htmlFor="secretariaSolicitante">Secretaria Solicitante</Label>
                                 <Input
                                 id="secretariaSolicitante"
@@ -130,7 +130,7 @@ export function DemandaExternaForm({
                                 className="border rounded-md p-2"
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label htmlFor="contato">Contato</Label>
                                 <Input
                                 id="contato"
@@ -141,7 +141,7 @@ export function DemandaExternaForm({
                                 className="border rounded-md p-2"
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label htmlFor="origem">Origem</Label>
                                 <Input
                                 id="origem"
@@ -152,7 +152,7 @@ export function DemandaExternaForm({
                                 className="border rounded-md p-2"
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label htmlFor="destino">Destino</Label>
                                 <Input
                                 id="destino"
@@ -193,7 +193,7 @@ export function DemandaExternaForm({
                         <div className="flex justify-center mt-6">
                             <Button
                             type="submit"
-                            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+                            className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-900 transition"
                             >
                             Solicitar Demanda
                             </Button>
