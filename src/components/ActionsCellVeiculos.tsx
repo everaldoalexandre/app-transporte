@@ -5,32 +5,32 @@ import { Button } from "./ui/button";
 import { Eraser, FileText, MoreHorizontal, X } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { Veiculos } from "@/generated/prisma";
+import { Veiculo } from "@/generated/prisma";
 
-export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculos, onRefresh: () => void }) {
+export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, onRefresh: () => void }) {
 
-    const [veiculos, setVeiculos] = useState<Veiculos[]> ([]);
-    const [veiculoEdit, setVeiculoEdit] = useState<Veiculos | null>(null);
+    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
+    const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
 
     const [showDialogDetalheVeiculo, setShowDialogDetalheVeiculo] = useState(false);
     const [showDialogEditVeiculo, setShowDialogEditVeiculo] = useState(false);
     const [showDialogDeleteVeiculo, setShowDialogDeleteVeiculo] = useState(false);
 
-    function openDialogDeleteVeiculo(veiculo: Veiculos) {
+    function openDialogDeleteVeiculo(veiculo: Veiculo) {
       setShowDialogDeleteVeiculo(true);
     }
 
-    function openDialogDetalheVeiculo(veiculo: Veiculos) {
+    function openDialogDetalheVeiculo(veiculo: Veiculo) {
       setVeiculoEdit(veiculo);
       setShowDialogDetalheVeiculo(true);
     }
 
-    function openDialogEditVeiculo(veiculo: Veiculos) {
+    function openDialogEditVeiculo(veiculo: Veiculo) {
       setVeiculoEdit(veiculo);
       setShowDialogEditVeiculo(true);
     }
 
-    async function saveEditVeiculo(veiculoEdit: Veiculos) {
+    async function saveEditVeiculo(veiculoEdit: Veiculo) {
       if (!veiculoEdit) {
         console.error('veiculoEdit não está definido');
         return;
@@ -116,28 +116,28 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculos, 
                         <Input 
                         type="text"
                         value={veiculoEdit?.placaVeiculo ?? ''}
-                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculos), placaVeiculo: e.target.value})}
+                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), placaVeiculo: e.target.value})}
                         placeholder='Placa'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Chassi: </span>
                         <Input 
                         type="text"
                         value={veiculoEdit?.chassiVeiculo ?? ''}
-                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculos), chassiVeiculo: e.target.value})}
+                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), chassiVeiculo: e.target.value})}
                         placeholder='Chassi'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Renavam: </span>
                         <Input 
                         type="text"
                         value={veiculoEdit?.renavamVeiculo ?? ''}
-                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculos), renavamVeiculo: e.target.value})}
+                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), renavamVeiculo: e.target.value})}
                         placeholder='Renavam'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Proprietário: </span>
                         <Input 
                         type="text"
                         value={veiculoEdit?.proprietarioVeiculo ?? ''}
-                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculos), proprietarioVeiculo: e.target.value})}
+                        onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), proprietarioVeiculo: e.target.value})}
                         placeholder='Proprietário'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>

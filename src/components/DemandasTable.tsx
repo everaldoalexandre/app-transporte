@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { DataTableDemo } from './DataColumns';
-import { Demandas } from '@/generated/prisma';
+import { Demanda } from '@/generated/prisma';
 
 export default function DemandasTable() {
-    const [demandas, setDemandas] = useState<Demandas[]> ([]);
+    const [demandas, setDemandas] = useState<Demanda[]> ([]);
 
     return (
         <DataTableDemo  data={demandas}/>

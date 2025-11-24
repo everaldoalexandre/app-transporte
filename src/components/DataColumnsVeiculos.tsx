@@ -9,11 +9,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Input } from "./ui/input";
 import { ActionsCellVeiculos} from "@/components/ActionsCellVeiculos"
 import { NovoVeiculo } from "./NovoVeiculo";
-import { Veiculos } from "@/generated/prisma";
+import { Veiculo } from "@/generated/prisma";
 
-export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
+export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
-  const [veiculos, setVeiculos] = useState<Veiculos[]>(initialData);
+  const [veiculos, setVeiculos] = useState<Veiculo[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -41,7 +41,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
         }
     }
 
-  const columns: ColumnDef<Veiculos>[] = [
+  const columns: ColumnDef<Veiculo>[] = [
     {
       accessorKey: "placaVeiculo",
       header: ({ column }) => {
@@ -77,7 +77,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
     
 ]
 
-  const table = useReactTable<Veiculos>({
+  const table = useReactTable<Veiculo>({
     data: veiculos,
     columns,
     onSortingChange: setSorting,

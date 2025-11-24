@@ -1,23 +1,27 @@
 import { PrismaClient, Prisma } from "@/generated/prisma";
 import { auth } from "@/lib/auth";
+import { connect } from "http2";
 
 const prisma = new PrismaClient();
 
 const userData = [
   {
     name: "Everaldo",
-    email: "ee@e.com",
+    email: "ee3@e.com",
     password: "teste123",
   },
 ];
 
-const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
+const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
   {
     placaVeiculo: "ABC-1234",
     chassiVeiculo: "9BWZZZ377VT004251",
     renavamVeiculo: "12345678901",
     proprietarioVeiculo: "Prefeitura Municipal",
     crlvVeiculo: "CRLV12345",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "XYZ-5678",
@@ -25,6 +29,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "98765432100",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV67890",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "ABC-1234",
@@ -32,6 +39,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "12345678901",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10001",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "XYZ-5678",
@@ -39,6 +49,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "98765432100",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10002",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "DEF-4321",
@@ -46,6 +59,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "11223344556",
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10003",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "GHI-8765",
@@ -53,6 +69,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "22334455667",
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10004",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "JKL-1122",
@@ -60,6 +79,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "33445566778",
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10005",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "MNO-3344",
@@ -67,6 +89,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "44556677889",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10006",
+    secretaria: {
+      connect: { id: "SEDUC"}
+    }
   },
   {
     placaVeiculo: "PQR-5566",
@@ -74,6 +99,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "55667788990",
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10007",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "STU-7788",
@@ -81,6 +109,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "66778899001",
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10008",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "VWX-9900",
@@ -88,6 +119,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "77889900112",
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10009",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "YZA-1111",
@@ -95,6 +129,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "88990011223",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10010",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "BCD-2222",
@@ -102,6 +139,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "99001122334",
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10011",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "EFG-3333",
@@ -109,6 +149,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "10111213141",
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10012",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "HIJ-4444",
@@ -116,6 +159,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "12131415161",
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10013",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "KLM-5555",
@@ -123,6 +169,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "13141516171",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10014",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "NOP-6666",
@@ -130,6 +179,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "14151617181",
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10015",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "QRS-7777",
@@ -137,6 +189,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "15161718191",
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10016",
+    secretaria: {
+      connect: { id: "SMS"}
+    }
   },
   {
     placaVeiculo: "TUV-8888",
@@ -144,6 +199,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "16171819202",
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10017",
+    secretaria: {
+      connect: { id: "SAD"}
+    }
   },
   {
     placaVeiculo: "WXY-9999",
@@ -151,6 +209,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "17181920212",
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10018",
+    secretaria: {
+      connect: { id: "SAD"}
+    }
   },
   {
     placaVeiculo: "ZAB-0001",
@@ -158,6 +219,9 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "18192021222",
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10019",
+    secretaria: {
+      connect: { id: "SAD"}
+    }
   },
   {
     placaVeiculo: "CDE-0002",
@@ -165,10 +229,13 @@ const veiculosData: Prisma.VeiculosCreateWithoutUserInput[] = [
     renavamVeiculo: "19202122232",
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10020",
+    secretaria: {
+      connect: { id: "SAD"}
+    }
   }
 ];
 
-const demandasData: Prisma.DemandasCreateWithoutUserInput[] = [
+const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
   {
     emailSolicitante: "usuario1@teste.com",
     demandaDetalhe: "Viagem a Recife",
@@ -466,7 +533,7 @@ export async function main() {
   }
 
   for (const v of veiculosData) {
-    await prisma.veiculos.create({data: {...v,
+    await prisma.veiculo.create({data: {...v,
       user: {
         connect: { id: mainUser.id },
       },
@@ -474,7 +541,7 @@ export async function main() {
   }
 
   for (const d of demandasData) {
-    await prisma.demandas.create({data: {...d,
+    await prisma.demanda.create({data: {...d,
       user: {
         connect: { id: mainUser.id },
       }

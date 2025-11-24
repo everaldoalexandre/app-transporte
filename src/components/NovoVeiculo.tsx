@@ -2,16 +2,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { Veiculos } from "@/generated/prisma";
+import { Veiculo } from "@/generated/prisma";
 
 export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh }: { openNovoVeiculo: boolean, openChangeNovoVeiculo: (v: boolean) => void, onRefresh: () => void }) {
 
-    const [veiculos, setVeiculos] = useState<Veiculos[]> ([]);
-    const [veiculoNovo, setVeiculoNovo] = useState<Veiculos | null>(null);
+    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
+    const [veiculoNovo, setVeiculoNovo] = useState<Veiculo | null>(null);
 
     const [showDialogNovoVeiculo, setShowDialogNovoVeiculo] = useState(false);
 
-    function openDialogNovoVeiculo(veiculo: Veiculos) {
+    function openDialogNovoVeiculo(veiculo: Veiculo) {
       setVeiculoNovo(veiculo);
       setShowDialogNovoVeiculo(true);
     }
@@ -76,28 +76,28 @@ export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh 
                           <Input 
                           type="text"
                           value={veiculoNovo?.placaVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculos), placaVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), placaVeiculo: e.target.value})}
                           placeholder='Placa'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Chassi: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.chassiVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculos), chassiVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), chassiVeiculo: e.target.value})}
                           placeholder='Chassi'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Renavam: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.renavamVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculos), renavamVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), renavamVeiculo: e.target.value})}
                           placeholder='Renavam'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Proprietário: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.proprietarioVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculos), proprietarioVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), proprietarioVeiculo: e.target.value})}
                           placeholder='Proprietário'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                       </div>

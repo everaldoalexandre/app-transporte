@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { DataTableVeiculos} from './DataColumnsVeiculos';
-import { Veiculos } from '@/generated/prisma';
+import { Veiculo } from '@/generated/prisma';
 
 export default function VeiculosTable() {
-    const [veiculos, setVeiculos] = useState<Veiculos[]> ([]);
+    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
 
     return (
         <DataTableVeiculos  data={veiculos}/>

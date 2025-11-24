@@ -6,13 +6,13 @@ import { Check, Eraser, FileText, MoreHorizontal, X } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
-import { Demandas } from "@/generated/prisma";
+import { Demanda } from "@/generated/prisma";
 
 
-export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefresh: () => void }) {
+export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefresh: () => void }) {
 
-    const [demandas, setDemandas] = useState<Demandas[]> ([]);
-    const [demandaEdit, setDemandaEdit] = useState<Demandas | null>(null);
+    const [demandas, setDemandas] = useState<Demanda[]> ([]);
+    const [demandaEdit, setDemandaEdit] = useState<Demanda | null>(null);
 
     const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] = useState(false);
     const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
@@ -20,30 +20,30 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
     const [showModalFinalizarDemanda, setShowModalFinalizarDemanda] = useState(false);
     
     const [contatoEdit, setContatoEdit] = useState('');
-    const [demandaFinalizada, setDemandaFinalizada] = useState<Demandas | null>(null);
+    const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
 
-    function openModalDeleteDemanda(demanda: Demandas) {
+    function openModalDeleteDemanda(demanda: Demanda) {
         setDemandaEdit(demanda);
         setShowModalDeleteDemanda(true);
     }
 
-    function openModalDetalhesDemanda(demanda: Demandas) {
+    function openModalDetalhesDemanda(demanda: Demanda) {
         setDemandaEdit(demanda);
         setShowModalDetalhesDemanda(true);
     }
 
-    function openModalEditDemanda(demanda: Demandas) {
+    function openModalEditDemanda(demanda: Demanda) {
         setDemandaEdit(demanda);        
         setShowModalEditDemanda(true);
     }
 
-    function openModalFinalizarDemanda(demanda: Demandas) {
+    function openModalFinalizarDemanda(demanda: Demanda) {
         setDemandaFinalizada(demanda);
         setShowModalFinalizarDemanda(true);
     }
 
-    async function saveEditDemanda(demandaEdit: Demandas) {
+    async function saveEditDemanda(demandaEdit: Demanda) {
         if (!demandaEdit) {
             console.error('DemandaEdit não está definido');
             return;
@@ -83,7 +83,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
         
     }
 
-    async function saveDemandaFinalizada(demandaEdit: Demandas) {
+    async function saveDemandaFinalizada(demandaEdit: Demanda) {
         if (!demandaEdit) return;
         try {
             const response = await fetch(`/api/transporte`, {
@@ -164,28 +164,28 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
                         <Input 
                         type="text"
                         value={demandaEdit?.pessoaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), pessoaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), pessoaSolicitante: e.target.value})}
                         placeholder='Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Secretaria: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.secretariaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), secretariaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), secretariaSolicitante: e.target.value})}
                         placeholder='Secretaria Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>E-mail: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.emailSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), emailSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), emailSolicitante: e.target.value})}
                         placeholder='E-mail'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Contato: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), contato: e.target.value})}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -194,7 +194,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), contato: e.target.value})}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Placa: </span>
@@ -213,27 +213,27 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
                         <Input 
                         type="text"
                         value={demandaEdit?.destino}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), destino: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), destino: e.target.value})}
                         placeholder='Destino'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Local de Saída: </span><input 
                         type="text"
                         value={demandaEdit?.origem}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), origem: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), origem: e.target.value})}
                         placeholder='Local de Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Saída: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraIda?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), dataHoraIda: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), dataHoraIda: e.target.value})}
                         placeholder='Horário da Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Volta: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraVolta ?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demandas), dataHoraVolta: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), dataHoraVolta: e.target.value})}
                         placeholder='Horario da Volta'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -311,13 +311,13 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demandas, onRefre
                 <AlertDialogHeader>
                   <AlertDialogTitle>Deseja finalizar a demanda?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Ao finalizar, a demanda terá seu status alterado para "Finalizado".
+                    Ao finalizar, a demanda terá seu status alterado para Finalizado.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={ () => { saveDemandaFinalizada(demandaFinalizada as Demandas);}}
+                  <AlertDialogAction onClick={ () => { saveDemandaFinalizada(demandaFinalizada as Demanda);}}
                   >Finalizar</AlertDialogAction>
                 </AlertDialogFooter>
                 </AlertDialogContent>

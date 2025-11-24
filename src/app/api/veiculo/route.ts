@@ -30,18 +30,26 @@ export async function GET () {
 
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
-      select: { secretariasId: true }
+      select: { 
+        secretarias: {
+          select:{ secretariaId: true }
+        }
+      }  
     });
 
-    if (!usuario?.secretariasId) {
+    if (!usuario?.secretarias) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
 
+    const secretariasIds = usuario.secretarias.map(s => s.secretariaId);
+    
     const veiculos = await prisma.veiculo.findMany({
-      where: { secretariasId: usuario.secretariasId }
+      where: { 
+        secretariaId: { in: secretariasIds }
+      }
     });
 
     return new Response(JSON.stringify(veiculos), { status: 200 });
@@ -69,16 +77,16 @@ export async function POST (request: Request) {
     const userId = session.user.id;
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
-      select: { secretariaId: true }
+      select: { secretarias: true }
     });
 
-    if (!usuario?.secretariasId) {
+    if (!usuario?.secretarias) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
-    const secretariasId = usuario.secretariasId;
+    const secretariaId = usuario.secretarias[0].secretariaId;
     const body = await request.json();
     const {novoVeiculo} = body;
 
@@ -90,7 +98,7 @@ export async function POST (request: Request) {
         proprietarioVeiculo: novoVeiculo.proprietarioVeiculo.trim(),
         crlvVeiculo: novoVeiculo.crlvVeiculo.trim(),
         userId,
-        secretariasId
+        secretariaId
         }
     } );
 
