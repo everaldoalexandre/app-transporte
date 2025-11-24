@@ -120,7 +120,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.DemandasScalarFieldEnum = {
+exports.Prisma.DemandaScalarFieldEnum = {
   id: 'id',
   emailSolicitante: 'emailSolicitante',
   demandaDetalhe: 'demandaDetalhe',
@@ -136,23 +136,28 @@ exports.Prisma.DemandasScalarFieldEnum = {
   updatedAt: 'updatedAt',
   userId: 'userId',
   veiculoId: 'veiculoId',
-  secretariasId: 'secretariasId'
+  secretariaId: 'secretariaId'
 };
 
-exports.Prisma.VeiculosScalarFieldEnum = {
+exports.Prisma.VeiculoScalarFieldEnum = {
   id: 'id',
   placaVeiculo: 'placaVeiculo',
   chassiVeiculo: 'chassiVeiculo',
   renavamVeiculo: 'renavamVeiculo',
   proprietarioVeiculo: 'proprietarioVeiculo',
   crlvVeiculo: 'crlvVeiculo',
-  userId: 'userId',
-  secretariasId: 'secretariasId'
+  secretariaId: 'secretariaId',
+  userId: 'userId'
 };
 
-exports.Prisma.SecretariasScalarFieldEnum = {
+exports.Prisma.SecretariaScalarFieldEnum = {
   id: 'id',
   nome: 'nome'
+};
+
+exports.Prisma.UserSecretariaScalarFieldEnum = {
+  userId: 'userId',
+  secretariaId: 'secretariaId'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -162,8 +167,7 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   emailVerified: 'emailVerified',
   image: 'image',
-  updatedAt: 'updatedAt',
-  secretariasId: 'secretariasId'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -219,9 +223,10 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Demandas: 'Demandas',
-  Veiculos: 'Veiculos',
-  Secretarias: 'Secretarias',
+  Demanda: 'Demanda',
+  Veiculo: 'Veiculo',
+  Secretaria: 'Secretaria',
+  UserSecretaria: 'UserSecretaria',
   User: 'User',
   Session: 'Session',
   Account: 'Account',

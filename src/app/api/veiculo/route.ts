@@ -40,7 +40,7 @@ export async function GET () {
       );
     }
 
-    const veiculos = await prisma.veiculos.findMany({
+    const veiculos = await prisma.veiculo.findMany({
       where: { secretariasId: usuario.secretariasId }
     });
 
@@ -69,7 +69,7 @@ export async function POST (request: Request) {
     const userId = session.user.id;
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
-      select: { secretariasId: true }
+      select: { secretariaId: true }
     });
 
     if (!usuario?.secretariasId) {
@@ -82,7 +82,7 @@ export async function POST (request: Request) {
     const body = await request.json();
     const {novoVeiculo} = body;
 
-    const veiculo = await prisma.veiculos.create({ 
+    const veiculo = await prisma.veiculo.create({ 
       data: {
         placaVeiculo: novoVeiculo.placaVeiculo.trim(),
         chassiVeiculo: novoVeiculo.chassiVeiculo.trim(),
@@ -110,7 +110,7 @@ export async function PUT (request: Request) {
       return new Response(JSON.stringify({ error: 'ID and updated fields are required.' }), { status: 400 });
     }
 
-    await prisma.veiculos.update({
+    await prisma.veiculo.update({
       where: { id },
       data: updatedVeiculos,
     });
@@ -131,7 +131,7 @@ export async function DELETE (request: Request) {
       return NextResponse.json({ error: 'ID is mandatory' }, { status: 400 });
     }
 
-    await prisma.veiculos.delete({
+    await prisma.veiculo.delete({
       where: { id },
     });
 

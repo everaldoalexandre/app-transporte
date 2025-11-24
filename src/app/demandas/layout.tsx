@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -15,6 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+  title: "Demandas",
+  description: "Página de demandas do sistema de transporte",
+};
 
 export default async function Layout({children}: {children: React.ReactNode}) {
 	const userSession = await auth.api.getSession({

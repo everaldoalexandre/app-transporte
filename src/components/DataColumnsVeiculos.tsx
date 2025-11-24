@@ -100,7 +100,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculos[]}) {
 
   const statusOptions = [
     {label: "Todos", value:""},
-    {label: "SEDUC", value: "Aguardando"},
+    {label: "Aguardando", value: "Aguardando"},
     {label: "Agendada", value: "Agendada"},
     {label: "Finalizada", value: "Finalizada"},
   ]

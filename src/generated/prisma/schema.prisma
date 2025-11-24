@@ -8,9 +8,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Demandas {
+model Demanda {
   id                    String   @id @default(uuid())
-  emailSolicitante      String   @unique
+  emailSolicitante      String
   demandaDetalhe        String?
   pessoaSolicitante     String
   secretariaSolicitante String
@@ -27,35 +27,47 @@ model Demandas {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   veiculoId String?
-  veiculo   Veiculos? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
+  veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
 
-  secretariasId String?
-  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
+  secretariaId String?
+  secretaria   Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)
 }
 
-model Veiculos {
+model Veiculo {
   id                  String @id @default(uuid())
-  placaVeiculo        String
+  placaVeiculo        String @unique
   chassiVeiculo       String
   renavamVeiculo      String
   proprietarioVeiculo String
   crlvVeiculo         String
 
+  secretariaId String
+  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
+
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  demandas      Demandas[]
-  secretariasId String?
-  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
+  demandas Demanda[]
 }
 
-model Secretarias {
+model Secretaria {
   id   String @id @default(uuid())
   nome String @unique
 
-  Veiculos Veiculos[]
-  Demandas Demandas[]
-  Users    User[]
+  demandas Demanda[]
+  users    UserSecretaria[]
+  veiculos Veiculo[]
+}
+
+model UserSecretaria {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  secretariaId String
+  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
+
+  @@id([userId, secretariaId])
+  @@map("user_on_secretaria")
 }
 
 model User {
@@ -67,13 +79,11 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
-  sessions Session[]
-  accounts Account[]
-  veiculos Veiculos[]
-  demandas Demandas[]
-
-  secretariasId String?
-  secretarias   Secretarias? @relation(fields: [secretariasId], references: [id], onDelete: SetNull)
+  sessions    Session[]
+  accounts    Account[]
+  veiculos    Veiculo[]
+  demandas    Demanda[]
+  secretarias UserSecretaria[]
 
   @@map("user")
 }
