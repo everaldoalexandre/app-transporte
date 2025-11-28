@@ -5,16 +5,6 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-interface UpdateData {
-  id: number;
-  placaVeiculo?: string;
-  chassiVeiculo: string;
-  renavamVeiculo: string;
-  proprietarioVeiculo: string;
-  crlvVeiculo: string;
-  userId: string
-};
-
 export async function GET () {
   try {
 
@@ -29,15 +19,17 @@ export async function GET () {
     const userId = session.user.id
 
     const usuario = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { 
+      where: {id: userId},
+      include: {
         secretarias: {
-          select:{ secretariaId: true }
+          include: {
+            secretaria: true
+          }
         }
-      }  
+      }
     });
 
-    if (!usuario?.secretarias) {
+    if (!usuario) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
@@ -63,10 +55,6 @@ export async function POST (request: Request) {
   try {
     const session = await auth.api.getSession({headers: await headers()});
 
-    if (!session) {
-      return new Response(JSON.stringify({ error: 'All fields are required.' }), { status: 400 });
-    }
-
     if (!session?.user) {
       return NextResponse.json(
         {error: 'Unauthenticated user'},
@@ -77,32 +65,37 @@ export async function POST (request: Request) {
     const userId = session.user.id;
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
-      select: { secretarias: true }
+      include: {
+        secretarias: true
+      }
     });
-
-    if (!usuario?.secretarias) {
+    
+    if (!usuario) {
+      return new NextResponse(JSON.stringify({ error: "Usuário não encontrado" }), { status: 404 });
+    }
+    
+    if (!usuario.secretarias || usuario.secretarias.length === 0) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
+    
     const secretariaId = usuario.secretarias[0].secretariaId;
+    
     const body = await request.json();
-    const {novoVeiculo} = body;
-
-    const veiculo = await prisma.veiculo.create({ 
+    const { veiculoNovo } = body;
+    
+    const veiculoCriado = await prisma.veiculo.create({
       data: {
-        placaVeiculo: novoVeiculo.placaVeiculo.trim(),
-        chassiVeiculo: novoVeiculo.chassiVeiculo.trim(),
-        renavamVeiculo: novoVeiculo.renavamVeiculo.trim(),
-        proprietarioVeiculo: novoVeiculo.proprietarioVeiculo.trim(),
-        crlvVeiculo: novoVeiculo.crlvVeiculo.trim(),
-        userId,
-        secretariaId
-        }
-    } );
-
-    return new Response(JSON.stringify({ message: 'Veiculo adicionado com sucesso!', veiculo}), { status: 200 });
+        ...veiculoNovo,
+        crlvVeiculo: veiculoNovo.crlvVeiculo ?? "",
+        user: { connect: { id: userId } },
+        secretaria: { connect: { id: secretariaId } },
+      }
+    });
+    
+    return new Response(JSON.stringify(veiculoCriado), { status: 201 });
   } catch (error) {
     console.error('Error processing request:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });

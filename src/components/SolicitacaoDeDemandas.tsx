@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
-export function DemandaExternaForm({
+export function SolicitacaoDemandaForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
@@ -78,7 +78,7 @@ export function DemandaExternaForm({
             <CardHeader>
                 <CardTitle className="flex items-center text-2xl font-bold">
                     <Car className="mr-2"/>
-                    Solicitação de Transporte Externo
+                    Solicitação de Transporte
                 </CardTitle>
             </CardHeader>
             <CardContent>

@@ -1,6 +1,5 @@
 import { PrismaClient, Prisma } from "@/generated/prisma";
 import { auth } from "@/lib/auth";
-import { connect } from "http2";
 
 const prisma = new PrismaClient();
 
@@ -12,6 +11,12 @@ const userData = [
   },
 ];
 
+const secretariasData = [
+  { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec", nome: "SEDUC" },
+  { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330", nome: "SMS" },
+  { id: "01410aef-17e2-4692-8e27-eb38a995f81b", nome: "SAD" },
+];
+
 const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
   {
     placaVeiculo: "ABC-1234",
@@ -20,7 +25,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Prefeitura Municipal",
     crlvVeiculo: "CRLV12345",
     secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -30,27 +35,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV67890",
     secretaria: {
-      connect: { id: "SEDUC"}
-    }
-  },
-  {
-    placaVeiculo: "ABC-1234",
-    chassiVeiculo: "9BWZZZ377VT004251",
-    renavamVeiculo: "12345678901",
-    proprietarioVeiculo: "Secretaria de Transportes",
-    crlvVeiculo: "CRLV10001",
-    secretaria: {
-      connect: { id: "SEDUC"}
-    }
-  },
-  {
-    placaVeiculo: "XYZ-5678",
-    chassiVeiculo: "8ADZZZ123VT987654",
-    renavamVeiculo: "98765432100",
-    proprietarioVeiculo: "Secretaria de Transportes",
-    crlvVeiculo: "CRLV10002",
-    secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -60,7 +45,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10003",
     secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -70,7 +55,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10004",
     secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -80,7 +65,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10005",
     secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -90,7 +75,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10006",
     secretaria: {
-      connect: { id: "SEDUC"}
+      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
     }
   },
   {
@@ -100,7 +85,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10007",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -110,7 +95,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10008",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -120,7 +105,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10009",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -130,7 +115,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10010",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -140,7 +125,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10011",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -150,7 +135,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10012",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -160,7 +145,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10013",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -170,7 +155,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10014",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -180,7 +165,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10015",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -190,7 +175,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10016",
     secretaria: {
-      connect: { id: "SMS"}
+      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
     }
   },
   {
@@ -200,7 +185,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10017",
     secretaria: {
-      connect: { id: "SAD"}
+      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
     }
   },
   {
@@ -210,7 +195,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10018",
     secretaria: {
-      connect: { id: "SAD"}
+      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
     }
   },
   {
@@ -220,7 +205,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10019",
     secretaria: {
-      connect: { id: "SAD"}
+      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
     }
   },
   {
@@ -230,7 +215,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10020",
     secretaria: {
-      connect: { id: "SAD"}
+      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
     }
   }
 ];
@@ -503,49 +488,111 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
 ];
 
 export async function main() {
-  const createdUsers: { id: string; email: string} [] = [];
+  try {
+    console.log("🌱 Iniciando seed do banco de dados...");
 
-  for (const user of userData) {
-    const result = await auth.api.signUpEmail({
-      body: {
-        email: user.email,
-        name: user.name,
-        password: user.password
+    // 1. Criar secretarias primeiro
+    
+
+    // 2. Criar usuários
+    console.log("\n👥 Criando usuários...");
+    const createdUsers: { id: string; email: string }[] = [];
+
+    for (const user of userData) {
+      // Verificar se usuário já existe
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email },
+      });
+
+      if (existingUser) {
+        createdUsers.push({ id: existingUser.id, email: existingUser.email });
+        console.log(`ℹ️ Usuário já existe: ${existingUser.email}`);
+        continue;
       }
-    });
 
-    const dbUser = await prisma.user.findUnique({
-      where: { email: user.email },
-    });
+      // Criar novo usuário
+      try {
+        await auth.api.signUpEmail({
+          body: {
+            email: user.email,
+            name: user.name,
+            password: user.password,
+          },
+        });
 
-    if (dbUser) {
-      createdUsers.push({ id: dbUser.id, email: dbUser.email });
-      console.log(`✅ Usuário criado: ${dbUser.email}`);
-    } else {
-      console.warn(`⚠️ Usuário ${user.email} não encontrado no banco.`);
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
+
+        if (dbUser) {
+          createdUsers.push({ id: dbUser.id, email: dbUser.email });
+          console.log(`✅ Usuário criado: ${dbUser.email}`);
+        }
+      } catch (error) {
+        console.error(`❌ Erro ao criar usuário ${user.email}:`, error);
+      }
     }
-  }
 
-  const mainUser = createdUsers[0];
+    const mainUser = createdUsers[0];
 
-  if (!mainUser) {
-    throw new Error("Nenhum usuário encontrado para vincular dados.");
-  }
+    if (!mainUser) {
+      throw new Error("Nenhum usuário encontrado para vincular dados.");
+    }
 
-  for (const v of veiculosData) {
-    await prisma.veiculo.create({data: {...v,
-      user: {
-        connect: { id: mainUser.id },
-      },
-    }});
-  }
+    // Vincular usuário às secretarias
+    console.log("\n🔗 Vinculando usuário às secretarias...");
+    for (const sec of secretariasData) {
+      const exists = await prisma.userSecretaria.findUnique({
+        where: {
+          userId_secretariaId: {
+            userId: mainUser.id,
+            secretariaId: sec.id,
+          },
+        },
+      });
 
-  for (const d of demandasData) {
-    await prisma.demanda.create({data: {...d,
-      user: {
-        connect: { id: mainUser.id },
+      if (!exists) {
+        await prisma.userSecretaria.create({
+          data: {
+            userId: mainUser.id,
+            secretariaId: sec.id,
+          },
+        });
+        console.log(`✅ Usuário vinculado à ${sec.nome}`);
+      } else {
+        console.log(`ℹ️ Vínculo já existe: ${sec.nome}`);
       }
-    }});
+    }
+
+    // 3. Criar veículos
+    console.log("\n🚗 Criando veículos...");
+    for (const v of veiculosData) {
+      const exists = await prisma.veiculo.findUnique({
+        where: { placaVeiculo: v.placaVeiculo },
+      });
+
+      if (!exists) {
+        await prisma.veiculo.create({
+          data: {
+            ...v,
+            user: {
+              connect: { id: mainUser.id },
+            },
+          },
+        });
+        console.log(`✅ Veículo criado: ${v.placaVeiculo}`);
+      } else {
+        console.log(`ℹ️ Veículo já existe: ${v.placaVeiculo}`);
+      }
+    }
+
+    // 4. Criar demandas
+   
+  } catch (error) {
+    console.error("\n❌ Erro durante o seed:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

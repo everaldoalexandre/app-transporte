@@ -19,18 +19,29 @@ export async function GET () {
 
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
-      select: { secretariasId: true }
+      include: {
+         secretarias: {
+          include: {
+            secretaria: true 
+          }
+        }
+      }
     });
 
-    if (!usuario?.secretariasId) {
+
+    if (!usuario) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
 
-    const demandas = await prisma.demandas.findMany({
-      where: { secretariasId: usuario.secretariasId }
+    const secretariasIds = usuario.secretarias.map(s => s.secretariaId);
+
+    const demandas = await prisma.demanda.findMany({
+      where: { 
+        secretariaId: { in: secretariasIds }
+      }
     });
     return new Response(JSON.stringify(demandas), { status: 200 });
   } catch (error) {
@@ -48,7 +59,7 @@ export async function POST (request: Request) {
       return new Response(JSON.stringify({ error: 'All fields are required.' }), { status: 400 });
     }
 
-    await prisma.demandas.create({ data: novaDemanda });
+    await prisma.demanda.create({ data: novaDemanda });
 
     return new Response(JSON.stringify({ message: 'Demanda externa adicionada com sucesso!' }), { status: 200 });
   } catch (error) {
@@ -66,7 +77,7 @@ export async function PUT (request: Request) {
       return new Response(JSON.stringify({ error: 'ID and updated fields are required.' }), { status: 400 });
     }
 
-    await prisma.demandas.update({
+    await prisma.demanda.update({
       where: { id },
       data: updatedDemandas,
     });
@@ -87,7 +98,7 @@ export async function DELETE (request: Request) {
       return NextResponse.json({ error: 'ID is mandatory' }, { status: 400 });
     }
 
-    await prisma.demandas.delete({
+    await prisma.demanda.delete({
       where: { id },
     });
 

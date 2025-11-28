@@ -7,7 +7,13 @@ import { Veiculo } from "@/generated/prisma";
 export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh }: { openNovoVeiculo: boolean, openChangeNovoVeiculo: (v: boolean) => void, onRefresh: () => void }) {
 
     const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
-    const [veiculoNovo, setVeiculoNovo] = useState<Veiculo | null>(null);
+    const [veiculoNovo, setVeiculoNovo] = useState({
+      placaVeiculo: "",
+      chassiVeiculo: "",
+      renavamVeiculo: "",
+      proprietarioVeiculo: "",
+      crlvVeiculo: ""
+    });
 
     const [showDialogNovoVeiculo, setShowDialogNovoVeiculo] = useState(false);
 
@@ -21,25 +27,22 @@ export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh 
       e.preventDefault();
 
       try {
-          const novoVeiculo = {
-            placaVeiculo: veiculoNovo?.placaVeiculo,
-            chassiVeiculo: veiculoNovo?.chassiVeiculo,
-            renavamVeiculo: veiculoNovo?.renavamVeiculo,
-            proprietarioVeiculo: veiculoNovo?.proprietarioVeiculo,
-            crlvVeiculo: '',
-          };
+          if (!veiculoNovo.placaVeiculo || !veiculoNovo.chassiVeiculo || !veiculoNovo.renavamVeiculo || !veiculoNovo.proprietarioVeiculo) {
+            toast.error("Preencha todos os campos obrigatórios.");
+            return;
+          }
           const response = await fetch(`/api/veiculo`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify({novoVeiculo}),
+              body: JSON.stringify({veiculoNovo}),
           });
-          toast.success('Veiculo atualizada com sucesso!');
           if (!response.ok) {
-              throw new Error('Falha ao criar veiculo');
+            throw new Error('Falha ao criar veiculo');
           }
-          setVeiculoNovo(null);
+          toast.success('Veiculo criado com sucesso!');
+          setVeiculoNovo(veiculoNovo);
           onRefresh();
       } catch (error) {
           console.error('Erro ao criar veiculo', error);
@@ -76,28 +79,28 @@ export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh 
                           <Input 
                           type="text"
                           value={veiculoNovo?.placaVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), placaVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo(prev => ({ ...prev, placaVeiculo: e.target.value}))}
                           placeholder='Placa'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Chassi: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.chassiVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), chassiVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo(prev => ({ ...prev, chassiVeiculo: e.target.value}))}
                           placeholder='Chassi'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Renavam: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.renavamVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), renavamVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo(prev => ({ ...prev, renavamVeiculo: e.target.value}))}
                           placeholder='Renavam'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                           <p><span>Proprietário: </span>
                           <Input 
                           type="text"
                           value={veiculoNovo?.proprietarioVeiculo}
-                          onChange={(e) => setVeiculoNovo({...(veiculoNovo as Veiculo), proprietarioVeiculo: e.target.value})}
+                          onChange={(e) => setVeiculoNovo(prev => ({ ...prev, proprietarioVeiculo: e.target.value}))}
                           placeholder='Proprietário'
                           className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                       </div>

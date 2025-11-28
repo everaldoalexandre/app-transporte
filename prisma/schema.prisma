@@ -5,11 +5,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Demanda {
-  id                    String      @id @default(uuid())
+  id                    String   @id @default(uuid())
   emailSolicitante      String
   demandaDetalhe        String?
   pessoaSolicitante     String
@@ -23,19 +23,19 @@ model Demanda {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
-  userId                String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   veiculoId String?
-  veiculo Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
+  veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
 
-  secretariaId         String?
-  secretaria Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)
+  secretariaId String?
+  secretaria   Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)
 }
 
 model Veiculo {
-  id                  String    @id @default(uuid())
-  placaVeiculo        String    @unique
+  id                  String @id @default(uuid())
+  placaVeiculo        String @unique
   chassiVeiculo       String
   renavamVeiculo      String
   proprietarioVeiculo String
@@ -44,24 +44,24 @@ model Veiculo {
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
 
-  userId              String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  demandas            Demanda[]
+  demandas Demanda[]
 }
 
 model Secretaria {
-  id                  String @id @default(uuid())
-  nome                String @unique
-  
-  demandas            Demanda[]
-  users               UserSecretaria[]
-  veiculos            Veiculo[]
+  id   String @id @default(uuid())
+  nome String @unique
+
+  demandas Demanda[]
+  users    UserSecretaria[]
+  veiculos Veiculo[]
 }
 
 model UserSecretaria {
-  userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
@@ -71,19 +71,19 @@ model UserSecretaria {
 }
 
 model User {
-  id                  String       @id @default(uuid())
-  name                String
-  email               String    @unique
-  createdAt           DateTime  @default(now())
-  emailVerified       Boolean   @default(false)
-  image               String?
-  updatedAt           DateTime  @default(now()) @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  createdAt     DateTime @default(now())
+  emailVerified Boolean  @default(false)
+  image         String?
+  updatedAt     DateTime @default(now()) @updatedAt
 
-  sessions            Session[]
-  accounts            Account[]
-  veiculos            Veiculo[]
-  demandas            Demanda[]
-  secretarias         UserSecretaria[]
+  sessions    Session[]
+  accounts    Account[]
+  veiculos    Veiculo[]
+  demandas    Demanda[]
+  secretarias UserSecretaria[]
 
   @@map("user")
 }
