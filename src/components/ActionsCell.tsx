@@ -6,19 +6,20 @@ import { Check, ClipboardPen , FileText, MoreHorizontal, X, Send } from "lucide-
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
-import { Demanda } from "@/generated/prisma";
+import { Demanda, Veiculo } from "@/generated/prisma";
 
-export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefresh: () => void }) {
+export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda, veiculo: Veiculo, onRefresh: () => void }) {
 
     const [demandas, setDemandas] = useState<Demanda[]> ([]);
+    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
     const [demandaEdit, setDemandaEdit] = useState<Demanda | null>(null);
+    const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
 
     const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] = useState(false);
     const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
     const [showModalDeleteDemanda, setShowModalDeleteDemanda] = useState(false);
     const [showModalFinalizarDemanda, setShowModalFinalizarDemanda] = useState(false);
     
-    const [contatoEdit, setContatoEdit] = useState('');
     const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
     const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
@@ -28,8 +29,9 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
         setShowModalDeleteDemanda(true);
     }
 
-    function openModalDetalhesDemanda(demanda: Demanda) {
+    function openModalDetalhesDemanda(demanda: Demanda, veiculo: Veiculo) {
         setDemandaEdit(demanda);
+        setVeiculoEdit(veiculo);
         setShowModalDetalhesDemanda(true);
     }
 
@@ -157,7 +159,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 
-                <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda)}>
+                <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda, veiculo)}>
                 <FileText/>Detalhes</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
@@ -220,8 +222,8 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
                         <p><span>Placa: </span>
                         <Input 
                         type="text"
-                        value={contatoEdit}
-                        onChange={(e) => setContatoEdit(e.target.value)}
+                        value={veiculoEdit?.placaVeiculo}
+                        onChange={(e) => setVeiculoEdit({...(veiculo as Veiculo), placaVeiculo: e.target.value})}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Status: </span>

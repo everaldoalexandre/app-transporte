@@ -35,8 +35,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    console.log('Iniciando envio de email...');
     
     const { data, error } = await resend.emails.send({
       from,

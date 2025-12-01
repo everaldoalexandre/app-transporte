@@ -28,6 +28,7 @@ export function SolicitacaoDemandaForm({
     const [dataHoraVolta, setDataHoraVolta] = useState('');
     const [origem, setOrigem] = useState('');
     const [contato, setContato] = useState('');
+    const [lotacao, setLotacao] = useState('');
     const [statusDemanda, setStatusDemanda] = useState('Aguardando');
 
     const envioEmaill = async (email: string, nome: string, detalhe: string) => {
@@ -103,6 +104,7 @@ export function SolicitacaoDemandaForm({
                 origem,
                 contato,
                 statusDemanda,
+                lotacao,
                 userId: 'f1b3216e-7aed-4d74-9cfe-196c9e7be0f0'
             };
             const response = await fetch('/api/demanda', {
@@ -127,6 +129,7 @@ export function SolicitacaoDemandaForm({
                 setDataHoraVolta('');
                 setOrigem('');
                 setContato('');
+                setLotacao('');
                 setStatusDemanda('Aguardando');
 
             } else {
@@ -194,6 +197,18 @@ export function SolicitacaoDemandaForm({
                                 type="text"
                                 value={secretariaSolicitante}
                                 onChange={(e) => setSecretariaSolicitante(e.target.value)}
+                                className="border rounded-md p-2"
+                                required
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="lotacao">Lotação</Label>
+                                <Input
+                                id="lotacao"
+                                placeholder="Informe o quantitativo de pessoas."
+                                type="number"
+                                value={lotacao}
+                                onChange={(e) => setLotacao(e.target.value)}
                                 className="border rounded-md p-2"
                                 required
                                 />

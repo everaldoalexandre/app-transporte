@@ -134,6 +134,7 @@ exports.Prisma.DemandaScalarFieldEnum = {
   statusDemanda: 'statusDemanda',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  lotacao: 'lotacao',
   userId: 'userId',
   veiculoId: 'veiculoId',
   secretariaId: 'secretariaId'
@@ -148,6 +149,18 @@ exports.Prisma.VeiculoScalarFieldEnum = {
   crlvVeiculo: 'crlvVeiculo',
   secretariaId: 'secretariaId',
   userId: 'userId'
+};
+
+exports.Prisma.MotoristaScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  secretariaId: 'secretariaId',
+  userId: 'userId'
+};
+
+exports.Prisma.AcessoScalarFieldEnum = {
+  id: 'id',
+  nivel: 'nivel'
 };
 
 exports.Prisma.SecretariaScalarFieldEnum = {
@@ -225,6 +238,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Demanda: 'Demanda',
   Veiculo: 'Veiculo',
+  Motorista: 'Motorista',
+  Acesso: 'Acesso',
   Secretaria: 'Secretaria',
   UserSecretaria: 'UserSecretaria',
   User: 'User',

@@ -4,17 +4,29 @@ import { auth } from "@/lib/auth";
 const prisma = new PrismaClient();
 
 const userData = [
+  
   {
     name: "Everaldo",
-    email: "ee3@e.com",
+    email: "e@e.com",
     password: "teste123",
+    acesso: {
+      connect: { id: "1923d61c-6f4a-4b44-9651-98b802151313" }
+    }
+  },
+  {
+    name: "Everaldo",
+    email: "e3@e.com",
+    password: "teste123",
+    acesso: {
+      connect: { id: "1923d61c-6f4a-4b44-9651-98b802151313" }
+    }
   },
 ];
 
 const secretariasData = [
-  { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec", nome: "SEDUC" },
-  { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330", nome: "SMS" },
-  { id: "01410aef-17e2-4692-8e27-eb38a995f81b", nome: "SAD" },
+  { id: "b4279091-986c-4598-93ed-eb2385606394", nome: "SEDUC" },
+  { id: "45ff928f-ee0c-4ff1-b582-90f9951e840e", nome: "SAD" },
+  { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a", nome: "SMS" },
 ];
 
 const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
@@ -25,7 +37,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Prefeitura Municipal",
     crlvVeiculo: "CRLV12345",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -35,7 +47,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV67890",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -45,7 +57,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10003",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -55,7 +67,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10004",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -65,7 +77,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10005",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -75,7 +87,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10006",
     secretaria: {
-      connect: { id: "f18da654-0d23-4335-b9fe-c89a8bee39ec" }
+      connect: { id: "b4279091-986c-4598-93ed-eb2385606394" }
     }
   },
   {
@@ -85,7 +97,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10007",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -95,7 +107,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10008",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -105,7 +117,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10009",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -115,7 +127,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10010",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -125,7 +137,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10011",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -135,7 +147,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10012",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -145,7 +157,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10013",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -155,7 +167,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10014",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -165,7 +177,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10015",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -175,7 +187,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10016",
     secretaria: {
-      connect: { id: "7b39a243-0b23-42aa-b993-5bd32ba0b330" }
+      connect: { id: "d1fcb980-9228-4d9d-9d96-eb3d15a45c2a" }
     }
   },
   {
@@ -185,7 +197,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Educação",
     crlvVeiculo: "CRLV10017",
     secretaria: {
-      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
+      connect: { id: "45ff928f-ee0c-4ff1-b582-90f9951e840e" }
     }
   },
   {
@@ -195,7 +207,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Transportes",
     crlvVeiculo: "CRLV10018",
     secretaria: {
-      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
+      connect: { id: "45ff928f-ee0c-4ff1-b582-90f9951e840e" }
     }
   },
   {
@@ -205,7 +217,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Obras",
     crlvVeiculo: "CRLV10019",
     secretaria: {
-      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
+      connect: { id: "45ff928f-ee0c-4ff1-b582-90f9951e840e" }
     }
   },
   {
@@ -215,7 +227,7 @@ const veiculosData: Prisma.VeiculoCreateWithoutUserInput[] = [
     proprietarioVeiculo: "Secretaria de Saúde",
     crlvVeiculo: "CRLV10020",
     secretaria: {
-      connect: { id: "01410aef-17e2-4692-8e27-eb38a995f81b" }
+      connect: { id: "45ff928f-ee0c-4ff1-b582-90f9951e840e" }
     }
   }
 ];
@@ -225,6 +237,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario1@teste.com",
     demandaDetalhe: "Viagem a Recife",
     pessoaSolicitante: "João da Silva",
+    lotacao: '30',
     secretariaSolicitante: "SEDUC",
     destino: "Recife",
     origem: "Caruaru",
@@ -237,6 +250,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario2@teste.com",
     demandaDetalhe: "Entrega de documentos",
     pessoaSolicitante: "Maria Oliveira",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Olinda",
     origem: "Recife",
@@ -249,6 +263,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario1gcg@teste.com",
     demandaDetalhe: "Reunião administrativa",
     pessoaSolicitante: "João Silva",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Recife",
     origem: "Caruaru",
@@ -261,6 +276,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario2uh@teste.com",
     demandaDetalhe: "Entrega de documentos",
     pessoaSolicitante: "Maria Oliveira",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Olinda",
     origem: "Recife",
@@ -273,6 +289,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario3@teste.com",
     demandaDetalhe: "Inspeção em escola municipal",
     pessoaSolicitante: "Carlos Andrade",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Garanhuns",
     origem: "Recife",
@@ -285,6 +302,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario4@teste.com",
     demandaDetalhe: "Transporte de equipe técnica",
     pessoaSolicitante: "Fernanda Costa",
+    lotacao: '30',
     secretariaSolicitante: "Infraestrutura",
     destino: "Petrolina",
     origem: "Recife",
@@ -297,6 +315,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario5@teste.com",
     demandaDetalhe: "Visita a unidade hospitalar",
     pessoaSolicitante: "Roberto Lima",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Caruaru",
     origem: "Recife",
@@ -309,6 +328,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario6@teste.com",
     demandaDetalhe: "Participação em seminário",
     pessoaSolicitante: "Juliana Souza",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Gravatá",
     origem: "Recife",
@@ -321,6 +341,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario7@teste.com",
     demandaDetalhe: "Coleta de materiais",
     pessoaSolicitante: "Pedro Martins",
+    lotacao: '30',
     secretariaSolicitante: "Obras",
     destino: "Paulista",
     origem: "Recife",
@@ -333,6 +354,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario8@teste.com",
     demandaDetalhe: "Entrega de ofícios",
     pessoaSolicitante: "Larissa Ramos",
+    lotacao: '30',
     secretariaSolicitante: "Administração",
     destino: "Abreu e Lima",
     origem: "Recife",
@@ -345,6 +367,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario9@teste.com",
     demandaDetalhe: "Acompanhamento de obra pública",
     pessoaSolicitante: "Eduardo Nunes",
+    lotacao: '30',
     secretariaSolicitante: "Infraestrutura",
     destino: "Ipojuca",
     origem: "Recife",
@@ -357,6 +380,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario10@teste.com",
     demandaDetalhe: "Transporte de materiais escolares",
     pessoaSolicitante: "Patrícia Gomes",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Vitória de Santo Antão",
     origem: "Recife",
@@ -369,6 +393,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario11@teste.com",
     demandaDetalhe: "Supervisão de obras",
     pessoaSolicitante: "Ricardo Barbosa",
+    lotacao: '30',
     secretariaSolicitante: "Obras",
     destino: "Goiana",
     origem: "Recife",
@@ -381,6 +406,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario12@teste.com",
     demandaDetalhe: "Capacitação de servidores",
     pessoaSolicitante: "Bianca Freitas",
+    lotacao: '30',
     secretariaSolicitante: "Administração",
     destino: "Carpina",
     origem: "Recife",
@@ -393,6 +419,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario13@teste.com",
     demandaDetalhe: "Entrega de equipamentos médicos",
     pessoaSolicitante: "Marcelo Dias",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Surubim",
     origem: "Recife",
@@ -405,6 +432,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario14@teste.com",
     demandaDetalhe: "Visita técnica em escola rural",
     pessoaSolicitante: "Sérgio Almeida",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Pesqueira",
     origem: "Recife",
@@ -417,6 +445,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario15@teste.com",
     demandaDetalhe: "Transporte de materiais de obra",
     pessoaSolicitante: "Cláudia Lima",
+    lotacao: '30',
     secretariaSolicitante: "Obras",
     destino: "Arcoverde",
     origem: "Recife",
@@ -429,6 +458,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario16@teste.com",
     demandaDetalhe: "Fiscalização sanitária",
     pessoaSolicitante: "Rafael Santos",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Paulista",
     origem: "Recife",
@@ -441,6 +471,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario17@teste.com",
     demandaDetalhe: "Entrega de documentos oficiais",
     pessoaSolicitante: "Vanessa Brito",
+    lotacao: '30',
     secretariaSolicitante: "Administração",
     destino: "Gravatá",
     origem: "Recife",
@@ -453,6 +484,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario18@teste.com",
     demandaDetalhe: "Treinamento técnico",
     pessoaSolicitante: "André Melo",
+    lotacao: '30',
     secretariaSolicitante: "Infraestrutura",
     destino: "Bezerros",
     origem: "Recife",
@@ -465,6 +497,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario19@teste.com",
     demandaDetalhe: "Visita de inspeção",
     pessoaSolicitante: "Carla Fernandes",
+    lotacao: '30',
     secretariaSolicitante: "Saúde",
     destino: "Gravatá",
     origem: "Recife",
@@ -477,6 +510,7 @@ const demandasData: Prisma.DemandaCreateWithoutUserInput[] = [
     emailSolicitante: "usuario20@teste.com",
     demandaDetalhe: "Entrega de materiais didáticos",
     pessoaSolicitante: "Fábio Pereira",
+    lotacao: '30',
     secretariaSolicitante: "Educação",
     destino: "Palmares",
     origem: "Recife",
@@ -587,6 +621,45 @@ export async function main() {
     }
 
     // 4. Criar demandas
+    for (const demanda of demandasData) {
+      // Buscar secretaria correspondente
+      const secretaria = await prisma.secretaria.findFirst({
+        where: {
+          nome: {
+            contains: demanda.secretariaSolicitante,
+            mode: 'insensitive'
+          }
+        }
+      });
+    
+      // Verificar se demanda já existe (usando combinação de campos únicos)
+      const exists = await prisma.demanda.findFirst({
+        where: {
+          emailSolicitante: demanda.emailSolicitante,
+          dataHoraIda: demanda.dataHoraIda,
+          destino: demanda.destino
+        }
+      });
+    
+      if (!exists) {
+        await prisma.demanda.create({
+          data: {
+            ...demanda,
+            user: {
+              connect: { id: mainUser.id }
+            },
+            secretaria: secretaria ? {
+              connect: { id: secretaria.id }
+            } : undefined,
+            // Você pode conectar um veículo aleatório se quiser
+            // veiculo: { connect: { id: algumVeiculoId } }
+          }
+        });
+        console.log(`✅ Demanda criada: ${demanda.pessoaSolicitante} - ${demanda.destino}`);
+      } else {
+        console.log(`ℹ️ Demanda já existe: ${demanda.pessoaSolicitante} - ${demanda.destino}`);
+      }
+    }
    
   } catch (error) {
     console.error("\n❌ Erro durante o seed:", error);

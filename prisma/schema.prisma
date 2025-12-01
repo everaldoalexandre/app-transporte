@@ -22,6 +22,7 @@ model Demanda {
   statusDemanda         String   @default("Aguardando")
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+  lotacao               String
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -50,13 +51,31 @@ model Veiculo {
   demandas Demanda[]
 }
 
+model Motorista {
+  id   String @id @default(uuid())
+  nome String
+
+  secretariaId String
+  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
+  userId       String?
+  User         User?      @relation(fields: [userId], references: [id])
+}
+
+model Acesso {
+  id    String @id @default(uuid())
+  nivel String
+
+  user User[]
+}
+
 model Secretaria {
   id   String @id @default(uuid())
   nome String @unique
 
-  demandas Demanda[]
-  users    UserSecretaria[]
-  veiculos Veiculo[]
+  demandas  Demanda[]
+  users     UserSecretaria[]
+  veiculos  Veiculo[]
+  motorista Motorista[]
 }
 
 model UserSecretaria {
@@ -79,10 +98,12 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
+  acesso      Acesso[]
   sessions    Session[]
   accounts    Account[]
   veiculos    Veiculo[]
   demandas    Demanda[]
+  motoristas  Motorista[]
   secretarias UserSecretaria[]
 
   @@map("user")
