@@ -1,23 +1,67 @@
 import { EmailTemplate } from '@/components/ModeloEmail';
 import { Resend } from 'resend';
+import { NextRequest } from 'next/server';
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+interface BodyEmailResponse {
+  from: string;
+  to: string[];
+  subject: string;
+  html: string;
+  content: string;
+  error: string;
+  data: string;
+}
+
+export async function POST(request: NextRequest) {
+  
   try {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY não está definida');
+      return Response.json(
+        { error: 'API key não configurada' },
+        { status: 500 }
+      );
+    }
+    
+    const body: BodyEmailResponse = await request.json();
+    const { from, to, subject, content } = body;
+    
+    if (!from || !to || !subject || !content) {
+      return Response.json(
+        { error: 'Todos os campos são obrigatórios.' },
+        { status: 400 }
+      );
+    }
+
+    console.log('Iniciando envio de email...');
+    
     const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['everaldo_lol@hotmail.com'],
-      subject: 'Hello world',
-      react: EmailTemplate({ firstName: 'John' }),
+      from,
+      to,
+      subject,
+      react: EmailTemplate({ content }),
     });
 
     if (error) {
-      return Response.json({ error }, { status: 500 });
+      console.error('Erro do Resend:', error);
+      return Response.json(
+        { error: error || 'Erro ao enviar email' },
+        { status: 500 }
+      );
     }
 
+    console.log('Email enviado com sucesso:', data);
     return Response.json(data);
   } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    console.error('Erro na rota:', error);
+    return Response.json(
+      { 
+        error: error instanceof Error ? error.message : 'Erro desconhecido' 
+      },
+      { status: 500 }
+    );
   }
 }

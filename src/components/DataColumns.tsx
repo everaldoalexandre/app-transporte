@@ -8,11 +8,11 @@ import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMe
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
-import { Demandas } from "@/generated/prisma";
+import { Demanda } from "@/generated/prisma";
 
 
-export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
-  const [demandas, setDemandas] = useState<Demandas[]>(initialData);
+export function DataTableDemo({data: initialData}: {data: Demanda[]}) {
+  const [demandas, setDemandas] = useState<Demanda[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -40,7 +40,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
         }
     }
 
-  const columns: ColumnDef<Demandas>[] = [
+  const columns: ColumnDef<Demanda>[] = [
     {
       accessorKey: "statusDemanda",
       header: ({ column }) => {
@@ -76,8 +76,8 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
       cell: ({ row }) => <div className="lowercase">{row.getValue("dataHoraIda")}</div>,
     },
     {
-        accessorKey: "contato",
-        header: "Contato",
+        accessorKey: "pessoaSolicitante",
+        header: "Solicitante",
     },
     {
     id: "actions",
@@ -87,7 +87,7 @@ export function DataTableDemo({data: initialData}: {data: Demandas[]}) {
     
 ]
 
-  const table = useReactTable<Demandas>({
+  const table = useReactTable<Demanda>({
     data: demandas,
     columns,
     onSortingChange: setSorting,

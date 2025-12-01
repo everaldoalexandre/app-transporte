@@ -2,12 +2,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Check, Eraser, FileText, MoreHorizontal, X } from "lucide-react";
+import { Check, ClipboardPen , FileText, MoreHorizontal, X, Send } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
 import { Demanda } from "@/generated/prisma";
-
 
 export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefresh: () => void }) {
 
@@ -21,10 +20,11 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
     
     const [contatoEdit, setContatoEdit] = useState('');
     const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
+    const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
 
     function openModalDeleteDemanda(demanda: Demanda) {
-        setDemandaEdit(demanda);
+        setDemandaDelete(demanda);
         setShowModalDeleteDemanda(true);
     }
 
@@ -48,8 +48,9 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
             console.error('DemandaEdit não está definido');
             return;
         }
+
         try {
-            const response = await fetch(`/api/transporte`, {
+            const response = await fetch(`/api/demanda`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,12 +71,12 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
                     }
                 }),
             });
-            toast.success('Demanda atualizada com sucesso!');
-
+            
             if (!response.ok) {
                 throw new Error('Falha ao atualizar demanda');
             }
-
+            
+            toast.success('Demanda atualizada com sucesso!');
             onRefresh();
         } catch (error) {
             console.error('Erro ao atualizar demanda:', error);
@@ -86,7 +87,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
     async function saveDemandaFinalizada(demandaEdit: Demanda) {
         if (!demandaEdit) return;
         try {
-            const response = await fetch(`/api/transporte`, {
+            const response = await fetch(`/api/demanda`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,9 +114,28 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
         
     }
 
+    async function deletDemanda(id: string) {
+        try {
+            const response = await fetch(`/api/demanda`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+            if (!response.ok) {
+                throw new Error('Falha ao deletar demanda');
+            }
+            toast.success('Demanda deletada com sucesso!');
+            onRefresh();
+        } catch (error) {
+            console.error('Erro ao deletar demanda:', error);
+        }  
+    }
+
     async function fetchDemandas() {
         try {
-            const response = await fetch('/api/transporte', { cache: 'no-store' });
+            const response = await fetch('/api/demanda', { cache: 'no-store' });
             if (!response.ok) {
                 console.error('Falha ao buscar demandas:', response.statusText);
                 return;
@@ -141,7 +161,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
                 <FileText/>Detalhes</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
-                <Eraser/>Editar</DropdownMenuItem>
+                <ClipboardPen/> Editar</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
                 <Check/>Finalizar</DropdownMenuItem>
@@ -257,7 +277,55 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
             <AlertDialog open={showModalDetalhesDemanda} onOpenChange={setShowModalDetalhesDemanda}>
               <AlertDialogContent className="w-full">
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Informações sobre a demanda</AlertDialogTitle>
+                  <AlertDialogTitle className="flex w-full"><div className="w-1/2">Informações sobre a demanda</div>
+                  <div className="flex justify-end w-1/2">
+                    <button onClick={() => {
+                        const texto = `*DEMANDA DE TRANSPORTE* 
+                        *Solicitante:* ${demandaEdit?.pessoaSolicitante || 'N/A'} 
+                        *Secretaria:* ${demandaEdit?.secretariaSolicitante || 'N/A'}
+                        *E-mail:* ${demandaEdit?.emailSolicitante || 'N/A'}
+                        *Contato:* ${demandaEdit?.contato || 'N/A'}
+                        *Destino:* ${demandaEdit?.destino || 'N/A'}
+                        *Local de Saída:* ${demandaEdit?.origem || 'N/A'}
+                        *Horário da Saída:* ${demandaEdit?.dataHoraIda || 'N/A'}
+                        *Horário da Volta:* ${demandaEdit?.dataHoraVolta || 'N/A'}
+                        *Detalhe:* ${demandaEdit?.demandaDetalhe || 'N/A'}
+                        *Status:* ${demandaEdit?.statusDemanda || 'N/A'}`;
+                        const textoFormatado = texto.replace(/^\s+/gm, '').trim();
+                        
+                        
+                        navigator.clipboard.writeText(textoFormatado).then(() => {
+                            toast.success('Detalhes da demanda copiados para a área de transferência!');
+                        }).catch((err) => {
+                            console.error('Erro ao copiar para a área de transferência: ', err);
+                        });
+                    }}
+                    className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"><FileText/></button>
+                    <button onClick={() => {
+                        const texto = `*DEMANDA DE TRANSPORTE* 
+                        *Solicitante:* ${demandaEdit?.pessoaSolicitante || 'N/A'} 
+                        *Secretaria:* ${demandaEdit?.secretariaSolicitante || 'N/A'}
+                        *E-mail:* ${demandaEdit?.emailSolicitante || 'N/A'}
+                        *Contato:* ${demandaEdit?.contato || 'N/A'}
+                        *Destino:* ${demandaEdit?.destino || 'N/A'}
+                        *Local de Saída:* ${demandaEdit?.origem || 'N/A'}
+                        *Horário da Saída:* ${demandaEdit?.dataHoraIda || 'N/A'}
+                        *Horário da Volta:* ${demandaEdit?.dataHoraVolta || 'N/A'}
+                        *Detalhe:* ${demandaEdit?.demandaDetalhe || 'N/A'}
+                        *Status:* ${demandaEdit?.statusDemanda || 'N/A'}`;
+                        const textoFormatado = texto.replace(/^\s+/gm, '').trim();
+                        const WhatsAppURL = `https://wa.me/?text=${encodeURIComponent(textoFormatado)}`;
+                        window.open(WhatsAppURL, '_blank');
+                        
+                        navigator.clipboard.writeText(textoFormatado).then(() => {
+                            toast.success('Detalhes da demanda copiados para a área de transferência!');
+                        }).catch((err) => {
+                            console.error('Erro ao copiar para a área de transferência: ', err);
+                        });
+                    }}
+                    className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"><Send/></button>
+                  </div>
+                  </AlertDialogTitle>
                 </AlertDialogHeader>
                     <div className="bg-white p-6 rounded shadow-lg">
                         <div className='flex sgrid-cols-2 gap-4'>
@@ -285,6 +353,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
                         </div>
                     </div>
                 <AlertDialogFooter>
+                    
                   <AlertDialogAction onClick={() => openModalEditDemanda(demanda)}>Editar</AlertDialogAction>
                   <AlertDialogCancel>Fechar</AlertDialogCancel>
                 </AlertDialogFooter>
@@ -301,7 +370,13 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: Demanda, onRefres
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={() => { 
+                    if (demandaDelete?.id) {
+                        deletDemanda(demandaDelete.id);
+                    } else {
+                        console.error('ID da demanda não está definido');
+                    }
+                    }}>Continue</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

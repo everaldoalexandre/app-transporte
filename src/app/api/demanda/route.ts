@@ -101,7 +101,7 @@ export async function DELETE (request: Request) {
     await prisma.demanda.delete({
       where: { id },
     });
-
+    
     return NextResponse.json({ message: 'Demanda deletada com sucesso' });
   } catch (error) {
     console.error('Error deleting task:', error);

@@ -8,6 +8,13 @@ import { Button } from "./ui/button";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
+interface EmailConfirmacao {
+    from: string;
+    to: string[];
+    subject: string;
+    content: string;
+}
+
 export function SolicitacaoDemandaForm({
     className,
     ...props
@@ -23,12 +30,64 @@ export function SolicitacaoDemandaForm({
     const [contato, setContato] = useState('');
     const [statusDemanda, setStatusDemanda] = useState('Aguardando');
 
+    const envioEmaill = async (email: string, nome: string, detalhe: string) => {
+        try {
+
+            if (!email || !email.trim()) {
+                console.log('Por favor, preencha o campo de email.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.trim())) {
+                
+                console.log('Por favor, informe um email válido.');
+                return;
+            }
+
+            const emailData = {
+                from: 'onboarding@resend.dev',
+                to: [email.trim()],
+                subject: 'Confirmação de Solicitação de Demanda',
+                content: `Olá, ${nome}! Sua solicitação de demanda foi recebida com sucesso. Detalhes da demanda: ${detalhe}. Obrigado por utilizar nosso serviço!`
+            }; 
+
+            const response = await fetch('/api/resend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Email de confirmação enviado com sucesso!');
+                toast.success('Email de confirmação enviado com sucesso!');
+            } else {
+                console.error('Erro ao enviar email de confirmação.', result.error);
+                toast.error('Erro ao enviar email de confirmação.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar email de confirmação:', error);
+            toast.error('Erro ao enviar email de confirmação.');
+        }
+    }
+
     async function adicionarDemanda(e: React.FormEvent) {
         e.preventDefault();
 
         if (!emailSolicitante || !demandaDetalhe || !pessoaSolicitante || !secretariaSolicitante || !destino || !dataHoraIda
             || !dataHoraVolta || !origem || !contato) {
             toast.error('Por favor, preencha todos os campos.')
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailSolicitante)) {
+            toast.error('Por favor, informe um email válido.');
+            console.log('Por favor, informe um email válido.');
             return;
         }
 
@@ -43,7 +102,8 @@ export function SolicitacaoDemandaForm({
                 dataHoraVolta: new Date(dataHoraVolta).toISOString(),
                 origem,
                 contato,
-                statusDemanda
+                statusDemanda,
+                userId: 'f1b3216e-7aed-4d74-9cfe-196c9e7be0f0'
             };
             const response = await fetch('/api/demanda', {
                 method: 'POST',
@@ -55,6 +115,9 @@ export function SolicitacaoDemandaForm({
 
             if (response.ok) {
                 toast.success('Demanda solicitada com sucesso!');
+
+                await envioEmaill(emailSolicitante, pessoaSolicitante, demandaDetalhe);
+
                 setEmailSolicitante('');
                 setDemandaDetalhe('');
                 setPessoaSolicitante('');
@@ -65,6 +128,7 @@ export function SolicitacaoDemandaForm({
                 setOrigem('');
                 setContato('');
                 setStatusDemanda('Aguardando');
+
             } else {
                 toast.error('Erro ao solicitar demanda.');
             }
@@ -72,7 +136,7 @@ export function SolicitacaoDemandaForm({
             toast.error('Erro ao solicitar demanda.');
             console.error('Erro ao solicitar demanda:', error);
         }
-    }
+    }    
     return (
         <Card>
             <CardHeader>
@@ -95,6 +159,7 @@ export function SolicitacaoDemandaForm({
                                 onChange={(e) => setEmailSolicitante(e.target.value)}
                                 placeholder="Informe o seu e-mail"
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -106,6 +171,7 @@ export function SolicitacaoDemandaForm({
                                 onChange={(e) => setDemandaDetalhe(e.target.value)}
                                 type="text"
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -117,6 +183,7 @@ export function SolicitacaoDemandaForm({
                                 onChange={(e) => setPessoaSolicitante(e.target.value)}
                                 type="text"
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -128,6 +195,7 @@ export function SolicitacaoDemandaForm({
                                 value={secretariaSolicitante}
                                 onChange={(e) => setSecretariaSolicitante(e.target.value)}
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -139,6 +207,7 @@ export function SolicitacaoDemandaForm({
                                 value={contato}
                                 onChange={(e) => setContato(e.target.value)}
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -150,6 +219,7 @@ export function SolicitacaoDemandaForm({
                                 onChange={(e) => setOrigem(e.target.value)}
                                 type="text"
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -161,6 +231,7 @@ export function SolicitacaoDemandaForm({
                                 onChange={(e) => setDestino(e.target.value)}
                                 type="text"
                                 className="border rounded-md p-2"
+                                required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -173,6 +244,7 @@ export function SolicitacaoDemandaForm({
                                     onChange={(e) => setDataHoraIda(e.target.value)}
                                     type="datetime-local"
                                     className="border rounded-md p-2 mb-2"
+                                    required
                                     />
                                 </div>
                             </div>
@@ -186,6 +258,7 @@ export function SolicitacaoDemandaForm({
                                     onChange={(e) => setDataHoraVolta(e.target.value)}
                                     type="datetime-local"
                                     className="border rounded-md p-2 mb-2"
+                                    required
                                     />
                                 </div>
                             </div>
