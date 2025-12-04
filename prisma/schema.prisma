@@ -52,14 +52,12 @@ model Veiculo {
 }
 
 model Motorista {
-  id   String @id @default(uuid())
-  nome String
+  id      String @id @default(uuid())
+  nome    String
   contato String
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
-  userId       String?
-  User         User?      @relation(fields: [userId], references: [id])
 }
 
 model Acesso {
@@ -80,13 +78,12 @@ model Secretaria {
 }
 
 model UserSecretaria {
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User[]
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
 
-  @@id([userId, secretariaId])
+  @@id([secretariaId])
   @@map("user_on_secretaria")
 }
 
@@ -99,13 +96,12 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
-  acesso      Acesso[]
-  sessions    Session[]
-  accounts    Account[]
-  veiculos    Veiculo[]
-  demandas    Demanda[]
-  motoristas  Motorista[]
-  secretarias UserSecretaria[]
+  acesso     Acesso[]
+  sessions   Session[]
+  accounts   Account[]
+  veiculos   Veiculo[]
+  demandas   Demanda[]
+  secretaria UserSecretaria[]
 
   @@map("user")
 }

@@ -8,12 +8,12 @@ import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMe
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
-import { Demanda} from "@/generated/prisma";
+import { DemandaType } from "./Types";
 
-
-export function DataTableDemo({data: initialData}: {data: Demanda[]}) {
-  const [demandas, setDemandas] = useState<Demanda[]>(initialData);
+export function DataTableDemo({data: initialData, userAccessLevel}: {data: DemandaType[], userAccessLevel: string}) {
+  const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [userAccess, setUserAccess] = useState<string>('usuário');
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -26,21 +26,20 @@ export function DataTableDemo({data: initialData}: {data: Demanda[]}) {
   }, []);
 
   async function fetchDemandas() {
-        try {
-            const response = await fetch('/api/demanda', { cache: 'no-store' });
-            if (!response.ok) {
-                console.error('Falha ao buscar demandas:', response.statusText);
-                return;
-            }
-            const data = await response.json();
-            setDemandas(data);
-            
-        } catch (error) {
-            console.error('Erro ao buscar demandas:', error);
-        }
+    try {
+        const res = await fetch('/api/demanda'); // seu endpoint GET
+        if (!res.ok) throw new Error('Falha ao buscar demandas');
+        
+        const data = await res.json();
+        
+        setDemandas(data.demandas);
+        setUserAccess(data.userAccessLevel);
+    } catch (err) {
+        console.error(err);
     }
+  }
 
-  const columns: ColumnDef<Demanda>[] = [
+  const columns: ColumnDef<DemandaType>[] = [
     {
       accessorKey: "statusDemanda",
       header: ({ column }) => {
@@ -82,12 +81,12 @@ export function DataTableDemo({data: initialData}: {data: Demanda[]}) {
     {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => <ActionsCell demanda={row.original} onRefresh={fetchDemandas}/>,
+    cell: ({ row }) => <ActionsCell demanda={row.original} onRefresh={fetchDemandas} userAccessLevel={userAccessLevel}/>,
     }
     
 ]
 
-  const table = useReactTable<Demanda>({
+  const table = useReactTable<DemandaType>({
     data: demandas,
     columns,
     onSortingChange: setSorting,

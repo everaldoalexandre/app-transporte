@@ -7,14 +7,14 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
 import { Demanda, Veiculo } from "@/generated/prisma";
+import { DemandaType } from "./Types";
 
-type DemandaComVeiculo = Demanda & { veiculo: Veiculo | null };
 
-export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo, onRefresh: () => void }) {
+export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: DemandaType, onRefresh: () => void; userAccessLevel: string }) {
 
     const [demandas, setDemandas] = useState<Demanda[]> ([]);
-    const [demandaEdit, setDemandaEdit] = useState<DemandaComVeiculo | null>(null);
-    const [veiculoEdit, setVeiculoEdit] = useState<DemandaComVeiculo | null>(null);
+    const [demandaEdit, setDemandaEdit] = useState<DemandaType | null>(null);
+    const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
 
     const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] = useState(false);
     const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
@@ -24,50 +24,35 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
     const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
     const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
-    const [query, setQuery] = useState<DemandaComVeiculo[]>([]);
-    const [resultados, setResultados] = useState<DemandaComVeiculo[]>([]);
+    const [query, setQuery] = useState<string>("");
+    const [resultados, setResultados] = useState<Veiculo[]>([]);
     const [loading, setLoading] = useState(false);
+    const [userAccess, setUserAccess] = useState<string>('usuário');
 
-    useEffect(() => {
-        if (!query || query.length < 2) {
-            setResultados([]);
-            return;
-        }
-
-        const timer = setTimeout(() => {
-            buscarPlacas(query);
-        }, 300);
-
-        return () => clearTimeout(timer);
-    }, [query]);
-
-
-    function openModalDeleteDemanda(demanda: DemandaComVeiculo) {
+    function openModalDeleteDemanda(demanda: DemandaType) {
         setDemandaDelete(demanda);
         setShowModalDeleteDemanda(true);
     }
 
-    function openModalDetalhesDemanda(demanda: DemandaComVeiculo) {
+    function openModalDetalhesDemanda(demanda: DemandaType) {
         setDemandaEdit(demanda);
         setShowModalDetalhesDemanda(true);
     }
 
-    function openModalEditDemanda(demanda: DemandaComVeiculo) {
+    function openModalEditDemanda(demanda: DemandaType) {
         setDemandaEdit(demanda);        
         setShowModalEditDemanda(true);
     }
 
-    function openModalFinalizarDemanda(demanda: DemandaComVeiculo) {
+    function openModalFinalizarDemanda(demanda: DemandaType) {
         setDemandaFinalizada(demanda);
         setShowModalFinalizarDemanda(true);
     }
 
-    
-
     async function buscarPlacas(texto: string) {
         try {
             setLoading(true);
-            const res = await fetch(`/api/veiculos?search=${texto}`);
+            const res = await fetch(`/api/veiculo?search=${texto}`);
             const data = await res.json();
             setResultados(data);
         } finally {
@@ -75,7 +60,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
         }
     }
 
-    async function saveEditDemanda(demandaEdit: DemandaComVeiculo) {
+    async function saveEditDemanda(demandaEdit: DemandaType) {
         if (!demandaEdit) {
             console.error('DemandaEdit não está definido');
             return;
@@ -99,7 +84,8 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                     dataHoraVolta: demandaEdit.dataHoraVolta,
                     origem: demandaEdit.origem,
                     contato: demandaEdit.contato,
-                    statusDemanda: demandaEdit.statusDemanda
+                    statusDemanda: demandaEdit.statusDemanda,
+                    veiculoId: demandaEdit.veiculo?.id || null
                     }
                 }),
             });
@@ -116,7 +102,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
         
     }
 
-    async function saveDemandaFinalizada(demandaEdit: DemandaComVeiculo) {
+    async function saveDemandaFinalizada(demandaEdit: DemandaType) {
         if (!demandaEdit) return;
         try {
             const response = await fetch(`/api/demanda`, {
@@ -167,17 +153,31 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
 
     async function fetchDemandas() {
         try {
-            const response = await fetch('/api/demanda', { cache: 'no-store' });
-            if (!response.ok) {
-                console.error('Falha ao buscar demandas:', response.statusText);
-                return;
-            }
-            const data = await response.json();
-            setDemandas(data);
-        } catch (error) {
-            console.error('Erro ao buscar demandas:', error);
+            const res = await fetch('/api/demanda'); // seu endpoint GET
+            if (!res.ok) throw new Error('Falha ao buscar demandas');
+            
+            const data = await res.json();
+            // data: { demandas: DemandaType[], userAccessLevel: string }
+            setDemandas(data.demandas);
+            setUserAccess(data.userAccessLevel);
+        } catch (err) {
+            console.error(err);
         }
     }
+
+    useEffect(() => {
+        if (!query || query.length < 2) {
+            setResultados([]);
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            buscarPlacas(query);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [query]);
+
     return (
         <div>
             <DropdownMenu>
@@ -192,14 +192,18 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                 <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda)}>
                 <FileText/>Detalhes</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
-                <ClipboardPen/> Editar</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
-                <Check/>Finalizar</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
-                <X/>Deletar</DropdownMenuItem>
+                {["administrador", "editor"].includes(userAccessLevel) && (
+                    <>
+                        <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
+                        <ClipboardPen/> Editar</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
+                        <Check/>Finalizar</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
+                        <X/>Deletar</DropdownMenuItem>
+                    </>
+                )}
             </DropdownMenuContent>
             </DropdownMenu>
             <AlertDialog open={showModalEditDemanda} onOpenChange={setShowModalEditDemanda}>
@@ -216,28 +220,28 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                         <Input 
                         type="text"
                         value={demandaEdit?.pessoaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), pessoaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), pessoaSolicitante: e.target.value})}
                         placeholder='Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Secretaria: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.secretariaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), secretariaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit( prev => prev ? {...prev,  secretariaSolicitante: e.target.value} : prev)}
                         placeholder='Secretaria Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>E-mail: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.emailSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), emailSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit( prev => prev ? {...prev,  emailSolicitante: e.target.value} : prev)}
                         placeholder='E-mail'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Contato: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit( prev => prev ? {...prev, contato: e.target.value} : prev)}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -246,7 +250,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit( prev => prev ? {...prev, contato: e.target.value} : prev)}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Placa: </span>
@@ -254,14 +258,38 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                             <Input
                                 type="text"
                                 value={demandaEdit?.veiculo?.placaVeiculo || ""}
-                                onChange={(e) => {
+                                onChange={async (e) => {
                                     const value = e.target.value;
-                                    setVeiculoEdit((prev) => ({ ...(prev || {}), placaVeiculo: value }));
-                                    setDemandaEdit((prev) =>
-                                        prev ? { ...prev, placaVeiculo: value } : prev
+                              
+                                    // Atualiza apenas a placa digitada
+                                    setDemandaEdit(prev =>
+                                      prev
+                                        ? {
+                                            ...prev,
+                                            veiculo: prev.veiculo
+                                              ? { ...prev.veiculo, placaVeiculo: value }
+                                              : { placaVeiculo: value } as Veiculo // tipo parcial inicial
+                                          }
+                                        : prev
                                     );
-                                    setQuery(value); // atualiza busca
-                                }}
+                              
+                                    setQuery(value);
+                              
+                                    if (value.length >= 2) {
+                                      setLoading(true);
+                                      try {
+                                        const res = await fetch(`/api/veiculos?search=${value}`);
+                                        const data: Veiculo[] = await res.json();
+                                        setResultados(data);
+                                      } catch (err) {
+                                        console.error("Erro ao buscar veículos:", err);
+                                      } finally {
+                                        setLoading(false);
+                                      }
+                                    } else {
+                                      setResultados([]);
+                                    }
+                                  }}
                                 placeholder="Placa do veículo"
                                 className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                             />
@@ -280,14 +308,13 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                                             onClick={() => {
                                                 setVeiculoEdit(item);
-                                                setDemandaEdit((prev) =>
-                                                    prev ? { ...prev, placaVeiculo: item.veiculo?.placaVeiculo } : prev
-                                                );
-                                                setQuery(item.veiculo?.placaVeiculo);
+                                                setDemandaEdit(prev => prev ? {
+                                                    ...prev, veiculo: item } : prev);
+                                                setQuery(item.placaVeiculo);
                                                 setResultados([]);
                                             }}
                                         >
-                                            {item.veiculo?.placaVeiculo}
+                                            {item.placaVeiculo}
                                         </li>
                                     ))}
                                 </ul>
@@ -303,27 +330,27 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                         <Input 
                         type="text"
                         value={demandaEdit?.destino}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), destino: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), destino: e.target.value})}
                         placeholder='Destino'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Local de Saída: </span><input 
                         type="text"
                         value={demandaEdit?.origem}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), origem: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), origem: e.target.value})}
                         placeholder='Local de Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Saída: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraIda?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), dataHoraIda: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), dataHoraIda: e.target.value})}
                         placeholder='Horário da Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Volta: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraVolta ?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), dataHoraVolta: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), dataHoraVolta: e.target.value})}
                         placeholder='Horario da Volta'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -462,7 +489,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo
                 
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={ () => { saveDemandaFinalizada(demandaFinalizada as Demanda);}}
+                  <AlertDialogAction onClick={ () => { saveDemandaFinalizada(demandaFinalizada as DemandaType);}}
                   >Finalizar</AlertDialogAction>
                 </AlertDialogFooter>
                 </AlertDialogContent>

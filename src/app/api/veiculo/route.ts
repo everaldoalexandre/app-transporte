@@ -5,8 +5,11 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET () {
+export async function GET (request: Request) {
   try {
+
+    const url = new URL(request.url);
+    const search = url.searchParams.get("search") || "";
 
     const session = await auth.api.getSession({
       headers: await headers()
@@ -21,11 +24,12 @@ export async function GET () {
     const usuario = await prisma.user.findUnique({
       where: {id: userId},
       include: {
-        secretarias: {
+        secretaria: {
           include: {
             secretaria: true
           }
-        }
+        },
+        acesso: true
       }
     });
 
@@ -36,15 +40,21 @@ export async function GET () {
       );
     }
 
-    const secretariasIds = usuario.secretarias.map(s => s.secretariaId);
+    const userAccessLevel = usuario.acesso.length > 0 ? usuario.acesso[0].nivel : 'usuário';
+    const secretariasIds = usuario.secretaria.map(s => s.secretariaId);
     
     const veiculos = await prisma.veiculo.findMany({
       where: { 
-        secretariaId: { in: secretariasIds }
+        secretariaId: { in: secretariasIds },
+        placaVeiculo: {contains: search, mode: "insensitive"}
+      },
+      include: {
+        secretaria: true,
+        user: true
       }
     });
 
-    return new Response(JSON.stringify(veiculos), { status: 200 });
+    return new Response(JSON.stringify({veiculos, userAccessLevel}), { status: 200 });
   } catch (error) {
     console.error('Error fetching veiculos:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
@@ -66,7 +76,7 @@ export async function POST (request: Request) {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        secretarias: true
+        secretaria: true
       }
     });
     
@@ -74,14 +84,14 @@ export async function POST (request: Request) {
       return new NextResponse(JSON.stringify({ error: "Usuário não encontrado" }), { status: 404 });
     }
     
-    if (!usuario.secretarias || usuario.secretarias.length === 0) {
+    if (!usuario.secretaria || usuario.secretaria.length === 0) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
     
-    const secretariaId = usuario.secretarias[0].secretariaId;
+    const secretariaId = usuario.secretaria[0].secretariaId;
     
     const body = await request.json();
     const { veiculoNovo } = body;

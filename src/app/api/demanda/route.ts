@@ -20,24 +20,26 @@ export async function GET () {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        secretarias: {
+        secretaria: {
           include: {
             secretaria: true
           }
         },
-        veiculos: true
+        veiculos: true,
+        acesso: true
       }
     });
 
-
+    
     if (!usuario) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
-
-    const secretariasIds = usuario.secretarias.map(s => s.secretariaId);
+    
+    const userAccessLevel = usuario.acesso.length > 0 ? usuario.acesso[0].nivel : 'usuário';
+    const secretariasIds = usuario.secretaria.map(s => s.secretariaId);
     const veiculosIds = usuario.veiculos.map(v => v.id);
 
     const demandas = await prisma.demanda.findMany({
@@ -53,7 +55,7 @@ export async function GET () {
         user: true
       }
     });
-    return new Response(JSON.stringify(demandas), { status: 200 });
+    return new Response(JSON.stringify({demandas, userAccessLevel}), { status: 200 });
   } catch (error) {
     console.error('Error fetching demandas:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
