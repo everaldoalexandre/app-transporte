@@ -20,11 +20,12 @@ export async function GET () {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-         secretarias: {
+        secretarias: {
           include: {
-            secretaria: true 
+            secretaria: true
           }
-        }
+        },
+        veiculos: true
       }
     });
 
@@ -37,10 +38,19 @@ export async function GET () {
     }
 
     const secretariasIds = usuario.secretarias.map(s => s.secretariaId);
+    const veiculosIds = usuario.veiculos.map(v => v.id);
 
     const demandas = await prisma.demanda.findMany({
-      where: { 
-        secretariaId: { in: secretariasIds }
+      where: {
+        OR: [ 
+        {veiculoId: {in: veiculosIds}},
+        {secretariaId: { in: secretariasIds }}
+        ]
+      },
+      include: {
+        veiculo: true,
+        secretaria: true,
+        user: true
       }
     });
     return new Response(JSON.stringify(demandas), { status: 200 });

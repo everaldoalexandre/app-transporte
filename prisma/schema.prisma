@@ -54,6 +54,7 @@ model Veiculo {
 model Motorista {
   id   String @id @default(uuid())
   nome String
+  contato String
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)

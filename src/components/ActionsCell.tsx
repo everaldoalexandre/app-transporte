@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
@@ -8,12 +8,13 @@ import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
 import { Demanda, Veiculo } from "@/generated/prisma";
 
-export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda, veiculo: Veiculo, onRefresh: () => void }) {
+type DemandaComVeiculo = Demanda & { veiculo: Veiculo | null };
+
+export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaComVeiculo, onRefresh: () => void }) {
 
     const [demandas, setDemandas] = useState<Demanda[]> ([]);
-    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
-    const [demandaEdit, setDemandaEdit] = useState<Demanda | null>(null);
-    const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
+    const [demandaEdit, setDemandaEdit] = useState<DemandaComVeiculo | null>(null);
+    const [veiculoEdit, setVeiculoEdit] = useState<DemandaComVeiculo | null>(null);
 
     const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] = useState(false);
     const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
@@ -23,29 +24,58 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
     const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
     const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
+    const [query, setQuery] = useState<DemandaComVeiculo[]>([]);
+    const [resultados, setResultados] = useState<DemandaComVeiculo[]>([]);
+    const [loading, setLoading] = useState(false);
 
-    function openModalDeleteDemanda(demanda: Demanda) {
+    useEffect(() => {
+        if (!query || query.length < 2) {
+            setResultados([]);
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            buscarPlacas(query);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [query]);
+
+
+    function openModalDeleteDemanda(demanda: DemandaComVeiculo) {
         setDemandaDelete(demanda);
         setShowModalDeleteDemanda(true);
     }
 
-    function openModalDetalhesDemanda(demanda: Demanda, veiculo: Veiculo) {
+    function openModalDetalhesDemanda(demanda: DemandaComVeiculo) {
         setDemandaEdit(demanda);
-        setVeiculoEdit(veiculo);
         setShowModalDetalhesDemanda(true);
     }
 
-    function openModalEditDemanda(demanda: Demanda) {
+    function openModalEditDemanda(demanda: DemandaComVeiculo) {
         setDemandaEdit(demanda);        
         setShowModalEditDemanda(true);
     }
 
-    function openModalFinalizarDemanda(demanda: Demanda) {
+    function openModalFinalizarDemanda(demanda: DemandaComVeiculo) {
         setDemandaFinalizada(demanda);
         setShowModalFinalizarDemanda(true);
     }
 
-    async function saveEditDemanda(demandaEdit: Demanda) {
+    
+
+    async function buscarPlacas(texto: string) {
+        try {
+            setLoading(true);
+            const res = await fetch(`/api/veiculos?search=${texto}`);
+            const data = await res.json();
+            setResultados(data);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function saveEditDemanda(demandaEdit: DemandaComVeiculo) {
         if (!demandaEdit) {
             console.error('DemandaEdit não está definido');
             return;
@@ -86,7 +116,7 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
         
     }
 
-    async function saveDemandaFinalizada(demandaEdit: Demanda) {
+    async function saveDemandaFinalizada(demandaEdit: DemandaComVeiculo) {
         if (!demandaEdit) return;
         try {
             const response = await fetch(`/api/demanda`, {
@@ -159,7 +189,7 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 
-                <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda, veiculo)}>
+                <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda)}>
                 <FileText/>Detalhes</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
@@ -186,28 +216,28 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
                         <Input 
                         type="text"
                         value={demandaEdit?.pessoaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), pessoaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), pessoaSolicitante: e.target.value})}
                         placeholder='Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Secretaria: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.secretariaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), secretariaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), secretariaSolicitante: e.target.value})}
                         placeholder='Secretaria Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>E-mail: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.emailSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), emailSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), emailSolicitante: e.target.value})}
                         placeholder='E-mail'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Contato: </span>
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), contato: e.target.value})}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -216,16 +246,54 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
                         <Input 
                         type="text"
                         value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), contato: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), contato: e.target.value})}
                         placeholder='Contato'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Placa: </span>
-                        <Input 
-                        type="text"
-                        value={veiculoEdit?.placaVeiculo}
-                        onChange={(e) => setVeiculoEdit({...(veiculo as Veiculo), placaVeiculo: e.target.value})}
-                        placeholder='Contato'
-                        className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
+                       <div className="relative">
+                            <Input
+                                type="text"
+                                value={demandaEdit?.veiculo?.placaVeiculo || ""}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setVeiculoEdit((prev) => ({ ...(prev || {}), placaVeiculo: value }));
+                                    setDemandaEdit((prev) =>
+                                        prev ? { ...prev, placaVeiculo: value } : prev
+                                    );
+                                    setQuery(value); // atualiza busca
+                                }}
+                                placeholder="Placa do veículo"
+                                className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                            />
+
+                            {loading && (
+                                <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
+                                    Buscando...
+                                </div>
+                            )}
+
+                            {resultados.length > 0 && (
+                                <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
+                                    {resultados.map((item) => (
+                                        <li
+                                            key={item.id}
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                            onClick={() => {
+                                                setVeiculoEdit(item);
+                                                setDemandaEdit((prev) =>
+                                                    prev ? { ...prev, placaVeiculo: item.veiculo?.placaVeiculo } : prev
+                                                );
+                                                setQuery(item.veiculo?.placaVeiculo);
+                                                setResultados([]);
+                                            }}
+                                        >
+                                            {item.veiculo?.placaVeiculo}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div></p>
+
                         <p><span>Status: </span>
                         <DropMenu statusDemanda={statusDemanda} setStatusDemanda={setStatusDemanda}/></p>
                     </div>
@@ -235,27 +303,27 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
                         <Input 
                         type="text"
                         value={demandaEdit?.destino}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), destino: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), destino: e.target.value})}
                         placeholder='Destino'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Local de Saída: </span><input 
                         type="text"
                         value={demandaEdit?.origem}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), origem: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), origem: e.target.value})}
                         placeholder='Local de Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Saída: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraIda?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), dataHoraIda: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), dataHoraIda: e.target.value})}
                         placeholder='Horário da Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Volta: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraVolta ?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as Demanda), dataHoraVolta: e.target.value})}
+                        onChange={(e) => setDemandaEdit({...(demanda as DemandaComVeiculo), dataHoraVolta: e.target.value})}
                         placeholder='Horario da Volta'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -339,7 +407,7 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
                             </div>
                             <div className='flex flex-col gap-2 w-1/3 justify-items-start'>
                                 <p><span>Motorista: </span></p>
-                                <p><span>Placa: </span></p>
+                                <p><span>Placa: </span>{demandaEdit?.veiculo?.placaVeiculo}</p>
                             </div>
                             
                             <div className='flex flex-col gap-2 w-1/3 justify-items-start'>
@@ -350,8 +418,8 @@ export function ActionsCell({ demanda, veiculo, onRefresh }: { demanda: Demanda,
                             </div>
                         </div>
                         <div className='flex flex-col gap-2 max-w-2xl min-w-2xl mt-2'>
-                            <p><span>Detalhe: </span>{demandaEdit?.demandaDetalhe}</p>
-                            <p><span>Status: </span>{demandaEdit?.statusDemanda}</p>
+                            <p className="font-medium"><span>Detalhe: </span>{demandaEdit?.demandaDetalhe}</p>
+                            <p className="font-medium"><span>Status: </span>{demandaEdit?.statusDemanda}</p>
                         </div>
                     </div>
                 <AlertDialogFooter>

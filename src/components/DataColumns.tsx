@@ -8,7 +8,7 @@ import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMe
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
-import { Demanda } from "@/generated/prisma";
+import { Demanda} from "@/generated/prisma";
 
 
 export function DataTableDemo({data: initialData}: {data: Demanda[]}) {

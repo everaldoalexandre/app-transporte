@@ -89,9 +89,6 @@ export function Login({
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <div className="w-full text-center text-sm text-muted-foreground">
-          Você não possui conta? <a href="/cadastro" className="underline hover:text-primary">Cadastre-se</a>
-        </div>
       </CardFooter>
     </Card>
   )

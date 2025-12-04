@@ -143,7 +143,7 @@ export function SolicitacaoDemandaForm({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center text-2xl font-bold">
+                <CardTitle className="flex justify-center items-center text-2xl font-bold">
                     <Car className="mr-2"/>
                     Solicitação de Transporte
                 </CardTitle>
