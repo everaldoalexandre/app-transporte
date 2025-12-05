@@ -137,6 +137,7 @@ exports.Prisma.DemandaScalarFieldEnum = {
   lotacao: 'lotacao',
   userId: 'userId',
   veiculoId: 'veiculoId',
+  motoristaId: 'motoristaId',
   secretariaId: 'secretariaId'
 };
 
@@ -155,8 +156,7 @@ exports.Prisma.MotoristaScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
   contato: 'contato',
-  secretariaId: 'secretariaId',
-  userId: 'userId'
+  secretariaId: 'secretariaId'
 };
 
 exports.Prisma.AcessoScalarFieldEnum = {

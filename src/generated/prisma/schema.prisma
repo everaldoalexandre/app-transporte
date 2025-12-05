@@ -30,6 +30,9 @@ model Demanda {
   veiculoId String?
   veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
 
+  motoristaId String?
+  motorista   Motorista? @relation(fields: [motoristaId], references: [id], onDelete: SetNull)
+
   secretariaId String?
   secretaria   Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)
 }
@@ -56,10 +59,10 @@ model Motorista {
   nome    String
   contato String
 
+  demandas Demanda[]
+
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
-  userId       String?
-  User         User?      @relation(fields: [userId], references: [id])
 }
 
 model Acesso {
@@ -103,7 +106,6 @@ model User {
   accounts   Account[]
   veiculos   Veiculo[]
   demandas   Demanda[]
-  motoristas Motorista[]
   secretaria UserSecretaria[]
 
   @@map("user")

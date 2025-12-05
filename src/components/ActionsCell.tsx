@@ -6,15 +6,16 @@ import { Check, ClipboardPen , FileText, MoreHorizontal, X, Send } from "lucide-
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
-import { Demanda, Veiculo } from "@/generated/prisma";
+import { Demanda, Veiculo, Motorista } from "@/generated/prisma";
 import { DemandaType } from "./Types";
 
 
-export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: DemandaType, onRefresh: () => void; userAccessLevel: string }) {
+export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRefresh: () => void }) {
 
     const [demandas, setDemandas] = useState<Demanda[]> ([]);
     const [demandaEdit, setDemandaEdit] = useState<DemandaType | null>(null);
     const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
+    const [motoristaEdit, setMotoristaEdit] = useState<Motorista | null>(null);
 
     const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] = useState(false);
     const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
@@ -24,10 +25,12 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
     const [demandaFinalizada, setDemandaFinalizada] = useState<Demanda | null>(null);
     const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
-    const [query, setQuery] = useState<string>("");
-    const [resultados, setResultados] = useState<Veiculo[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [userAccess, setUserAccess] = useState<string>('usuário');
+    const [queryPlaca, setQueryPlaca] = useState<string>("");
+    const [queryMotorista, setQueryMotorista] = useState<string>("");
+    const [resultadosVeiculo, setResultadosVeiculo] = useState<Veiculo[]>([]);
+    const [resultadosMotorista, setResultadosMotorista] = useState<Motorista[]>([]);
+    const [loadingPlaca, setLoadingPlaca] = useState(false);
+    const [loadingMotorista, setLoadingMotorista] = useState(false);
 
     function openModalDeleteDemanda(demanda: DemandaType) {
         setDemandaDelete(demanda);
@@ -51,12 +54,23 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
 
     async function buscarPlacas(texto: string) {
         try {
-            setLoading(true);
+            setLoadingPlaca(true);
             const res = await fetch(`/api/veiculo?search=${texto}`);
             const data = await res.json();
-            setResultados(data);
+            setResultadosVeiculo(data);
         } finally {
-            setLoading(false);
+            setLoadingPlaca(false);
+        }
+    }
+
+    async function buscarMotoristas(texto: string) {
+        try {
+            setLoadingMotorista(true);
+            const res = await fetch(`/api/motorista?search=${texto}`);
+            const data = await res.json();
+            setResultadosMotorista(data);
+        } finally {
+            setLoadingMotorista(false);
         }
     }
 
@@ -175,24 +189,36 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
             
             const data = await res.json();
             setDemandas(data.demandas);
-            setUserAccess(data.userAccessLevel);
         } catch (err) {
             console.error(err);
         }
     }
 
     useEffect(() => {
-        if (!query || query.length < 2) {
-            setResultados([]);
+        if (!queryPlaca || queryPlaca.length < 2) {
+            setResultadosVeiculo([]);
             return;
         }
 
         const timer = setTimeout(() => {
-            buscarPlacas(query);
+            buscarPlacas(queryPlaca);
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [query]);
+    }, [queryPlaca]);
+
+    useEffect(() => {
+        if (!queryMotorista || queryMotorista.length < 2) {
+            setResultadosMotorista([]);
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            buscarMotoristas(queryMotorista);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [queryMotorista]);
 
     return (
         <div>
@@ -258,12 +284,71 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                     </div>
                     <div className='flex flex-col gap-2 w-1/3 justify-items-start'>
                         <p><span>Motorista: </span>
-                        <Input 
-                        type="text"
-                        value={demandaEdit?.contato}
-                        onChange={(e) => setDemandaEdit( prev => prev ? {...prev, contato: e.target.value} : prev)}
-                        placeholder='Contato'
-                        className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
+                        <div className="relative">
+                            <Input
+                                type="text"
+                                value={demandaEdit?.motorista?.nome || ""}
+                                onChange={async (e) => {
+                                    const value = e.target.value;
+                              
+                                    setDemandaEdit(prev =>
+                                      prev
+                                        ? {
+                                            ...prev,
+                                            motorista: prev.motorista
+                                              ? { ...prev.motorista, nome: value }
+                                              : { nome: value } as Motorista
+                                          }
+                                        : prev
+                                    );
+                              
+                                    setQueryMotorista(value);
+                              
+                                    if (value.length >= 2) {
+                                      setLoadingMotorista(true);
+                                      try {
+                                        const res = await fetch(`/api/motorista?search=${value}`);
+                                        const data: Motorista[] = await res.json();
+                                        setResultadosMotorista(data);
+                                      } catch (err) {
+                                        console.error("Erro ao buscar motorista:", err);
+                                      } finally {
+                                        setLoadingMotorista(false);
+                                      }
+                                    } else {
+                                      setResultadosMotorista([]);
+                                    }
+                                  }}
+                                placeholder="Nome do Motorista"
+                                className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                            />
+
+                            {loadingMotorista && (
+                                <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
+                                    Buscando...
+                                </div>
+                            )}
+
+                            {resultadosMotorista.length > 0 && (
+                                <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
+                                    {resultadosMotorista.map((item) => (
+                                        <li
+                                            key={item.id}
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                            onClick={() => {
+                                                setMotoristaEdit(item);
+                                                setDemandaEdit(prev => prev ? {
+                                                    ...prev, motorista: item } : prev);
+                                                setQueryMotorista(item.nome);
+                                                setResultadosMotorista([]);
+                                            }}
+                                        >
+                                            {item.nome}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div></p>
                         <p><span>Placa: </span>
                        <div className="relative">
                             <Input
@@ -272,7 +357,6 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                                 onChange={async (e) => {
                                     const value = e.target.value;
                               
-                                    // Atualiza apenas a placa digitada
                                     setDemandaEdit(prev =>
                                       prev
                                         ? {
@@ -284,36 +368,36 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                                         : prev
                                     );
                               
-                                    setQuery(value);
+                                    setQueryPlaca(value);
                               
                                     if (value.length >= 2) {
-                                      setLoading(true);
+                                      setLoadingPlaca(true);
                                       try {
-                                        const res = await fetch(`/api/veiculos?search=${value}`);
+                                        const res = await fetch(`/api/veiculo?search=${value}`);
                                         const data: Veiculo[] = await res.json();
-                                        setResultados(data);
+                                        setResultadosVeiculo(data);
                                       } catch (err) {
                                         console.error("Erro ao buscar veículos:", err);
                                       } finally {
-                                        setLoading(false);
+                                        setLoadingPlaca(false);
                                       }
                                     } else {
-                                      setResultados([]);
+                                      setResultadosVeiculo([]);
                                     }
                                   }}
                                 placeholder="Placa do veículo"
                                 className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                             />
 
-                            {loading && (
+                            {loadingPlaca && (
                                 <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
                                     Buscando...
                                 </div>
                             )}
 
-                            {resultados.length > 0 && (
+                            {resultadosVeiculo.length > 0 && (
                                 <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
-                                    {resultados.map((item) => (
+                                    {resultadosVeiculo.map((item) => (
                                         <li
                                             key={item.id}
                                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
@@ -321,8 +405,8 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                                                 setVeiculoEdit(item);
                                                 setDemandaEdit(prev => prev ? {
                                                     ...prev, veiculo: item } : prev);
-                                                setQuery(item.placaVeiculo);
-                                                setResultados([]);
+                                                setQueryPlaca(item.placaVeiculo);
+                                                setResultadosVeiculo([]);
                                             }}
                                         >
                                             {item.placaVeiculo}

@@ -10,10 +10,9 @@ import { Input } from "./ui/input";
 import { ActionsCell} from "@/components/ActionsCell"
 import { DemandaType } from "./Types";
 
-export function DataTableDemo({data: initialData, userAccessLevel}: {data: DemandaType[], userAccessLevel: string}) {
+export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
   const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [userAccess, setUserAccess] = useState<string>('usuário');
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -33,7 +32,6 @@ export function DataTableDemo({data: initialData, userAccessLevel}: {data: Deman
         const data = await res.json();
         
         setDemandas(data.demandas);
-        setUserAccess(data.userAccessLevel);
     } catch (err) {
         console.error(err);
     }
@@ -81,7 +79,7 @@ export function DataTableDemo({data: initialData, userAccessLevel}: {data: Deman
     {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => <ActionsCell demanda={row.original} onRefresh={fetchDemandas} userAccessLevel={userAccessLevel}/>,
+    cell: ({ row }) => <ActionsCell demanda={row.original} onRefresh={fetchDemandas} />,
     }
     
 ]

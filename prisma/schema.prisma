@@ -30,6 +30,9 @@ model Demanda {
   veiculoId String?
   veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
 
+  motoristaId String?
+  motorista   Motorista? @relation(fields: [motoristaId], references: [id], onDelete: SetNull)
+
   secretariaId String?
   secretaria   Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)
 }
@@ -55,6 +58,8 @@ model Motorista {
   id      String @id @default(uuid())
   nome    String
   contato String
+
+  demandas Demanda[]
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)

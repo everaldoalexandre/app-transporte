@@ -35,15 +35,13 @@ export async function GET (request: Request) {
     const url = new URL(request.url);
     const search = url.searchParams.get("search") || "";
 
-    const session = await auth.api.getSession({
-      headers: await headers()
-    });
+    const user = await getAuthenticatedUser();
 
-    if (!session?.user?.id) {
+    if (!user) {
       return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
     }
 
-    const userId = session.user.id
+    const userId = user.id
 
     const usuario = await prisma.user.findUnique({
       where: {id: userId},
