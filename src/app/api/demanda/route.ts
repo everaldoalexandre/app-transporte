@@ -5,6 +5,30 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+async function getAuthenticatedUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session?.user?.id) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      acesso: true,
+      secretaria: true
+    }
+  });
+
+  if (!user) return null;
+
+  return {
+    id: user.id,
+    userAccessLevel: user.acesso?.[0]?.nivel ?? "usuário",
+    secretariasIds: user.secretaria?.map(s => s.secretariaId) || []
+  };
+}
+
 export async function GET () {
   try {
     const session = await auth.api.getSession({
@@ -15,7 +39,7 @@ export async function GET () {
       return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
     }
 
-    const userId = session.user.id
+    const userId = session.user.id;
 
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
@@ -82,11 +106,38 @@ export async function POST (request: Request) {
 
 export async function PUT (request: Request) {
   try {
+    const user = await getAuthenticatedUser();
+
+    if (!user) {
+      return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
+    }
+
     const body = await request.json();
     const { id, updatedDemandas } = body;
 
     if (!id || !updatedDemandas) {
       return new Response(JSON.stringify({ error: 'ID and updated fields are required.' }), { status: 400 });
+    }
+
+    const demanda = await prisma.demanda.findUnique({
+      where: { id },
+      include: {
+        secretaria: true
+      }
+    });
+
+    if (!demanda) {
+      return new Response(JSON.stringify({ error: 'Demanda não encontrada.' }), { status: 404 });
+    }
+
+    if (['administrador', 'editor'].includes(user.userAccessLevel)) {
+
+    }else if (user.userAccessLevel === 'secretaria') {
+      if (!user.secretariasIds.includes(demanda.secretariaId ?? '')) {
+        return new Response(JSON.stringify({ error: 'Acesso negado. Você não pode editar demandas de outras secretarias.' }), { status: 403 });
+      }
+    } else {
+      return new Response(JSON.stringify({ error: 'Acesso negado. Nível de acesso insuficiente.' }), { status: 403 });
     }
 
     await prisma.demanda.update({
@@ -103,11 +154,38 @@ export async function PUT (request: Request) {
 
 export async function DELETE (request: Request) {
   try {
+    const user = await getAuthenticatedUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Usuário não autenticado"}, {status: 401});
+    }
+
     const body = await request.json();
     const { id } = body;
 
     if (!id) {
       return NextResponse.json({ error: 'ID is mandatory' }, { status: 400 });
+    }
+
+    const demanda = await prisma.demanda.findUnique({
+      where: { id },
+      include: {
+        secretaria: true
+      }
+    });
+
+    if (!demanda) {
+      return NextResponse.json({ error: 'Demanda não encontrada' }, { status: 404 });
+    }
+
+    if (['administrador'].includes(user.userAccessLevel)) {
+
+    }else if (user.userAccessLevel === 'secretaria') {
+      if (!user.secretariasIds.includes(demanda.secretariaId ?? '')) {
+        return NextResponse.json({ error: 'Acesso negado. Você não pode deletar demandas de outras secretarias.' }, { status: 403 });
+      }
+    } else {
+      return NextResponse.json({ error: 'Acesso negado. Nível de acesso insuficiente.' }, { status: 403 });
     }
 
     await prisma.demanda.delete({

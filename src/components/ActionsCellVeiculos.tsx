@@ -7,7 +7,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from "./ui/input";
 import { Veiculo } from "@/generated/prisma";
 
-export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, onRefresh: () => void }) {
+export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, onRefresh: () => void}) {
 
     const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
     const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
@@ -55,15 +55,21 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
                   }
               }),
           });
-          toast.success('Veiculo atualizada com sucesso!');
+
+          if (response.status === 403) {
+              toast.error('Você não tem permissão para editar este veículo.');
+              return;
+          }
+
+          toast.success('Veículo atualizada com sucesso!');
 
           if (!response.ok) {
-              throw new Error('Falha ao atualizar veiculo');
+              throw new Error('Falha ao atualizar veículo');
           }
 
           onRefresh();
       } catch (error) {
-          console.error('Erro ao atualizar veiculo:', error);
+          console.error('Erro ao atualizar veículo:', error);
       }
         
     }
@@ -77,6 +83,12 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
               },
               body: JSON.stringify({ id }),
           });
+
+          if (response.status === 403) {
+              toast.error('Você não tem permissão para deletar este veículo.');
+              return;
+          }
+
           if (!response.ok) {
               throw new Error('Falha ao deletar veículo');
           }
@@ -114,12 +126,12 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
               <DropdownMenuItem onClick={() => openDialogDetalheVeiculo(veiculo)}>
               <FileText/>Detalhes</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => openDialogEditVeiculo(veiculo)}>
-              <Eraser/>Editar</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => openDialogDeleteVeiculo(veiculo)}>
-              <X/>Deletar</DropdownMenuItem>
-              <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => openDialogEditVeiculo(veiculo)}>
+                <Eraser/>Editar</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => openDialogDeleteVeiculo(veiculo)}>
+                <X/>Deletar</DropdownMenuItem>
+                <DropdownMenuSeparator />
           </DropdownMenuContent>
           </DropdownMenu>
 

@@ -27,7 +27,7 @@ export function DataTableDemo({data: initialData, userAccessLevel}: {data: Deman
 
   async function fetchDemandas() {
     try {
-        const res = await fetch('/api/demanda'); // seu endpoint GET
+        const res = await fetch('/api/demanda');
         if (!res.ok) throw new Error('Falha ao buscar demandas');
         
         const data = await res.json();

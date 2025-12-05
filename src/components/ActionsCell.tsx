@@ -89,6 +89,11 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                     }
                 }),
             });
+
+            if (response.status === 403) {
+                toast.error('Você não tem permissão para editar esta demanda.');
+                return;
+            }
             
             if (!response.ok) {
                 throw new Error('Falha ao atualizar demanda');
@@ -117,6 +122,12 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                     }
                 }),
             });
+
+            if (response.status === 403) {
+                toast.error('Você não tem permissão para finalizar esta demanda.');
+                return;
+            }
+
             toast.success('Demanda finalizada com sucesso!');
 
             if (response.ok) {
@@ -141,6 +152,12 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                 },
                 body: JSON.stringify({ id }),
             });
+
+            if (response.status === 403) {
+                toast.error('Você não tem permissão para deletar esta demanda.');
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error('Falha ao deletar demanda');
             }
@@ -153,11 +170,10 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
 
     async function fetchDemandas() {
         try {
-            const res = await fetch('/api/demanda'); // seu endpoint GET
+            const res = await fetch('/api/demanda');
             if (!res.ok) throw new Error('Falha ao buscar demandas');
             
             const data = await res.json();
-            // data: { demandas: DemandaType[], userAccessLevel: string }
             setDemandas(data.demandas);
             setUserAccess(data.userAccessLevel);
         } catch (err) {
@@ -188,22 +204,17 @@ export function ActionsCell({ demanda, onRefresh, userAccessLevel }: { demanda: 
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                
                 <DropdownMenuItem onClick={() => openModalDetalhesDemanda(demanda)}>
                 <FileText/>Detalhes</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                {["administrador", "editor"].includes(userAccessLevel) && (
-                    <>
-                        <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
-                        <ClipboardPen/> Editar</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
-                        <Check/>Finalizar</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
-                        <X/>Deletar</DropdownMenuItem>
-                    </>
-                )}
+                <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
+                <ClipboardPen/> Editar</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
+                <Check/>Finalizar</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
+                <X/>Deletar</DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
             <AlertDialog open={showModalEditDemanda} onOpenChange={setShowModalEditDemanda}>

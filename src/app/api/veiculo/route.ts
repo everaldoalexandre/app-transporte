@@ -5,6 +5,30 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+async function getAuthenticatedUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session?.user?.id) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      acesso: true,
+      secretaria: true
+    }
+  });
+
+  if (!user) return null;
+
+  return {
+    id: user.id,
+    userAccessLevel: user.acesso?.[0]?.nivel ?? "usuário",
+    secretariasIds: user.secretaria?.map(s => s.secretariaId) || []
+  };
+}
+
 export async function GET (request: Request) {
   try {
 
@@ -63,16 +87,16 @@ export async function GET (request: Request) {
 
 export async function POST (request: Request) {
   try {
-    const session = await auth.api.getSession({headers: await headers()});
+    const user = await getAuthenticatedUser();
 
-    if (!session?.user) {
+    if (!user) {
       return NextResponse.json(
         {error: 'Unauthenticated user'},
         {status: 401}
       )
     }
 
-    const userId = session.user.id;
+    const userId = user.id;
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -95,6 +119,16 @@ export async function POST (request: Request) {
     
     const body = await request.json();
     const { veiculoNovo } = body;
+
+    if (!veiculoNovo) {
+      return new NextResponse(JSON.stringify({ error: "Dados do veículo são obrigatórios" }), { status: 400 });
+    }
+
+    if (['administrador', 'editor'].includes(user.userAccessLevel)) {
+      
+    }else {
+      return new NextResponse(JSON.stringify({ error: "Acesso negado. Nível de acesso insuficiente." }), { status: 403 });
+    }
     
     const veiculoCriado = await prisma.veiculo.create({
       data: {
@@ -114,11 +148,39 @@ export async function POST (request: Request) {
 
 export async function PUT (request: Request) {
   try {
+
+    const user = await getAuthenticatedUser();
+
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Usuário não autenticado' }), { status: 401 });
+    }
+
     const body = await request.json();
     const { id, updatedVeiculos } = body;
 
     if (!id || !updatedVeiculos) {
       return new Response(JSON.stringify({ error: 'ID and updated fields are required.' }), { status: 400 });
+    }
+
+    const veiculo = await prisma.veiculo.findUnique({
+      where: { id },
+      include: {
+        secretaria: true
+      }
+    });
+
+    if (!veiculo) {
+      return new Response(JSON.stringify({ error: 'Veiculo não encontrado.' }), { status: 404 });
+    }
+
+    if (['administrador', 'editor'].includes(user.userAccessLevel)) {
+
+    }else if (user.userAccessLevel === 'secretaria') {
+      if (!user.secretariasIds.includes(veiculo.secretariaId ?? '')) {
+        return new Response(JSON.stringify({ error: 'Acesso negado. Você não pode editar veiculos de outras secretarias.' }), { status: 403 });
+      }
+    } else {
+      return new Response(JSON.stringify({ error: 'Acesso negado.' }), { status: 403 });
     }
 
     await prisma.veiculo.update({
@@ -135,11 +197,38 @@ export async function PUT (request: Request) {
 
 export async function DELETE (request: Request) {
   try {
+    const user = await getAuthenticatedUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Usuário não autenticado"}, {status: 401});
+    }
+
     const body = await request.json();
     const { id } = body;
 
     if (!id) {
       return NextResponse.json({ error: 'ID is mandatory' }, { status: 400 });
+    }
+
+    const veiculo = await prisma.veiculo.findUnique({
+      where: { id },
+      include: {
+        secretaria: true
+      }
+    });
+
+    if (!veiculo) {
+      return NextResponse.json({ error: 'Veiculo não encontrado.' }, { status: 404 });
+    }
+
+    if (['administrador'].includes(user.userAccessLevel)) {
+
+    }else if (user.userAccessLevel === 'secretaria') {
+      if (!user.secretariasIds.includes(veiculo.secretariaId ?? '')) {
+        return NextResponse.json({ error: 'Acesso negado. Você não pode deletar veiculos de outras secretarias.' }, { status: 403 });
+      }
+    } else {
+      return NextResponse.json({ error: 'Acesso negado. Nível de acesso insuficiente.' }, { status: 403 });
     }
 
     await prisma.veiculo.delete({

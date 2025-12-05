@@ -34,8 +34,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
                 return;
             }
             const data = await response.json();
-            setVeiculos(data);
-            
+            setVeiculos(data.veiculos);            
         } catch (error) {
             console.error('Erro o buscar veiculos:', error);
         }
@@ -72,7 +71,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
     {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => <ActionsCellVeiculos veiculo={row.original} onRefresh={fetchVeiculos}/>,
+    cell: ({ row }) => <ActionsCellVeiculos veiculo={row.original} onRefresh={fetchVeiculos} />,
     }
     
 ]

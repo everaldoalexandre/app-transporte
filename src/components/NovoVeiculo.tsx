@@ -38,6 +38,11 @@ export function NovoVeiculo({ openNovoVeiculo, openChangeNovoVeiculo, onRefresh 
               },
               body: JSON.stringify({veiculoNovo}),
           });
+
+          if (response.status === 403) {
+            toast.error("Acesso negado. Nível de acesso insuficiente.");
+            return;
+          }
           if (!response.ok) {
             throw new Error('Falha ao criar veiculo');
           }
