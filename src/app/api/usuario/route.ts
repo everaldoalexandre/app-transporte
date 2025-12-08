@@ -29,21 +29,16 @@ async function getAuthenticatedUser() {
   };
 }
 
-export async function GET (request: Request) {
+export async function GET () {
   try {
 
-    const url = new URL(request.url);
-    const search = url.searchParams.get("search") || "";
+    const user = await getAuthenticatedUser();
 
-    const session = await auth.api.getSession({
-      headers: await headers()
-    });
-
-    if (!session?.user?.id) {
+    if (!user) {
       return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
     }
 
-    const userId = session.user.id
+    const userId = user.id
 
     const usuario = await prisma.user.findUnique({
       where: {id: userId},
@@ -65,22 +60,10 @@ export async function GET (request: Request) {
     }
 
     const userAccessLevel = usuario.acesso.length > 0 ? usuario.acesso[0].nivel : 'usuário';
-    const secretariasIds = usuario.secretaria.map(s => s.secretariaId);
     
-    const veiculos = await prisma.veiculo.findMany({
-      where: { 
-        secretariaId: { in: secretariasIds },
-        placaVeiculo: {contains: search, mode: "insensitive"}
-      },
-      include: {
-        secretaria: true,
-        user: true
-      }
-    });
-
-    return new Response(JSON.stringify({veiculos, userAccessLevel}), { status: 200 });
+    return new Response(JSON.stringify({usuario, userAccessLevel}), { status: 200 });
   } catch (error) {
-    console.error('Error fetching veiculos:', error);
+    console.error('Error ao buscar usuário:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
   }
 }

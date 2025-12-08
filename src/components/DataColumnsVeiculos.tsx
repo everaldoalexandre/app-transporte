@@ -9,11 +9,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Input } from "./ui/input";
 import { ActionsCellVeiculos} from "@/components/ActionsCellVeiculos"
 import { NovoVeiculo } from "./NovoVeiculo";
-import { Veiculo } from "@/generated/prisma";
+import { VeiculoType } from "@/components/Types";
+import { NovoMotorista } from "./NovoMotorista";
 
-export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
+export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
-  const [veiculos, setVeiculos] = useState<Veiculo[]>(initialData);
+  const [openDialogNovoMotorista, setOpenDialogNovoMotorista] = useState(false);
+  const [veiculos, setVeiculos] = useState<VeiculoType[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -27,46 +29,46 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
   }, []);
 
   async function fetchVeiculos() {
-        try {
-            const response = await fetch('/api/veiculo', { cache: 'no-store' });
-            if (!response.ok) {
-                console.error('Falha ao buscar veiculos:', response.statusText);
-                return;
-            }
-            const data = await response.json();
-            setVeiculos(data.veiculos);            
-        } catch (error) {
-            console.error('Erro o buscar veiculos:', error);
+    try {
+        const response = await fetch('/api/veiculo', { cache: 'no-store' });
+        if (!response.ok) {
+            console.error('Falha ao buscar veiculos:', response.statusText);
+            return;
         }
+        const data = await response.json();
+        setVeiculos(data.veiculos);            
+    } catch (error) {
+        console.error('Erro o buscar veiculos:', error);
     }
+  }
 
-  const columns: ColumnDef<Veiculo>[] = [
+  const columns: ColumnDef<VeiculoType>[] = [
     {
-      accessorKey: "placaVeiculo",
+      accessorKey: "modelo.modelo",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Placa
+            Modelo
             <ArrowUpDown/>
           </Button>
         )
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("placaVeiculo")}</div>,
+      cell: ({ row }) => <div className="">{row.getValue("modelo")}</div>,
+    },
+    {
+      accessorKey: "placaVeiculo",
+      header: "Placa",
     },
     {
         accessorKey: "proprietarioVeiculo",
         header: "Proprietário",
     },
     {
-        accessorKey: "chassiVeiculo",
-        header: "Chassi",
-    },
-    {
-        accessorKey: "renavamVeiculo",
-        header: "Renavam",
+        accessorKey: "modelo.modelo",
+        header: "Modelo",
     },
     {
     id: "actions",
@@ -76,7 +78,7 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
     
 ]
 
-  const table = useReactTable<Veiculo>({
+  const table = useReactTable<VeiculoType>({
     data: veiculos,
     columns,
     onSortingChange: setSorting,
@@ -97,11 +99,11 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
 
   const column = table.getColumn("placaVeiculo")
 
-  const statusOptions = [
+  const modeloOptions = [
     {label: "Todos", value:""},
-    {label: "Aguardando", value: "Aguardando"},
-    {label: "Agendada", value: "Agendada"},
-    {label: "Finalizada", value: "Finalizada"},
+    {label: "Carro", value: "Carro"},
+    {label: "Caminhão", value: "Caminhão"},
+    {label: "Ônibus", value: "Ônibus"},
   ]
 
   return (
@@ -110,12 +112,12 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              {(table.getColumn("placaVeiculo")?.getFilterValue() as string) ?? "Todos"}
+              {(table.getColumn("modelo.modelo")?.getFilterValue() as string) ?? "Todos"}
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {statusOptions.map((status) =>
+            {modeloOptions.map((status) =>
             
                   <DropdownMenuItem
                     key={status.value}
@@ -166,6 +168,12 @@ export function DataTableVeiculos({data: initialData}: {data: Veiculo[]}) {
         </Button>
         <NovoVeiculo openNovoVeiculo={openDialogNovoVeiculo}
         openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
+        onRefresh={fetchVeiculos}/>
+        <Button onClick={() => setOpenDialogNovoMotorista(true)}>
+          AddMotorista
+        </Button>
+        <NovoMotorista openNovoMotorista={openDialogNovoMotorista}
+        openChangeNovoMotorista={setOpenDialogNovoMotorista}
         onRefresh={fetchVeiculos}/>
       </div>
       <div className="overflow-hidden rounded-md border">

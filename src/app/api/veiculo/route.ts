@@ -72,7 +72,8 @@ export async function GET (request: Request) {
       },
       include: {
         secretaria: true,
-        user: true
+        user: true,
+        modelo: true
       }
     });
 

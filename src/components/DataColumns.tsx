@@ -51,7 +51,7 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
           </Button>
         )
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("statusDemanda")}</div>,
+      cell: ({ row }) => <div className="">{row.getValue("statusDemanda")}</div>,
     },
     {
         accessorKey: "destino",

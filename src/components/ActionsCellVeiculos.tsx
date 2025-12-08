@@ -5,34 +5,34 @@ import { Button } from "./ui/button";
 import { Eraser, FileText, MoreHorizontal, X } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { Veiculo } from "@/generated/prisma";
+import { VeiculoType } from "./Types";
 
-export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, onRefresh: () => void}) {
+export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: VeiculoType, onRefresh: () => void}) {
 
-    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
-    const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
-    const [apagarVeiculo, setApagarVeiculo] = useState<Veiculo | null>(null);
+    const [veiculos, setVeiculos] = useState<VeiculoType[]> ([]);
+    const [veiculoEdit, setVeiculoEdit] = useState<VeiculoType | null>(null);
+    const [apagarVeiculo, setApagarVeiculo] = useState<VeiculoType | null>(null);
 
     const [showDialogDetalheVeiculo, setShowDialogDetalheVeiculo] = useState(false);
     const [showDialogEditVeiculo, setShowDialogEditVeiculo] = useState(false);
     const [showDialogDeleteVeiculo, setShowDialogDeleteVeiculo] = useState(false);
 
-    function openDialogDeleteVeiculo(veiculo: Veiculo) {
+    function openDialogDeleteVeiculo(veiculo: VeiculoType) {
       setApagarVeiculo(veiculo);
       setShowDialogDeleteVeiculo(true);
     }
 
-    function openDialogDetalheVeiculo(veiculo: Veiculo) {
+    function openDialogDetalheVeiculo(veiculo: VeiculoType) {
       setVeiculoEdit(veiculo);
       setShowDialogDetalheVeiculo(true);
     }
 
-    function openDialogEditVeiculo(veiculo: Veiculo) {
+    function openDialogEditVeiculo(veiculo: VeiculoType) {
       setVeiculoEdit(veiculo);
       setShowDialogEditVeiculo(true);
     }
 
-    async function saveEditVeiculo(veiculoEdit: Veiculo) {
+    async function saveEditVeiculo(veiculoEdit: VeiculoType) {
       if (!veiculoEdit) {
         console.error('veiculoEdit não está definido');
         return;
@@ -61,7 +61,7 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
               return;
           }
 
-          toast.success('Veículo atualizada com sucesso!');
+          toast.success('Veículo atualizado com sucesso!');
 
           if (!response.ok) {
               throw new Error('Falha ao atualizar veículo');
@@ -92,7 +92,7 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
           if (!response.ok) {
               throw new Error('Falha ao deletar veículo');
           }
-          toast.success('Veículo deletada com sucesso!');
+          toast.success('Veículo deletado com sucesso!');
           onRefresh();
       } catch (error) {
           console.error('Erro ao deletar veículo:', error);
@@ -149,28 +149,28 @@ export function ActionsCellVeiculos({veiculo, onRefresh }: { veiculo: Veiculo, o
                       <Input 
                       type="text"
                       value={veiculoEdit?.placaVeiculo ?? ''}
-                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), placaVeiculo: e.target.value})}
+                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as VeiculoType), placaVeiculo: e.target.value})}
                       placeholder='Placa'
                       className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                       <p><span>Chassi: </span>
                       <Input 
                       type="text"
                       value={veiculoEdit?.chassiVeiculo ?? ''}
-                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), chassiVeiculo: e.target.value})}
+                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as VeiculoType), chassiVeiculo: e.target.value})}
                       placeholder='Chassi'
                       className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                       <p><span>Renavam: </span>
                       <Input 
                       type="text"
                       value={veiculoEdit?.renavamVeiculo ?? ''}
-                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), renavamVeiculo: e.target.value})}
+                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as VeiculoType), renavamVeiculo: e.target.value})}
                       placeholder='Renavam'
                       className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                       <p><span>Proprietário: </span>
                       <Input 
                       type="text"
                       value={veiculoEdit?.proprietarioVeiculo ?? ''}
-                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as Veiculo), proprietarioVeiculo: e.target.value})}
+                      onChange={(e) => setVeiculoEdit({...(veiculoEdit as VeiculoType), proprietarioVeiculo: e.target.value})}
                       placeholder='Proprietário'
                       className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                   </div>

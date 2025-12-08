@@ -51,7 +51,17 @@ model Veiculo {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  modeloId String?
+  modelo   VeiculoModelo? @relation(fields: [modeloId], references: [id], onDelete: Cascade)
+
   demandas Demanda[]
+}
+
+model VeiculoModelo {
+  id     String @id @default(uuid())
+  modelo String
+
+  veiculos Veiculo[]
 }
 
 model Motorista {

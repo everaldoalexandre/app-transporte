@@ -35,15 +35,13 @@ export async function GET (request: Request) {
     const url = new URL(request.url);
     const search = url.searchParams.get("search") || "";
 
-    const session = await auth.api.getSession({
-      headers: await headers()
-    });
+    const user = await getAuthenticatedUser();
 
-    if (!session?.user?.id) {
+    if (!user) {
       return new NextResponse(JSON.stringify({ error: "Usuário não autenticado"}), {status: 401});
     }
 
-    const userId = session.user.id
+    const userId = user.id
 
     const usuario = await prisma.user.findUnique({
       where: {id: userId},
@@ -123,17 +121,14 @@ export async function POST (request: Request) {
       return new NextResponse(JSON.stringify({ error: "Dados do motorista são obrigatórios" }), { status: 400 });
     }
 
-    if (['administrador', 'editor'].includes(user.userAccessLevel)) {
-      
-    }else {
+    if (!['administrador', 'editor'].includes(user.userAccessLevel)) {
       return new NextResponse(JSON.stringify({ error: "Acesso negado. Nível de acesso insuficiente." }), { status: 403 });
+      
     }
     
     const motoristaCriado = await prisma.motorista.create({
       data: {
-        ...motoristaNovo,
-        user: { connect: { id: userId } },
-        secretaria: { connect: { id: secretariaId } },
+        ...motoristaNovo
       }
     });
     

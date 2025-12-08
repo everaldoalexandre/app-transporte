@@ -9,7 +9,6 @@ import { DropMenu } from "./StatusDemanda";
 import { Demanda, Veiculo, Motorista } from "@/generated/prisma";
 import { DemandaType } from "./Types";
 
-
 export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRefresh: () => void }) {
 
     const [demandas, setDemandas] = useState<Demanda[]> ([]);
@@ -26,10 +25,10 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
     const [demandaDelete, setDemandaDelete] = useState<Demanda | null>(null);
     const [statusDemanda, setStatusDemanda] = useState('');
     const [queryPlaca, setQueryPlaca] = useState<string>("");
-    const [queryMotorista, setQueryMotorista] = useState<string>("");
     const [resultadosVeiculo, setResultadosVeiculo] = useState<Veiculo[]>([]);
-    const [resultadosMotorista, setResultadosMotorista] = useState<Motorista[]>([]);
     const [loadingPlaca, setLoadingPlaca] = useState(false);
+    const [queryMotorista, setQueryMotorista] = useState<string>("");
+    const [resultadosMotorista, setResultadosMotorista] = useState<Motorista[]>([]);
     const [loadingMotorista, setLoadingMotorista] = useState(false);
 
     function openModalDeleteDemanda(demanda: DemandaType) {
@@ -43,8 +42,20 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
     }
 
     function openModalEditDemanda(demanda: DemandaType) {
-        setDemandaEdit(demanda);        
+        setDemandaEdit(demanda);
+        setStatusDemanda(demanda.statusDemanda ||'');
+        setQueryPlaca(demanda.veiculo?.placaVeiculo || '');
+        setQueryMotorista(demanda.motorista?.nome || '');  
         setShowModalEditDemanda(true);
+    }
+
+    function closeModalEditDemanda() {
+        setShowModalEditDemanda(false);
+        setDemandaEdit(null);
+        setResultadosMotorista([]);
+        setResultadosVeiculo([]);
+        setQueryMotorista("");
+        setQueryPlaca("");
     }
 
     function openModalFinalizarDemanda(demanda: DemandaType) {
@@ -57,7 +68,14 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
             setLoadingPlaca(true);
             const res = await fetch(`/api/veiculo?search=${texto}`);
             const data = await res.json();
-            setResultadosVeiculo(data);
+
+            const veiculosArray = data.veiculos || [];
+
+            if(demandaEdit?.veiculo && !veiculosArray.find((v: Veiculo) => v.id === demandaEdit.veiculo?.id &&
+             demandaEdit.veiculo.placaVeiculo.toLowerCase().includes(texto.toLowerCase()))) {
+                veiculosArray.unshift(demandaEdit.veiculo);
+            }
+            setResultadosVeiculo(veiculosArray);
         } finally {
             setLoadingPlaca(false);
         }
@@ -68,7 +86,14 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
             setLoadingMotorista(true);
             const res = await fetch(`/api/motorista?search=${texto}`);
             const data = await res.json();
-            setResultadosMotorista(data);
+
+            const motoristasArray = data.motorista || [];
+
+            if(demandaEdit?.motorista && !motoristasArray.find((m: Motorista) => m.id === demandaEdit.motorista?.id &&
+                demandaEdit.motorista.nome.toLowerCase().includes(texto.toLowerCase()))) {
+                motoristasArray.unshift(demandaEdit.motorista);
+            }
+            setResultadosMotorista(motoristasArray);
         } finally {
             setLoadingMotorista(false);
         }
@@ -257,7 +282,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                         <Input 
                         type="text"
                         value={demandaEdit?.pessoaSolicitante}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), pessoaSolicitante: e.target.value})}
+                        onChange={(e) => setDemandaEdit(prev => prev ? {...prev, pessoaSolicitante: e.target.value} : prev)}
                         placeholder='Solicitante'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Secretaria: </span>
@@ -308,8 +333,9 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                                       setLoadingMotorista(true);
                                       try {
                                         const res = await fetch(`/api/motorista?search=${value}`);
-                                        const data: Motorista[] = await res.json();
-                                        setResultadosMotorista(data);
+                                        const data = await res.json();
+
+                                        setResultadosMotorista(data.motoristas || []);
                                       } catch (err) {
                                         console.error("Erro ao buscar motorista:", err);
                                       } finally {
@@ -363,7 +389,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                                             ...prev,
                                             veiculo: prev.veiculo
                                               ? { ...prev.veiculo, placaVeiculo: value }
-                                              : { placaVeiculo: value } as Veiculo // tipo parcial inicial
+                                              : { placaVeiculo: value } as Veiculo 
                                           }
                                         : prev
                                     );
@@ -374,8 +400,8 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                                       setLoadingPlaca(true);
                                       try {
                                         const res = await fetch(`/api/veiculo?search=${value}`);
-                                        const data: Veiculo[] = await res.json();
-                                        setResultadosVeiculo(data);
+                                        const data = await res.json();
+                                        setResultadosVeiculo(data.veiculos || []);
                                       } catch (err) {
                                         console.error("Erro ao buscar veículos:", err);
                                       } finally {
@@ -417,7 +443,9 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                         </div></p>
 
                         <p><span>Status: </span>
-                        <DropMenu statusDemanda={statusDemanda} setStatusDemanda={setStatusDemanda}/></p>
+                        <DropMenu statusDemanda={demandaEdit?.statusDemanda ?? ""} setStatusDemanda={(value) =>
+                            setDemandaEdit(prev => prev ? {...prev, statusDemanda: value} : prev)
+                        }/></p>
                     </div>
                     
                     <div className='flex flex-col gap-2 w-1/3 justify-items-start'>
@@ -425,27 +453,27 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                         <Input 
                         type="text"
                         value={demandaEdit?.destino}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), destino: e.target.value})}
+                        onChange={(e) => setDemandaEdit(prev => prev ? {...prev, destino: e.target.value} : prev)}
                         placeholder='Destino'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Local de Saída: </span><input 
                         type="text"
                         value={demandaEdit?.origem}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), origem: e.target.value})}
+                        onChange={(e) => setDemandaEdit(prev => prev ? {...prev, origem: e.target.value} : prev)}
                         placeholder='Local de Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Saída: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraIda?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), dataHoraIda: e.target.value})}
+                        onChange={(e) => setDemandaEdit(prev => prev ? {...prev, dataHoraIda: e.target.value} : prev)}
                         placeholder='Horário da Saída'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                         <p><span>Horário da Volta: </span>
                         <Input 
                         type="datetime-local"
                         value={demandaEdit?.dataHoraVolta ?? ''}
-                        onChange={(e) => setDemandaEdit({...(demanda as DemandaType), dataHoraVolta: e.target.value})}
+                        onChange={(e) => setDemandaEdit(prev => prev ? {...prev, dataHoraVolta: e.target.value} : prev)}
                         placeholder='Horario da Volta'
                         className='w-full text-gray-500 rounded mb-2 border border-gray-300'/></p>
                     </div>
@@ -454,7 +482,7 @@ export function ActionsCell({ demanda, onRefresh }: { demanda: DemandaType, onRe
                     <p><span>Detalhe: </span>{demandaEdit?.demandaDetalhe}</p>
                 </div>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel onClick={() => closeModalEditDemanda()}>Cancel</AlertDialogCancel>
                   <AlertDialogAction onClick= {() => {
                                     if (demandaEdit){
                                         saveEditDemanda(demandaEdit);

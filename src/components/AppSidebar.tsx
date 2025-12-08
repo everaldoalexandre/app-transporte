@@ -1,17 +1,14 @@
 'use client'
 
 import Image  from "next/image"; 
-import { ChevronDown, ChevronUp, Home, Inbox } from "lucide-react";
+import { Car, ChevronsUpDown, Inbox, MonitorCog } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import Logout from "./Logout";
+import { User } from "@/generated/prisma";
+import { useEffect, useState } from "react";
 
 const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
   {
     title: "Demandas",
     url: "/demandas",
@@ -20,72 +17,89 @@ const items = [
   {
     title: "Frota",
     url: "/frota",
-    icon: Inbox,
+    icon: Car,
   },
+  {
+    title: "Painel",
+    url: "/",
+    icon: MonitorCog,
+  }
 ]
 
 export default function AppSidebar() {
-    
-    const {
-        state,
-        open,
-        setOpen,
-        openMobile,
-        setOpenMobile,
-        isMobile,
-        toggleSidebar,
-    } = useSidebar()
 
-    return (
-        <Sidebar collapsible="icon">
-            <SidebarContent>
-                <SidebarGroup>
-                <SidebarGroupLabel>Application</SidebarGroupLabel>
-                <SidebarGroupContent>
-                    <SidebarMenu>
-                    {items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild>
-                            <a href={item.url}>
-                            <item.icon />
-                            <span>{item.title}</span>
-                            </a>
-                        </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
-                    </SidebarMenu>
-                </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
-            <SidebarFooter className="justify-end">
+  const [user, setUser] = useState<User | null>(null);
+  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function carregarUser() {
+      try {
+        const res = await fetch('/api/usuario');
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+        } catch (error) {
+        console.error('Erro ao carregar usuário:', error);
+      }
+    }
+
+    carregarUser();
+  }, []);
+    
+  const {
+      state,
+  } = useSidebar()
+
+  return (
+    <Sidebar collapsible="icon">
+        <SidebarContent>
+            <SidebarGroup>
+            <SidebarGroupLabel></SidebarGroupLabel>
+            <SidebarGroupContent>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton className=" flex h-15 justify-start">
-                            <AvatarIcon size={35}/>
-                            {state !== "collapsed" && (
-                            <div className="flex flex-col ml-2">
-                                <span>Username</span>
-                                <span className="text-xs text-gray-500">m@exemple.com</span>
-                            </div>)}
-                            {state !== "collapsed" && <ChevronUp className="ml-auto" />}
-                        </SidebarMenuButton>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                        side="right"
-                        className="w-[--radix-popper-anchor-width]"
-                        >
-                        <DropdownMenuItem>
-                            <Logout/>
-                        </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                {items.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                        <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                        </a>
+                    </SidebarMenuButton>
                     </SidebarMenuItem>
+                ))}
                 </SidebarMenu>
-            </SidebarFooter>
-        </Sidebar>
-    )
+            </SidebarGroupContent>
+            </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter className="justify-end">
+            <SidebarMenu>
+                <SidebarMenuItem>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton className=" flex h-15 justify-start">
+                        <AvatarIcon size={35}/>
+                        {state !== "collapsed" && (
+                        <div className="flex flex-col ml-2">
+                            <span>{user?.name}</span>
+                            <span className="text-xs text-gray-500">{user?.email}</span>
+                        </div>)}
+                        {state !== "collapsed" && <ChevronsUpDown className="ml-auto" />}
+                    </SidebarMenuButton>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                    side="right"
+                    className="w-[--radix-popper-anchor-width]"
+                    >
+                    <DropdownMenuItem className="flex justify-center">
+                        <Logout/>
+                    </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarFooter>
+    </Sidebar>
+  )
 }
 
 function AvatarIcon({ size = 35 }: { size?: number }) {

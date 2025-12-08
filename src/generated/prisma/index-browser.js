@@ -149,7 +149,13 @@ exports.Prisma.VeiculoScalarFieldEnum = {
   proprietarioVeiculo: 'proprietarioVeiculo',
   crlvVeiculo: 'crlvVeiculo',
   secretariaId: 'secretariaId',
-  userId: 'userId'
+  userId: 'userId',
+  modeloId: 'modeloId'
+};
+
+exports.Prisma.VeiculoModeloScalarFieldEnum = {
+  id: 'id',
+  modelo: 'modelo'
 };
 
 exports.Prisma.MotoristaScalarFieldEnum = {
@@ -238,6 +244,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Demanda: 'Demanda',
   Veiculo: 'Veiculo',
+  VeiculoModelo: 'VeiculoModelo',
   Motorista: 'Motorista',
   Acesso: 'Acesso',
   Secretaria: 'Secretaria',
