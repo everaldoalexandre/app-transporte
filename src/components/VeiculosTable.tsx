@@ -1,13 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { DataTableVeiculos} from './DataColumnsVeiculos';
-import { Veiculo } from '@/generated/prisma';
+import { useState } from "react";
+import { DataTableVeiculos } from "./DataColumnsVeiculos";
+import { VeiculoType } from "@/components/Types";
 
 export default function VeiculosTable() {
-    const [veiculos, setVeiculos] = useState<Veiculo[]> ([]);
+  const [veiculos, setVeiculos] = useState<VeiculoType[]>([]);
 
-    return (
-        <DataTableVeiculos  data={veiculos}/>
-    )
-};
+  return <DataTableVeiculos data={veiculos} />;
+}

@@ -1,9 +1,25 @@
-'use client'
+"use client";
 
-import Image  from "next/image"; 
+import Image from "next/image";
 import { Car, ChevronsUpDown, Inbox, MonitorCog } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "./ui/sidebar";
 import Logout from "./Logout";
 import { User } from "@/generated/prisma";
 import { useEffect, useState } from "react";
@@ -23,91 +39,90 @@ const items = [
     title: "Painel",
     url: "/",
     icon: MonitorCog,
-  }
-]
+  },
+];
 
 export default function AppSidebar() {
-
   const [user, setUser] = useState<User | null>(null);
   const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
 
   useEffect(() => {
     async function carregarUser() {
       try {
-        const res = await fetch('/api/usuario');
+        const res = await fetch("/api/usuario");
         const data = await res.json();
         setUser(data.usuario);
         setUserAccessLevel(data.userAccessLevel);
-        } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
       }
     }
 
     carregarUser();
   }, []);
-    
-  const {
-      state,
-  } = useSidebar()
+
+  const { state } = useSidebar();
 
   return (
     <Sidebar collapsible="icon">
-        <SidebarContent>
-            <SidebarGroup>
-            <SidebarGroupLabel></SidebarGroupLabel>
-            <SidebarGroupContent>
-                <SidebarMenu>
-                {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                        <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                        </a>
-                    </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
-            </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter className="justify-end">
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel></SidebarGroupLabel>
+          <SidebarGroupContent>
             <SidebarMenu>
-                <SidebarMenuItem>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton className=" flex h-15 justify-start">
-                        <AvatarIcon size={35}/>
-                        {state !== "collapsed" && (
-                        <div className="flex flex-col ml-2">
-                            <span>{user?.name}</span>
-                            <span className="text-xs text-gray-500">{user?.email}</span>
-                        </div>)}
-                        {state !== "collapsed" && <ChevronsUpDown className="ml-auto" />}
-                    </SidebarMenuButton>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                    side="right"
-                    className="w-[--radix-popper-anchor-width]"
-                    >
-                    <DropdownMenuItem className="flex justify-center">
-                        <Logout/>
-                    </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
+              ))}
             </SidebarMenu>
-        </SidebarFooter>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="justify-end">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton className=" flex h-15 justify-start">
+                  <AvatarIcon size={35} />
+                  {state !== "collapsed" && (
+                    <div className="flex flex-col ml-2">
+                      <span>{user?.name}</span>
+                      <span className="text-xs text-gray-500">
+                        {user?.email}
+                      </span>
+                    </div>
+                  )}
+                  {state !== "collapsed" && (
+                    <ChevronsUpDown className="ml-auto" />
+                  )}
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="right"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem className="flex justify-center">
+                  <Logout />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
 
 function AvatarIcon({ size = 35 }: { size?: number }) {
   return (
-    <div
-      className="flex-shrink-0"
-      style={{ width: size, height: size }}
-    >
+    <div className="flex-shrink-0" style={{ width: size, height: size }}>
       <Image
         src="/avatar.jpg"
         width={size}
@@ -116,5 +131,5 @@ function AvatarIcon({ size = 35 }: { size?: number }) {
         className="rounded-lg border w-full h-full"
       />
     </div>
-  )
+  );
 }

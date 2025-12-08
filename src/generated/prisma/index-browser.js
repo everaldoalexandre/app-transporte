@@ -135,7 +135,7 @@ exports.Prisma.DemandaScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lotacao: 'lotacao',
-  userId: 'userId',
+  kmRodado: 'kmRodado',
   veiculoId: 'veiculoId',
   motoristaId: 'motoristaId',
   secretariaId: 'secretariaId'

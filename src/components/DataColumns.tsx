@@ -1,24 +1,48 @@
-"use client"
+"use client";
 
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table"
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { Button } from "./ui/button";
-import { ArrowUpDown, ChevronDown} from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "./ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import {
+  DropdownMenuCheckboxItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsCell} from "@/components/ActionsCell"
+import { ActionsCell } from "@/components/ActionsCell";
 import { DemandaType } from "./Types";
 
-export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
+export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
     fetchDemandas();
@@ -26,14 +50,14 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
 
   async function fetchDemandas() {
     try {
-        const res = await fetch('/api/demanda');
-        if (!res.ok) throw new Error('Falha ao buscar demandas');
-        
-        const data = await res.json();
-        
-        setDemandas(data.demandas);
+      const res = await fetch("/api/demanda");
+      if (!res.ok) throw new Error("Falha ao buscar demandas");
+
+      const data = await res.json();
+
+      setDemandas(data.demandas);
     } catch (err) {
-        console.error(err);
+      console.error(err);
     }
   }
 
@@ -47,15 +71,17 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Status
-            <ArrowUpDown/>
+            <ArrowUpDown />
           </Button>
-        )
+        );
       },
-      cell: ({ row }) => <div className="">{row.getValue("statusDemanda")}</div>,
+      cell: ({ row }) => (
+        <div className="">{row.getValue("statusDemanda")}</div>
+      ),
     },
     {
-        accessorKey: "destino",
-        header: "Destino",
+      accessorKey: "destino",
+      header: "Destino",
     },
     {
       accessorKey: "dataHoraIda",
@@ -66,23 +92,26 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Data/Hora Ida
-            <ArrowUpDown/>
+            <ArrowUpDown />
           </Button>
-        )
+        );
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("dataHoraIda")}</div>,
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("dataHoraIda")}</div>
+      ),
     },
     {
-        accessorKey: "pessoaSolicitante",
-        header: "Solicitante",
+      accessorKey: "pessoaSolicitante",
+      header: "Solicitante",
     },
     {
-    id: "actions",
-    header: "Ações",
-    cell: ({ row }) => <ActionsCell demanda={row.original} onRefresh={fetchDemandas} />,
-    }
-    
-]
+      id: "actions",
+      header: "Ações",
+      cell: ({ row }) => (
+        <ActionsCell demanda={row.original} onRefresh={fetchDemandas} />
+      ),
+    },
+  ];
 
   const table = useReactTable<DemandaType>({
     data: demandas,
@@ -101,38 +130,37 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
-  const column = table.getColumn("statusDemanda")
+  const column = table.getColumn("statusDemanda");
 
   const statusOptions = [
-    {label: "Todos", value:""},
-    {label: "Aguardando", value: "Aguardando"},
-    {label: "Agendada", value: "Agendada"},
-    {label: "Finalizada", value: "Finalizada"},
-  ]
+    { label: "Todos", value: "" },
+    { label: "Aguardando", value: "Aguardando" },
+    { label: "Agendada", value: "Agendada" },
+    { label: "Finalizada", value: "Finalizada" },
+  ];
 
   return (
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
-         <DropdownMenu>
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              {(table.getColumn("statusDemanda")?.getFilterValue() as string) ?? "Todos"}
+              {(table.getColumn("statusDemanda")?.getFilterValue() as string) ??
+                "Todos"}
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {statusOptions.map((status) =>
-            
-                  <DropdownMenuItem
-                    key={status.value}
-                    onClick={() => column?.setFilterValue(status.value)}
-                  >
-                    {status.label}
-                  </DropdownMenuItem>
-                )
-              }
+            {statusOptions.map((status) => (
+              <DropdownMenuItem
+                key={status.value}
+                onClick={() => column?.setFilterValue(status.value)}
+              >
+                {status.label}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
         <Input
@@ -145,7 +173,9 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
         />
         <Input
           placeholder="Filtre por data"
-          value={(table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("dataHoraIda")?.setFilterValue(event.target.value)
           }
@@ -173,7 +203,7 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -193,7 +223,7 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -255,5 +285,5 @@ export function DataTableDemo({data: initialData}: {data: DemandaType[]}) {
         </div>
       </div>
     </div>
-  )
+  );
 }

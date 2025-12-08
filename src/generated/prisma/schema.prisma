@@ -11,21 +11,19 @@ datasource db {
 model Demanda {
   id                    String   @id @default(uuid())
   emailSolicitante      String
-  demandaDetalhe        String?
+  demandaDetalhe        String
   pessoaSolicitante     String
   secretariaSolicitante String
   destino               String
-  dataHoraIda           String?
-  dataHoraVolta         String?
+  dataHoraIda           String
+  dataHoraVolta         String
   origem                String
   contato               String
   statusDemanda         String   @default("Aguardando")
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
-  lotacao               String
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lotacao               Int?
+  kmRodado              Int?
 
   veiculoId String?
   veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
@@ -115,7 +113,6 @@ model User {
   sessions   Session[]
   accounts   Account[]
   veiculos   Veiculo[]
-  demandas   Demanda[]
   secretaria UserSecretaria[]
 
   @@map("user")

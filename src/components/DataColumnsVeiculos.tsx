@@ -1,28 +1,56 @@
-"use client"
+"use client";
 
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table"
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { Button } from "./ui/button";
-import { ArrowUpDown, ChevronDown} from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "./ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import {
+  DropdownMenuCheckboxItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsCellVeiculos} from "@/components/ActionsCellVeiculos"
+import { ActionsCellVeiculos } from "@/components/ActionsCellVeiculos";
 import { NovoVeiculo } from "./NovoVeiculo";
 import { VeiculoType } from "@/components/Types";
 import { NovoMotorista } from "./NovoMotorista";
 
-export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
+export function DataTableVeiculos({
+  data: initialData,
+}: {
+  data: VeiculoType[];
+}) {
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
   const [openDialogNovoMotorista, setOpenDialogNovoMotorista] = useState(false);
   const [veiculos, setVeiculos] = useState<VeiculoType[]>(initialData);
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
     fetchVeiculos();
@@ -30,15 +58,15 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
 
   async function fetchVeiculos() {
     try {
-        const response = await fetch('/api/veiculo', { cache: 'no-store' });
-        if (!response.ok) {
-            console.error('Falha ao buscar veiculos:', response.statusText);
-            return;
-        }
-        const data = await response.json();
-        setVeiculos(data.veiculos);            
+      const response = await fetch("/api/veiculo", { cache: "no-store" });
+      if (!response.ok) {
+        console.error("Falha ao buscar veiculos:", response.statusText);
+        return;
+      }
+      const data = await response.json();
+      setVeiculos(data.veiculos);
     } catch (error) {
-        console.error('Erro o buscar veiculos:', error);
+      console.error("Erro o buscar veiculos:", error);
     }
   }
 
@@ -52,9 +80,9 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Modelo
-            <ArrowUpDown/>
+            <ArrowUpDown />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => <div className="">{row.getValue("modelo")}</div>,
     },
@@ -63,20 +91,21 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
       header: "Placa",
     },
     {
-        accessorKey: "proprietarioVeiculo",
-        header: "Proprietário",
+      accessorKey: "proprietarioVeiculo",
+      header: "Proprietário",
     },
     {
-        accessorKey: "modelo.modelo",
-        header: "Modelo",
+      accessorKey: "modelo.modelo",
+      header: "Modelo",
     },
     {
-    id: "actions",
-    header: "Ações",
-    cell: ({ row }) => <ActionsCellVeiculos veiculo={row.original} onRefresh={fetchVeiculos} />,
-    }
-    
-]
+      id: "actions",
+      header: "Ações",
+      cell: ({ row }) => (
+        <ActionsCellVeiculos veiculo={row.original} onRefresh={fetchVeiculos} />
+      ),
+    },
+  ];
 
   const table = useReactTable<VeiculoType>({
     data: veiculos,
@@ -95,43 +124,44 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
-  const column = table.getColumn("placaVeiculo")
+  const column = table.getColumn("placaVeiculo");
 
   const modeloOptions = [
-    {label: "Todos", value:""},
-    {label: "Carro", value: "Carro"},
-    {label: "Caminhão", value: "Caminhão"},
-    {label: "Ônibus", value: "Ônibus"},
-  ]
+    { label: "Todos", value: "" },
+    { label: "Carro", value: "Carro" },
+    { label: "Caminhão", value: "Caminhão" },
+    { label: "Ônibus", value: "Ônibus" },
+  ];
 
   return (
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
-         <DropdownMenu>
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              {(table.getColumn("modelo.modelo")?.getFilterValue() as string) ?? "Todos"}
+              {(table.getColumn("modelo.modelo")?.getFilterValue() as string) ??
+                "Todos"}
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {modeloOptions.map((status) =>
-            
-                  <DropdownMenuItem
-                    key={status.value}
-                    onClick={() => column?.setFilterValue(status.value)}
-                  >
-                    {status.label}
-                  </DropdownMenuItem>
-                )
-              }
+            {modeloOptions.map((status) => (
+              <DropdownMenuItem
+                key={status.value}
+                onClick={() => column?.setFilterValue(status.value)}
+              >
+                {status.label}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
         <Input
           placeholder="Filtre por placa"
-          value={(table.getColumn("placaVeiculo")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("placaVeiculo")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("placaVeiculo")?.setFilterValue(event.target.value)
           }
@@ -159,22 +189,26 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
         <Button onClick={() => setOpenDialogNovoVeiculo(true)}>
           Adicionar Veículo
         </Button>
-        <NovoVeiculo openNovoVeiculo={openDialogNovoVeiculo}
-        openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
-        onRefresh={fetchVeiculos}/>
+        <NovoVeiculo
+          openNovoVeiculo={openDialogNovoVeiculo}
+          openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
+          onRefresh={fetchVeiculos}
+        />
         <Button onClick={() => setOpenDialogNovoMotorista(true)}>
           AddMotorista
         </Button>
-        <NovoMotorista openNovoMotorista={openDialogNovoMotorista}
-        openChangeNovoMotorista={setOpenDialogNovoMotorista}
-        onRefresh={fetchVeiculos}/>
+        <NovoMotorista
+          openNovoMotorista={openDialogNovoMotorista}
+          openChangeNovoMotorista={setOpenDialogNovoMotorista}
+          onRefresh={fetchVeiculos}
+        />
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -191,7 +225,7 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -253,5 +287,5 @@ export function DataTableVeiculos({data: initialData}: {data: VeiculoType[]}) {
         </div>
       </div>
     </div>
-  )
+  );
 }

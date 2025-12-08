@@ -1987,7 +1987,6 @@ export namespace Prisma {
     sessions: number
     accounts: number
     veiculos: number
-    demandas: number
     secretaria: number
   }
 
@@ -1996,7 +1995,6 @@ export namespace Prisma {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     veiculos?: boolean | UserCountOutputTypeCountVeiculosArgs
-    demandas?: boolean | UserCountOutputTypeCountDemandasArgs
     secretaria?: boolean | UserCountOutputTypeCountSecretariaArgs
   }
 
@@ -2042,13 +2040,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountDemandasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DemandaWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountSecretariaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserSecretariaWhereInput
   }
@@ -2064,8 +2055,20 @@ export namespace Prisma {
 
   export type AggregateDemanda = {
     _count: DemandaCountAggregateOutputType | null
+    _avg: DemandaAvgAggregateOutputType | null
+    _sum: DemandaSumAggregateOutputType | null
     _min: DemandaMinAggregateOutputType | null
     _max: DemandaMaxAggregateOutputType | null
+  }
+
+  export type DemandaAvgAggregateOutputType = {
+    lotacao: number | null
+    kmRodado: number | null
+  }
+
+  export type DemandaSumAggregateOutputType = {
+    lotacao: number | null
+    kmRodado: number | null
   }
 
   export type DemandaMinAggregateOutputType = {
@@ -2082,8 +2085,8 @@ export namespace Prisma {
     statusDemanda: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    lotacao: string | null
-    userId: string | null
+    lotacao: number | null
+    kmRodado: number | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
@@ -2103,8 +2106,8 @@ export namespace Prisma {
     statusDemanda: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    lotacao: string | null
-    userId: string | null
+    lotacao: number | null
+    kmRodado: number | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
@@ -2125,13 +2128,23 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     lotacao: number
-    userId: number
+    kmRodado: number
     veiculoId: number
     motoristaId: number
     secretariaId: number
     _all: number
   }
 
+
+  export type DemandaAvgAggregateInputType = {
+    lotacao?: true
+    kmRodado?: true
+  }
+
+  export type DemandaSumAggregateInputType = {
+    lotacao?: true
+    kmRodado?: true
+  }
 
   export type DemandaMinAggregateInputType = {
     id?: true
@@ -2148,7 +2161,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     lotacao?: true
-    userId?: true
+    kmRodado?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2169,7 +2182,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     lotacao?: true
-    userId?: true
+    kmRodado?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2190,7 +2203,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     lotacao?: true
-    userId?: true
+    kmRodado?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2235,6 +2248,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: DemandaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DemandaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: DemandaMinAggregateInputType
@@ -2265,6 +2290,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DemandaCountAggregateInputType | true
+    _avg?: DemandaAvgAggregateInputType
+    _sum?: DemandaSumAggregateInputType
     _min?: DemandaMinAggregateInputType
     _max?: DemandaMaxAggregateInputType
   }
@@ -2272,23 +2299,25 @@ export namespace Prisma {
   export type DemandaGroupByOutputType = {
     id: string
     emailSolicitante: string
-    demandaDetalhe: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda: string | null
-    dataHoraVolta: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda: string
     createdAt: Date
     updatedAt: Date
-    lotacao: string
-    userId: string
+    lotacao: number | null
+    kmRodado: number | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
     _count: DemandaCountAggregateOutputType | null
+    _avg: DemandaAvgAggregateOutputType | null
+    _sum: DemandaSumAggregateOutputType | null
     _min: DemandaMinAggregateOutputType | null
     _max: DemandaMaxAggregateOutputType | null
   }
@@ -2322,11 +2351,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     lotacao?: boolean
-    userId?: boolean
+    kmRodado?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
@@ -2347,11 +2375,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     lotacao?: boolean
-    userId?: boolean
+    kmRodado?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
@@ -2372,11 +2399,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     lotacao?: boolean
-    userId?: boolean
+    kmRodado?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
@@ -2397,27 +2423,24 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     lotacao?: boolean
-    userId?: boolean
+    kmRodado?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
   }
 
-  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "userId" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
+  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "kmRodado" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
   export type DemandaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
   }
   export type DemandaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
   }
   export type DemandaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
     secretaria?: boolean | Demanda$secretariaArgs<ExtArgs>
@@ -2426,7 +2449,6 @@ export namespace Prisma {
   export type $DemandaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Demanda"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       veiculo: Prisma.$VeiculoPayload<ExtArgs> | null
       motorista: Prisma.$MotoristaPayload<ExtArgs> | null
       secretaria: Prisma.$SecretariaPayload<ExtArgs> | null
@@ -2434,19 +2456,19 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       emailSolicitante: string
-      demandaDetalhe: string | null
+      demandaDetalhe: string
       pessoaSolicitante: string
       secretariaSolicitante: string
       destino: string
-      dataHoraIda: string | null
-      dataHoraVolta: string | null
+      dataHoraIda: string
+      dataHoraVolta: string
       origem: string
       contato: string
       statusDemanda: string
       createdAt: Date
       updatedAt: Date
-      lotacao: string
-      userId: string
+      lotacao: number | null
+      kmRodado: number | null
       veiculoId: string | null
       motoristaId: string | null
       secretariaId: string | null
@@ -2844,7 +2866,6 @@ export namespace Prisma {
    */
   export interface Prisma__DemandaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     veiculo<T extends Demanda$veiculoArgs<ExtArgs> = {}>(args?: Subset<T, Demanda$veiculoArgs<ExtArgs>>): Prisma__VeiculoClient<$Result.GetResult<Prisma.$VeiculoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     motorista<T extends Demanda$motoristaArgs<ExtArgs> = {}>(args?: Subset<T, Demanda$motoristaArgs<ExtArgs>>): Prisma__MotoristaClient<$Result.GetResult<Prisma.$MotoristaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     secretaria<T extends Demanda$secretariaArgs<ExtArgs> = {}>(args?: Subset<T, Demanda$secretariaArgs<ExtArgs>>): Prisma__SecretariaClient<$Result.GetResult<Prisma.$SecretariaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2890,8 +2911,8 @@ export namespace Prisma {
     readonly statusDemanda: FieldRef<"Demanda", 'String'>
     readonly createdAt: FieldRef<"Demanda", 'DateTime'>
     readonly updatedAt: FieldRef<"Demanda", 'DateTime'>
-    readonly lotacao: FieldRef<"Demanda", 'String'>
-    readonly userId: FieldRef<"Demanda", 'String'>
+    readonly lotacao: FieldRef<"Demanda", 'Int'>
+    readonly kmRodado: FieldRef<"Demanda", 'Int'>
     readonly veiculoId: FieldRef<"Demanda", 'String'>
     readonly motoristaId: FieldRef<"Demanda", 'String'>
     readonly secretariaId: FieldRef<"Demanda", 'String'>
@@ -10013,7 +10034,6 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     veiculos?: boolean | User$veiculosArgs<ExtArgs>
-    demandas?: boolean | User$demandasArgs<ExtArgs>
     secretaria?: boolean | User$secretariaArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -10054,7 +10074,6 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     veiculos?: boolean | User$veiculosArgs<ExtArgs>
-    demandas?: boolean | User$demandasArgs<ExtArgs>
     secretaria?: boolean | User$secretariaArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -10068,7 +10087,6 @@ export namespace Prisma {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       veiculos: Prisma.$VeiculoPayload<ExtArgs>[]
-      demandas: Prisma.$DemandaPayload<ExtArgs>[]
       secretaria: Prisma.$UserSecretariaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10477,7 +10495,6 @@ export namespace Prisma {
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     veiculos<T extends User$veiculosArgs<ExtArgs> = {}>(args?: Subset<T, User$veiculosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VeiculoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    demandas<T extends User$demandasArgs<ExtArgs> = {}>(args?: Subset<T, User$demandasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemandaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     secretaria<T extends User$secretariaArgs<ExtArgs> = {}>(args?: Subset<T, User$secretariaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSecretariaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10996,30 +11013,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VeiculoScalarFieldEnum | VeiculoScalarFieldEnum[]
-  }
-
-  /**
-   * User.demandas
-   */
-  export type User$demandasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Demanda
-     */
-    select?: DemandaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Demanda
-     */
-    omit?: DemandaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DemandaInclude<ExtArgs> | null
-    where?: DemandaWhereInput
-    orderBy?: DemandaOrderByWithRelationInput | DemandaOrderByWithRelationInput[]
-    cursor?: DemandaWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DemandaScalarFieldEnum | DemandaScalarFieldEnum[]
   }
 
   /**
@@ -14361,7 +14354,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     lotacao: 'lotacao',
-    userId: 'userId',
+    kmRodado: 'kmRodado',
     veiculoId: 'veiculoId',
     motoristaId: 'motoristaId',
     secretariaId: 'secretariaId'
@@ -14542,13 +14535,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -14559,6 +14545,27 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -14571,23 +14578,22 @@ export namespace Prisma {
     NOT?: DemandaWhereInput | DemandaWhereInput[]
     id?: StringFilter<"Demanda"> | string
     emailSolicitante?: StringFilter<"Demanda"> | string
-    demandaDetalhe?: StringNullableFilter<"Demanda"> | string | null
+    demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
     secretariaSolicitante?: StringFilter<"Demanda"> | string
     destino?: StringFilter<"Demanda"> | string
-    dataHoraIda?: StringNullableFilter<"Demanda"> | string | null
-    dataHoraVolta?: StringNullableFilter<"Demanda"> | string | null
+    dataHoraIda?: StringFilter<"Demanda"> | string
+    dataHoraVolta?: StringFilter<"Demanda"> | string
     origem?: StringFilter<"Demanda"> | string
     contato?: StringFilter<"Demanda"> | string
     statusDemanda?: StringFilter<"Demanda"> | string
     createdAt?: DateTimeFilter<"Demanda"> | Date | string
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
-    lotacao?: StringFilter<"Demanda"> | string
-    userId?: StringFilter<"Demanda"> | string
+    lotacao?: IntNullableFilter<"Demanda"> | number | null
+    kmRodado?: IntNullableFilter<"Demanda"> | number | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     veiculo?: XOR<VeiculoNullableScalarRelationFilter, VeiculoWhereInput> | null
     motorista?: XOR<MotoristaNullableScalarRelationFilter, MotoristaWhereInput> | null
     secretaria?: XOR<SecretariaNullableScalarRelationFilter, SecretariaWhereInput> | null
@@ -14596,23 +14602,22 @@ export namespace Prisma {
   export type DemandaOrderByWithRelationInput = {
     id?: SortOrder
     emailSolicitante?: SortOrder
-    demandaDetalhe?: SortOrderInput | SortOrder
+    demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
     secretariaSolicitante?: SortOrder
     destino?: SortOrder
-    dataHoraIda?: SortOrderInput | SortOrder
-    dataHoraVolta?: SortOrderInput | SortOrder
+    dataHoraIda?: SortOrder
+    dataHoraVolta?: SortOrder
     origem?: SortOrder
     contato?: SortOrder
     statusDemanda?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    lotacao?: SortOrder
-    userId?: SortOrder
+    lotacao?: SortOrderInput | SortOrder
+    kmRodado?: SortOrderInput | SortOrder
     veiculoId?: SortOrderInput | SortOrder
     motoristaId?: SortOrderInput | SortOrder
     secretariaId?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
     veiculo?: VeiculoOrderByWithRelationInput
     motorista?: MotoristaOrderByWithRelationInput
     secretaria?: SecretariaOrderByWithRelationInput
@@ -14624,23 +14629,22 @@ export namespace Prisma {
     OR?: DemandaWhereInput[]
     NOT?: DemandaWhereInput | DemandaWhereInput[]
     emailSolicitante?: StringFilter<"Demanda"> | string
-    demandaDetalhe?: StringNullableFilter<"Demanda"> | string | null
+    demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
     secretariaSolicitante?: StringFilter<"Demanda"> | string
     destino?: StringFilter<"Demanda"> | string
-    dataHoraIda?: StringNullableFilter<"Demanda"> | string | null
-    dataHoraVolta?: StringNullableFilter<"Demanda"> | string | null
+    dataHoraIda?: StringFilter<"Demanda"> | string
+    dataHoraVolta?: StringFilter<"Demanda"> | string
     origem?: StringFilter<"Demanda"> | string
     contato?: StringFilter<"Demanda"> | string
     statusDemanda?: StringFilter<"Demanda"> | string
     createdAt?: DateTimeFilter<"Demanda"> | Date | string
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
-    lotacao?: StringFilter<"Demanda"> | string
-    userId?: StringFilter<"Demanda"> | string
+    lotacao?: IntNullableFilter<"Demanda"> | number | null
+    kmRodado?: IntNullableFilter<"Demanda"> | number | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     veiculo?: XOR<VeiculoNullableScalarRelationFilter, VeiculoWhereInput> | null
     motorista?: XOR<MotoristaNullableScalarRelationFilter, MotoristaWhereInput> | null
     secretaria?: XOR<SecretariaNullableScalarRelationFilter, SecretariaWhereInput> | null
@@ -14649,25 +14653,27 @@ export namespace Prisma {
   export type DemandaOrderByWithAggregationInput = {
     id?: SortOrder
     emailSolicitante?: SortOrder
-    demandaDetalhe?: SortOrderInput | SortOrder
+    demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
     secretariaSolicitante?: SortOrder
     destino?: SortOrder
-    dataHoraIda?: SortOrderInput | SortOrder
-    dataHoraVolta?: SortOrderInput | SortOrder
+    dataHoraIda?: SortOrder
+    dataHoraVolta?: SortOrder
     origem?: SortOrder
     contato?: SortOrder
     statusDemanda?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    lotacao?: SortOrder
-    userId?: SortOrder
+    lotacao?: SortOrderInput | SortOrder
+    kmRodado?: SortOrderInput | SortOrder
     veiculoId?: SortOrderInput | SortOrder
     motoristaId?: SortOrderInput | SortOrder
     secretariaId?: SortOrderInput | SortOrder
     _count?: DemandaCountOrderByAggregateInput
+    _avg?: DemandaAvgOrderByAggregateInput
     _max?: DemandaMaxOrderByAggregateInput
     _min?: DemandaMinOrderByAggregateInput
+    _sum?: DemandaSumOrderByAggregateInput
   }
 
   export type DemandaScalarWhereWithAggregatesInput = {
@@ -14676,19 +14682,19 @@ export namespace Prisma {
     NOT?: DemandaScalarWhereWithAggregatesInput | DemandaScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Demanda"> | string
     emailSolicitante?: StringWithAggregatesFilter<"Demanda"> | string
-    demandaDetalhe?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
+    demandaDetalhe?: StringWithAggregatesFilter<"Demanda"> | string
     pessoaSolicitante?: StringWithAggregatesFilter<"Demanda"> | string
     secretariaSolicitante?: StringWithAggregatesFilter<"Demanda"> | string
     destino?: StringWithAggregatesFilter<"Demanda"> | string
-    dataHoraIda?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
-    dataHoraVolta?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
+    dataHoraIda?: StringWithAggregatesFilter<"Demanda"> | string
+    dataHoraVolta?: StringWithAggregatesFilter<"Demanda"> | string
     origem?: StringWithAggregatesFilter<"Demanda"> | string
     contato?: StringWithAggregatesFilter<"Demanda"> | string
     statusDemanda?: StringWithAggregatesFilter<"Demanda"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Demanda"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Demanda"> | Date | string
-    lotacao?: StringWithAggregatesFilter<"Demanda"> | string
-    userId?: StringWithAggregatesFilter<"Demanda"> | string
+    lotacao?: IntNullableWithAggregatesFilter<"Demanda"> | number | null
+    kmRodado?: IntNullableWithAggregatesFilter<"Demanda"> | number | null
     veiculoId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
     motoristaId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
     secretariaId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
@@ -15013,7 +15019,6 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     veiculos?: VeiculoListRelationFilter
-    demandas?: DemandaListRelationFilter
     secretaria?: UserSecretariaListRelationFilter
   }
 
@@ -15029,7 +15034,6 @@ export namespace Prisma {
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     veiculos?: VeiculoOrderByRelationAggregateInput
-    demandas?: DemandaOrderByRelationAggregateInput
     secretaria?: UserSecretariaOrderByRelationAggregateInput
   }
 
@@ -15048,7 +15052,6 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     veiculos?: VeiculoListRelationFilter
-    demandas?: DemandaListRelationFilter
     secretaria?: UserSecretariaListRelationFilter
   }, "id" | "email">
 
@@ -15303,19 +15306,19 @@ export namespace Prisma {
   export type DemandaCreateInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    user: UserCreateNestedOneWithoutDemandasInput
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
@@ -15324,19 +15327,19 @@ export namespace Prisma {
   export type DemandaUncheckedCreateInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
@@ -15345,19 +15348,19 @@ export namespace Prisma {
   export type DemandaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
@@ -15366,19 +15369,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15387,19 +15390,19 @@ export namespace Prisma {
   export type DemandaCreateManyInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
@@ -15408,36 +15411,37 @@ export namespace Prisma {
   export type DemandaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type DemandaUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15753,7 +15757,6 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
   }
 
@@ -15769,7 +15772,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -15785,7 +15787,6 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
   }
 
@@ -15801,7 +15802,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16100,6 +16100,28 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -16113,22 +16135,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type VeiculoNullableScalarRelationFilter = {
@@ -16166,10 +16172,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lotacao?: SortOrder
-    userId?: SortOrder
+    kmRodado?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
+  }
+
+  export type DemandaAvgOrderByAggregateInput = {
+    lotacao?: SortOrder
+    kmRodado?: SortOrder
   }
 
   export type DemandaMaxOrderByAggregateInput = {
@@ -16187,7 +16198,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lotacao?: SortOrder
-    userId?: SortOrder
+    kmRodado?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
@@ -16208,10 +16219,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lotacao?: SortOrder
-    userId?: SortOrder
+    kmRodado?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
+  }
+
+  export type DemandaSumOrderByAggregateInput = {
+    lotacao?: SortOrder
+    kmRodado?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -16232,6 +16248,36 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -16250,23 +16296,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type SecretariaScalarRelationFilter = {
     is?: SecretariaWhereInput
     isNot?: SecretariaWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type VeiculoModeloNullableScalarRelationFilter = {
@@ -16644,12 +16681,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UserCreateNestedOneWithoutDemandasInput = {
-    create?: XOR<UserCreateWithoutDemandasInput, UserUncheckedCreateWithoutDemandasInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDemandasInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type VeiculoCreateNestedOneWithoutDemandasInput = {
     create?: XOR<VeiculoCreateWithoutDemandasInput, VeiculoUncheckedCreateWithoutDemandasInput>
     connectOrCreate?: VeiculoCreateOrConnectWithoutDemandasInput
@@ -16672,20 +16703,16 @@ export namespace Prisma {
     set?: string
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
-  export type UserUpdateOneRequiredWithoutDemandasNestedInput = {
-    create?: XOR<UserCreateWithoutDemandasInput, UserUncheckedCreateWithoutDemandasInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDemandasInput
-    upsert?: UserUpsertWithoutDemandasInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDemandasInput, UserUpdateWithoutDemandasInput>, UserUncheckedUpdateWithoutDemandasInput>
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type VeiculoUpdateOneWithoutDemandasNestedInput = {
@@ -16716,6 +16743,10 @@ export namespace Prisma {
     delete?: SecretariaWhereInput | boolean
     connect?: SecretariaWhereUniqueInput
     update?: XOR<XOR<SecretariaUpdateToOneWithWhereWithoutDemandasInput, SecretariaUpdateWithoutDemandasInput>, SecretariaUncheckedUpdateWithoutDemandasInput>
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type SecretariaCreateNestedOneWithoutVeiculosInput = {
@@ -17187,13 +17218,6 @@ export namespace Prisma {
     connect?: VeiculoWhereUniqueInput | VeiculoWhereUniqueInput[]
   }
 
-  export type DemandaCreateNestedManyWithoutUserInput = {
-    create?: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput> | DemandaCreateWithoutUserInput[] | DemandaUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DemandaCreateOrConnectWithoutUserInput | DemandaCreateOrConnectWithoutUserInput[]
-    createMany?: DemandaCreateManyUserInputEnvelope
-    connect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-  }
-
   export type UserSecretariaCreateNestedManyWithoutUserInput = {
     create?: XOR<UserSecretariaCreateWithoutUserInput, UserSecretariaUncheckedCreateWithoutUserInput> | UserSecretariaCreateWithoutUserInput[] | UserSecretariaUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSecretariaCreateOrConnectWithoutUserInput | UserSecretariaCreateOrConnectWithoutUserInput[]
@@ -17225,13 +17249,6 @@ export namespace Prisma {
     connectOrCreate?: VeiculoCreateOrConnectWithoutUserInput | VeiculoCreateOrConnectWithoutUserInput[]
     createMany?: VeiculoCreateManyUserInputEnvelope
     connect?: VeiculoWhereUniqueInput | VeiculoWhereUniqueInput[]
-  }
-
-  export type DemandaUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput> | DemandaCreateWithoutUserInput[] | DemandaUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DemandaCreateOrConnectWithoutUserInput | DemandaCreateOrConnectWithoutUserInput[]
-    createMany?: DemandaCreateManyUserInputEnvelope
-    connect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
   }
 
   export type UserSecretariaUncheckedCreateNestedManyWithoutUserInput = {
@@ -17297,20 +17314,6 @@ export namespace Prisma {
     update?: VeiculoUpdateWithWhereUniqueWithoutUserInput | VeiculoUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: VeiculoUpdateManyWithWhereWithoutUserInput | VeiculoUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: VeiculoScalarWhereInput | VeiculoScalarWhereInput[]
-  }
-
-  export type DemandaUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput> | DemandaCreateWithoutUserInput[] | DemandaUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DemandaCreateOrConnectWithoutUserInput | DemandaCreateOrConnectWithoutUserInput[]
-    upsert?: DemandaUpsertWithWhereUniqueWithoutUserInput | DemandaUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DemandaCreateManyUserInputEnvelope
-    set?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    disconnect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    delete?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    connect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    update?: DemandaUpdateWithWhereUniqueWithoutUserInput | DemandaUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DemandaUpdateManyWithWhereWithoutUserInput | DemandaUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DemandaScalarWhereInput | DemandaScalarWhereInput[]
   }
 
   export type UserSecretariaUpdateManyWithoutUserNestedInput = {
@@ -17381,20 +17384,6 @@ export namespace Prisma {
     deleteMany?: VeiculoScalarWhereInput | VeiculoScalarWhereInput[]
   }
 
-  export type DemandaUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput> | DemandaCreateWithoutUserInput[] | DemandaUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DemandaCreateOrConnectWithoutUserInput | DemandaCreateOrConnectWithoutUserInput[]
-    upsert?: DemandaUpsertWithWhereUniqueWithoutUserInput | DemandaUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DemandaCreateManyUserInputEnvelope
-    set?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    disconnect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    delete?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    connect?: DemandaWhereUniqueInput | DemandaWhereUniqueInput[]
-    update?: DemandaUpdateWithWhereUniqueWithoutUserInput | DemandaUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DemandaUpdateManyWithWhereWithoutUserInput | DemandaUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DemandaScalarWhereInput | DemandaScalarWhereInput[]
-  }
-
   export type UserSecretariaUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserSecretariaCreateWithoutUserInput, UserSecretariaUncheckedCreateWithoutUserInput> | UserSecretariaCreateWithoutUserInput[] | UserSecretariaUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSecretariaCreateOrConnectWithoutUserInput | UserSecretariaCreateOrConnectWithoutUserInput[]
@@ -17454,6 +17443,28 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -17466,17 +17477,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -17507,6 +17507,47 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -17522,31 +17563,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -17585,41 +17601,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type UserCreateWithoutDemandasInput = {
-    id?: string
-    name: string
-    email: string
-    createdAt?: Date | string
-    emailVerified?: boolean
-    image?: string | null
-    updatedAt?: Date | string
-    acesso?: AcessoCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutDemandasInput = {
-    id?: string
-    name: string
-    email: string
-    createdAt?: Date | string
-    emailVerified?: boolean
-    image?: string | null
-    updatedAt?: Date | string
-    acesso?: AcessoUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutDemandasInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDemandasInput, UserUncheckedCreateWithoutDemandasInput>
   }
 
   export type VeiculoCreateWithoutDemandasInput = {
@@ -17689,47 +17670,6 @@ export namespace Prisma {
   export type SecretariaCreateOrConnectWithoutDemandasInput = {
     where: SecretariaWhereUniqueInput
     create: XOR<SecretariaCreateWithoutDemandasInput, SecretariaUncheckedCreateWithoutDemandasInput>
-  }
-
-  export type UserUpsertWithoutDemandasInput = {
-    update: XOR<UserUpdateWithoutDemandasInput, UserUncheckedUpdateWithoutDemandasInput>
-    create: XOR<UserCreateWithoutDemandasInput, UserUncheckedCreateWithoutDemandasInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDemandasInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDemandasInput, UserUncheckedUpdateWithoutDemandasInput>
-  }
-
-  export type UserUpdateWithoutDemandasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    acesso?: AcessoUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDemandasInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    acesso?: AcessoUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VeiculoUpsertWithoutDemandasInput = {
@@ -17851,7 +17791,6 @@ export namespace Prisma {
     acesso?: AcessoCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
   }
 
@@ -17866,7 +17805,6 @@ export namespace Prisma {
     acesso?: AcessoUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -17893,19 +17831,19 @@ export namespace Prisma {
   export type DemandaCreateWithoutVeiculoInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    user: UserCreateNestedOneWithoutDemandasInput
+    lotacao?: number | null
+    kmRodado?: number | null
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
   }
@@ -17913,19 +17851,19 @@ export namespace Prisma {
   export type DemandaUncheckedCreateWithoutVeiculoInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     motoristaId?: string | null
     secretariaId?: string | null
   }
@@ -17989,7 +17927,6 @@ export namespace Prisma {
     acesso?: AcessoUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
   }
 
@@ -18004,7 +17941,6 @@ export namespace Prisma {
     acesso?: AcessoUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -18051,19 +17987,19 @@ export namespace Prisma {
     NOT?: DemandaScalarWhereInput | DemandaScalarWhereInput[]
     id?: StringFilter<"Demanda"> | string
     emailSolicitante?: StringFilter<"Demanda"> | string
-    demandaDetalhe?: StringNullableFilter<"Demanda"> | string | null
+    demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
     secretariaSolicitante?: StringFilter<"Demanda"> | string
     destino?: StringFilter<"Demanda"> | string
-    dataHoraIda?: StringNullableFilter<"Demanda"> | string | null
-    dataHoraVolta?: StringNullableFilter<"Demanda"> | string | null
+    dataHoraIda?: StringFilter<"Demanda"> | string
+    dataHoraVolta?: StringFilter<"Demanda"> | string
     origem?: StringFilter<"Demanda"> | string
     contato?: StringFilter<"Demanda"> | string
     statusDemanda?: StringFilter<"Demanda"> | string
     createdAt?: DateTimeFilter<"Demanda"> | Date | string
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
-    lotacao?: StringFilter<"Demanda"> | string
-    userId?: StringFilter<"Demanda"> | string
+    lotacao?: IntNullableFilter<"Demanda"> | number | null
+    kmRodado?: IntNullableFilter<"Demanda"> | number | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
@@ -18137,19 +18073,19 @@ export namespace Prisma {
   export type DemandaCreateWithoutMotoristaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    user: UserCreateNestedOneWithoutDemandasInput
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
   }
@@ -18157,19 +18093,19 @@ export namespace Prisma {
   export type DemandaUncheckedCreateWithoutMotoristaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     secretariaId?: string | null
   }
@@ -18259,7 +18195,6 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
   }
 
@@ -18274,7 +18209,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -18315,19 +18249,19 @@ export namespace Prisma {
   export type DemandaCreateWithoutSecretariaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    user: UserCreateNestedOneWithoutDemandasInput
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
   }
@@ -18335,19 +18269,19 @@ export namespace Prisma {
   export type DemandaUncheckedCreateWithoutSecretariaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     motoristaId?: string | null
   }
@@ -18531,7 +18465,6 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSecretariaInput = {
@@ -18546,7 +18479,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSecretariaInput = {
@@ -18737,56 +18669,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DemandaCreateWithoutUserInput = {
-    id?: string
-    emailSolicitante: string
-    demandaDetalhe?: string | null
-    pessoaSolicitante: string
-    secretariaSolicitante: string
-    destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
-    origem: string
-    contato: string
-    statusDemanda?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lotacao: string
-    veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
-    motorista?: MotoristaCreateNestedOneWithoutDemandasInput
-    secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
-  }
-
-  export type DemandaUncheckedCreateWithoutUserInput = {
-    id?: string
-    emailSolicitante: string
-    demandaDetalhe?: string | null
-    pessoaSolicitante: string
-    secretariaSolicitante: string
-    destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
-    origem: string
-    contato: string
-    statusDemanda?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lotacao: string
-    veiculoId?: string | null
-    motoristaId?: string | null
-    secretariaId?: string | null
-  }
-
-  export type DemandaCreateOrConnectWithoutUserInput = {
-    where: DemandaWhereUniqueInput
-    create: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput>
-  }
-
-  export type DemandaCreateManyUserInputEnvelope = {
-    data: DemandaCreateManyUserInput | DemandaCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserSecretariaCreateWithoutUserInput = {
     secretaria: SecretariaCreateNestedOneWithoutUsersInput
   }
@@ -18905,22 +18787,6 @@ export namespace Prisma {
     data: XOR<VeiculoUpdateManyMutationInput, VeiculoUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type DemandaUpsertWithWhereUniqueWithoutUserInput = {
-    where: DemandaWhereUniqueInput
-    update: XOR<DemandaUpdateWithoutUserInput, DemandaUncheckedUpdateWithoutUserInput>
-    create: XOR<DemandaCreateWithoutUserInput, DemandaUncheckedCreateWithoutUserInput>
-  }
-
-  export type DemandaUpdateWithWhereUniqueWithoutUserInput = {
-    where: DemandaWhereUniqueInput
-    data: XOR<DemandaUpdateWithoutUserInput, DemandaUncheckedUpdateWithoutUserInput>
-  }
-
-  export type DemandaUpdateManyWithWhereWithoutUserInput = {
-    where: DemandaScalarWhereInput
-    data: XOR<DemandaUpdateManyMutationInput, DemandaUncheckedUpdateManyWithoutUserInput>
-  }
-
   export type UserSecretariaUpsertWithWhereUniqueWithoutUserInput = {
     where: UserSecretariaWhereUniqueInput
     update: XOR<UserSecretariaUpdateWithoutUserInput, UserSecretariaUncheckedUpdateWithoutUserInput>
@@ -18948,7 +18814,6 @@ export namespace Prisma {
     acesso?: AcessoCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
   }
 
@@ -18963,7 +18828,6 @@ export namespace Prisma {
     acesso?: AcessoUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -18994,7 +18858,6 @@ export namespace Prisma {
     acesso?: AcessoUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
   }
 
@@ -19009,7 +18872,6 @@ export namespace Prisma {
     acesso?: AcessoUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -19024,7 +18886,6 @@ export namespace Prisma {
     acesso?: AcessoCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     veiculos?: VeiculoCreateNestedManyWithoutUserInput
-    demandas?: DemandaCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaCreateNestedManyWithoutUserInput
   }
 
@@ -19039,7 +18900,6 @@ export namespace Prisma {
     acesso?: AcessoUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     veiculos?: VeiculoUncheckedCreateNestedManyWithoutUserInput
-    demandas?: DemandaUncheckedCreateNestedManyWithoutUserInput
     secretaria?: UserSecretariaUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -19070,7 +18930,6 @@ export namespace Prisma {
     acesso?: AcessoUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
   }
 
@@ -19085,26 +18944,25 @@ export namespace Prisma {
     acesso?: AcessoUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DemandaCreateManyVeiculoInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     motoristaId?: string | null
     secretariaId?: string | null
   }
@@ -19112,19 +18970,19 @@ export namespace Prisma {
   export type DemandaUpdateWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
   }
@@ -19132,19 +18990,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19152,19 +19010,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateManyWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19218,19 +19076,19 @@ export namespace Prisma {
   export type DemandaCreateManyMotoristaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     secretariaId?: string | null
   }
@@ -19238,19 +19096,19 @@ export namespace Prisma {
   export type DemandaUpdateWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
   }
@@ -19258,19 +19116,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19278,19 +19136,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateManyWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19306,7 +19164,6 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUpdateManyWithoutUserNestedInput
   }
 
@@ -19321,7 +19178,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
     secretaria?: UserSecretariaUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -19338,19 +19194,19 @@ export namespace Prisma {
   export type DemandaCreateManySecretariaInput = {
     id?: string
     emailSolicitante: string
-    demandaDetalhe?: string | null
+    demandaDetalhe: string
     pessoaSolicitante: string
     secretariaSolicitante: string
     destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
+    dataHoraIda: string
+    dataHoraVolta: string
     origem: string
     contato: string
     statusDemanda?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    lotacao: string
-    userId: string
+    lotacao?: number | null
+    kmRodado?: number | null
     veiculoId?: string | null
     motoristaId?: string | null
   }
@@ -19379,19 +19235,19 @@ export namespace Prisma {
   export type DemandaUpdateWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutDemandasNestedInput
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
   }
@@ -19399,19 +19255,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19419,19 +19275,19 @@ export namespace Prisma {
   export type DemandaUncheckedUpdateManyWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
     emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
+    demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
     secretariaSolicitante?: StringFieldUpdateOperationsInput | string
     destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
+    dataHoraIda?: StringFieldUpdateOperationsInput | string
+    dataHoraVolta?: StringFieldUpdateOperationsInput | string
     origem?: StringFieldUpdateOperationsInput | string
     contato?: StringFieldUpdateOperationsInput | string
     statusDemanda?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    lotacao?: NullableIntFieldUpdateOperationsInput | number | null
+    kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19515,7 +19371,6 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSecretariaInput = {
@@ -19530,7 +19385,6 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     veiculos?: VeiculoUncheckedUpdateManyWithoutUserNestedInput
-    demandas?: DemandaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutSecretariaInput = {
@@ -19577,26 +19431,6 @@ export namespace Prisma {
     crlvVeiculo: string
     secretariaId: string
     modeloId?: string | null
-  }
-
-  export type DemandaCreateManyUserInput = {
-    id?: string
-    emailSolicitante: string
-    demandaDetalhe?: string | null
-    pessoaSolicitante: string
-    secretariaSolicitante: string
-    destino: string
-    dataHoraIda?: string | null
-    dataHoraVolta?: string | null
-    origem: string
-    contato: string
-    statusDemanda?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lotacao: string
-    veiculoId?: string | null
-    motoristaId?: string | null
-    secretariaId?: string | null
   }
 
   export type AcessoUpdateWithoutUserInput = {
@@ -19722,66 +19556,6 @@ export namespace Prisma {
     crlvVeiculo?: StringFieldUpdateOperationsInput | string
     secretariaId?: StringFieldUpdateOperationsInput | string
     modeloId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DemandaUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
-    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
-    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
-    destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
-    origem?: StringFieldUpdateOperationsInput | string
-    contato?: StringFieldUpdateOperationsInput | string
-    statusDemanda?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
-    motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
-    secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
-  }
-
-  export type DemandaUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
-    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
-    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
-    destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
-    origem?: StringFieldUpdateOperationsInput | string
-    contato?: StringFieldUpdateOperationsInput | string
-    statusDemanda?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
-    motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
-    secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DemandaUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    emailSolicitante?: StringFieldUpdateOperationsInput | string
-    demandaDetalhe?: NullableStringFieldUpdateOperationsInput | string | null
-    pessoaSolicitante?: StringFieldUpdateOperationsInput | string
-    secretariaSolicitante?: StringFieldUpdateOperationsInput | string
-    destino?: StringFieldUpdateOperationsInput | string
-    dataHoraIda?: NullableStringFieldUpdateOperationsInput | string | null
-    dataHoraVolta?: NullableStringFieldUpdateOperationsInput | string | null
-    origem?: StringFieldUpdateOperationsInput | string
-    contato?: StringFieldUpdateOperationsInput | string
-    statusDemanda?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lotacao?: StringFieldUpdateOperationsInput | string
-    veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
-    motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
-    secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSecretariaUpdateWithoutUserInput = {
