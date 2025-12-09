@@ -72,6 +72,7 @@ export function DataTableVeiculos({
 
   const columns: ColumnDef<VeiculoType>[] = [
     {
+      id: "modelo",
       accessorKey: "modelo.modelo",
       header: ({ column }) => {
         return (
@@ -84,7 +85,9 @@ export function DataTableVeiculos({
           </Button>
         );
       },
-      cell: ({ row }) => <div className="">{row.getValue("modelo")}</div>,
+      cell: ({ row }) => (
+        <div className="">{(row.original as any).modelo?.modelo || ""}</div>
+      ),
     },
     {
       accessorKey: "placaVeiculo",
@@ -93,10 +96,6 @@ export function DataTableVeiculos({
     {
       accessorKey: "proprietarioVeiculo",
       header: "Proprietário",
-    },
-    {
-      accessorKey: "modelo.modelo",
-      header: "Modelo",
     },
     {
       id: "actions",
@@ -126,7 +125,7 @@ export function DataTableVeiculos({
     },
   });
 
-  const column = table.getColumn("placaVeiculo");
+  const filterModelo = table.getColumn("modelo");
 
   const modeloOptions = [
     { label: "Todos", value: "" },
@@ -141,18 +140,18 @@ export function DataTableVeiculos({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              {(table.getColumn("modelo.modelo")?.getFilterValue() as string) ??
+              {(table.getColumn("modelo")?.getFilterValue() as string) ??
                 "Todos"}
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {modeloOptions.map((status) => (
+            {modeloOptions.map((modelo) => (
               <DropdownMenuItem
-                key={status.value}
-                onClick={() => column?.setFilterValue(status.value)}
+                key={modelo.value}
+                onClick={() => filterModelo?.setFilterValue(modelo.value)}
               >
-                {status.label}
+                {modelo.label}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

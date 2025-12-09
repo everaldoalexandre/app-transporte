@@ -1,10 +1,23 @@
 import { MenuNavigationCompleto } from "@/components/MenuNavbar";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const userSession = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (userSession) {
+    redirect("/demandas");
+  } else {
+    redirect("/SolicitacaoDemandas");
+  }
+
   return (
     <div className="font-sans grid min-h-screen bg-gray-100">
       <main className="flex flex-col row-start-2 justify-items-center items-center sm:items-start">
-        <MenuNavigationCompleto/>
+        <MenuNavigationCompleto />
         <div className="flex items-center justify-center w-full pt-26">
           <h1>HOME</h1>
         </div>
