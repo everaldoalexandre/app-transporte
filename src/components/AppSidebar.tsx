@@ -29,7 +29,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
+} from "@/components/ui/collapsible";
 
 const items = [
   {
@@ -41,11 +41,6 @@ const items = [
     title: "Frota",
     url: "/frota",
     icon: Car,
-  },
-  {
-    title: "Painel",
-    url: "/",
-    icon: MonitorCog,
   },
 ];
 
@@ -87,22 +82,37 @@ export default function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-            </SidebarMenu>
-            <SidebarMenu>
-              <Collapsible defaultOpen className="group/collapsible">
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton />
-                  </CollapsibleTrigger>
-                  dsa
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuSubItem />
-                      asddassas
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
+              {userAccessLevel === "administrador" && (
+                <Collapsible defaultOpen className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                        <span className="flex w-full gap-2">
+                          <MonitorCog className="w-4" />
+                          Painel
+                        </span>
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        <SidebarMenuButton>
+                          <a href="/frota" className="flex gap-2">
+                            <MonitorCog className="w-4" />
+                            <span>Usuário</span>
+                          </a>
+                        </SidebarMenuButton>
+                        <SidebarMenuButton>
+                          <a href="/frota" className="flex gap-2">
+                            <MonitorCog className="w-4" />
+                            <span>Motorista</span>
+                          </a>
+                        </SidebarMenuButton>
+                        <SidebarMenuSubItem />
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

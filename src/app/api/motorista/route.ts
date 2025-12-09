@@ -31,9 +31,6 @@ async function getAuthenticatedUser() {
 
 export async function GET(request: Request) {
   try {
-    const url = new URL(request.url);
-    const search = url.searchParams.get("search") || "";
-
     const user = await getAuthenticatedUser();
 
     if (!user) {
@@ -68,21 +65,20 @@ export async function GET(request: Request) {
       usuario.acesso.length > 0 ? usuario.acesso[0].nivel : "usuário";
     const secretariasIds = usuario.secretaria.map((s) => s.secretariaId);
 
-    const motorista = await prisma.motorista.findMany({
+    const motoristas = await prisma.motorista.findMany({
       where: {
         secretariaId: { in: secretariasIds },
-        nome: { contains: search, mode: "insensitive" },
       },
       include: {
         secretaria: true,
       },
     });
 
-    return new Response(JSON.stringify({ motorista, userAccessLevel }), {
+    return new Response(JSON.stringify({ motoristas, userAccessLevel }), {
       status: 200,
     });
   } catch (error) {
-    console.error("Error fetching veiculos:", error);
+    console.error("Error fetching motoristas:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
       status: 500,
     });
