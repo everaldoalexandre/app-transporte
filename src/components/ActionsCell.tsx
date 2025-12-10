@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -28,7 +28,7 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { DropMenu } from "./StatusDemanda";
-import { Demanda, Veiculo, Motorista } from "@/generated/prisma";
+import { Demanda, Veiculo, Motorista, User } from "@/generated/prisma";
 import { DemandaType } from "./Types";
 import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 
@@ -43,6 +43,8 @@ export function ActionsCell({
   const [demandaEdit, setDemandaEdit] = useState<DemandaType | null>(null);
   const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
   const [motoristaEdit, setMotoristaEdit] = useState<Motorista | null>(null);
+  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] =
     useState(false);
@@ -64,6 +66,11 @@ export function ActionsCell({
     []
   );
   const [loadingMotorista, setLoadingMotorista] = useState(false);
+
+  const isAdmin = (userAccessLevel: string | null) =>
+    ["administrador"].includes(userAccessLevel ?? "");
+  const isEditor = (userAccessLevel: string | null) =>
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
 
   function openModalDeleteDemanda(demanda: DemandaType) {
     setDemandaDelete(demanda);
@@ -293,6 +300,20 @@ export function ActionsCell({
     return () => clearTimeout(timer);
   }, [queryMotorista]);
 
+  useEffect(() => {
+    async function carregarUser() {
+      try {
+        const res = await fetch("/api/usuario");
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
+      }
+    }
+    carregarUser();
+  }, []);
+
   return (
     <div>
       <DropdownMenu>
@@ -307,20 +328,30 @@ export function ActionsCell({
             <FileText />
             Detalhes
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
-            <ClipboardPen /> Editar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openModalFinalizarDemanda(demanda)}>
-            <Check />
-            Finalizar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
-            <X />
-            Deletar
-          </DropdownMenuItem>
+          {isEditor(userAccessLevel) && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => openModalEditDemanda(demanda)}>
+                <ClipboardPen /> Editar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => openModalFinalizarDemanda(demanda)}
+              >
+                <Check />
+                Finalizar
+              </DropdownMenuItem>
+            </>
+          )}
+          {isAdmin(userAccessLevel) && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
+                <X />
+                Deletar
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog
@@ -797,9 +828,11 @@ export function ActionsCell({
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => openModalEditDemanda(demanda)}>
-              Editar
-            </AlertDialogAction>
+            {isEditor(userAccessLevel) && (
+              <AlertDialogAction onClick={() => openModalEditDemanda(demanda)}>
+                Editar
+              </AlertDialogAction>
+            )}
             <AlertDialogCancel>Fechar</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

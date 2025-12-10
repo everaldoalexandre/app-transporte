@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -21,6 +21,7 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { VeiculoType } from "@/components/Types";
+import { User } from "@/generated/prisma";
 
 export function ActionsCellVeiculos({
   veiculo,
@@ -32,11 +33,18 @@ export function ActionsCellVeiculos({
   const [veiculos, setVeiculos] = useState<VeiculoType[]>([]);
   const [veiculoEdit, setVeiculoEdit] = useState<VeiculoType | null>(null);
   const [apagarVeiculo, setApagarVeiculo] = useState<VeiculoType | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
 
   const [showDialogDetalheVeiculo, setShowDialogDetalheVeiculo] =
     useState(false);
   const [showDialogEditVeiculo, setShowDialogEditVeiculo] = useState(false);
   const [showDialogDeleteVeiculo, setShowDialogDeleteVeiculo] = useState(false);
+
+  const isAdmin = (userAccessLevel: string | null) =>
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
+  const isEditor = (userAccessLevel: string | null) =>
+    ["editor"].includes(userAccessLevel ?? "");
 
   function openDialogDeleteVeiculo(veiculo: VeiculoType) {
     setApagarVeiculo(veiculo);
@@ -52,6 +60,26 @@ export function ActionsCellVeiculos({
     setVeiculoEdit(veiculo);
     setShowDialogEditVeiculo(true);
   }
+
+  const carregado = useRef(false);
+
+  useEffect(() => {
+    if (carregado.current) return;
+    carregado.current = true;
+
+    console.log("Fetching user data...");
+    async function carregarUser() {
+      try {
+        const res = await fetch("/api/usuario");
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
+      }
+    }
+    carregarUser();
+  }, []);
 
   async function saveEditVeiculo(veiculoEdit: VeiculoType) {
     if (!veiculoEdit) {
@@ -119,19 +147,6 @@ export function ActionsCellVeiculos({
     }
   }
 
-  async function fetchVeiculos() {
-    try {
-      const response = await fetch("/api/veiculo", { cache: "no-store" });
-      if (!response.ok) {
-        console.error("Falha ao buscar veiculos:", response.statusText);
-        return;
-      }
-      const data = await response.json();
-      setVeiculos(data);
-    } catch (error) {
-      console.error("Erro ao buscar veiculos:", error);
-    }
-  }
   return (
     <div>
       <DropdownMenu>
@@ -146,17 +161,26 @@ export function ActionsCellVeiculos({
             <FileText />
             Detalhes
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogEditVeiculo(veiculo)}>
-            <Eraser />
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogDeleteVeiculo(veiculo)}>
-            <X />
-            Deletar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {isEditor(userAccessLevel) && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => openDialogEditVeiculo(veiculo)}>
+                <Eraser />
+                Editar
+              </DropdownMenuItem>
+            </>
+          )}
+          {isAdmin(userAccessLevel) && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => openDialogDeleteVeiculo(veiculo)}
+              >
+                <X />
+                Deletar
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

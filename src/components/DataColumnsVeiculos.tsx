@@ -35,6 +35,7 @@ import { ActionsCellVeiculos } from "@/components/ActionsCellVeiculos";
 import { NovoVeiculo } from "./NovoVeiculo";
 import { VeiculoType } from "@/components/Types";
 import { NovoMotorista } from "./NovoMotorista";
+import { set } from "better-auth";
 
 export function DataTableVeiculos({
   data: initialData,
@@ -44,6 +45,7 @@ export function DataTableVeiculos({
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
   const [openDialogNovoMotorista, setOpenDialogNovoMotorista] = useState(false);
   const [veiculos, setVeiculos] = useState<VeiculoType[]>(initialData);
+  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -65,6 +67,7 @@ export function DataTableVeiculos({
       }
       const data = await response.json();
       setVeiculos(data.veiculos);
+      setUserAccessLevel(data.userAccessLevel);
     } catch (error) {
       console.error("Erro o buscar veiculos:", error);
     }
@@ -198,14 +201,6 @@ export function DataTableVeiculos({
         <NovoVeiculo
           openNovoVeiculo={openDialogNovoVeiculo}
           openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
-          onRefresh={fetchVeiculos}
-        />
-        <Button onClick={() => setOpenDialogNovoMotorista(true)}>
-          AddMotorista
-        </Button>
-        <NovoMotorista
-          openNovoMotorista={openDialogNovoMotorista}
-          openChangeNovoMotorista={setOpenDialogNovoMotorista}
           onRefresh={fetchVeiculos}
         />
       </div>
