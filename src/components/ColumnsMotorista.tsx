@@ -124,7 +124,7 @@ export function TableMotoristas({ data: initialData }: { data: Motorista[] }) {
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filtre por placa"
+          placeholder="Filtre por nome"
           value={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("nome")?.setFilterValue(event.target.value)

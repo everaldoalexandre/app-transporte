@@ -96,13 +96,13 @@ export default function AppSidebar() {
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         <SidebarMenuButton>
-                          <a href="/frota" className="flex gap-2">
+                          <a href="/usuario" className="flex gap-2">
                             <MonitorCog className="w-4" />
                             <span>Usuário</span>
                           </a>
                         </SidebarMenuButton>
                         <SidebarMenuButton>
-                          <a href="/frota" className="flex gap-2">
+                          <a href="/motorista" className="flex gap-2">
                             <MonitorCog className="w-4" />
                             <span>Motorista</span>
                           </a>
