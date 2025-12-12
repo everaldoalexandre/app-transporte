@@ -139,9 +139,18 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!motoristaNovo.secretariaId) {
+      return new NextResponse(
+        JSON.stringify({ error: "Secretaria é obrigatórios." }),
+        { status: 400 }
+      );
+    }
+
     const motoristaCriado = await prisma.motorista.create({
       data: {
-        ...motoristaNovo,
+        nome: motoristaNovo.nome,
+        contato: motoristaNovo.contato,
+        secretariaId: motoristaNovo.secretariaId,
       },
     });
 
@@ -208,7 +217,11 @@ export async function PUT(request: Request) {
 
     await prisma.motorista.update({
       where: { id },
-      data: updatedMotorista,
+      data: {
+        nome: updatedMotorista.nome,
+        contato: updatedMotorista.contato,
+        secretariaId: updatedMotorista.secretariaId,
+      },
     });
 
     return new Response(

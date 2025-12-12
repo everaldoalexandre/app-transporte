@@ -37,6 +37,8 @@ import { DemandaType } from "./Types";
 export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [user, setUser] = useState(null);
+  const [userAccessLevel, setUserAccessLevel] = useState(null);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -46,6 +48,20 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
 
   useEffect(() => {
     fetchDemandas();
+  }, []);
+
+  useEffect(() => {
+    async function carregarUser() {
+      try {
+        const res = await fetch("/api/usuario");
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
+      }
+    }
+    carregarUser();
   }, []);
 
   async function fetchDemandas() {
@@ -108,7 +124,12 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
-        <ActionsCell demanda={row.original} onRefresh={fetchDemandas} />
+        <ActionsCell
+          demanda={row.original}
+          onRefresh={fetchDemandas}
+          user={user}
+          userAccessLevel={userAccessLevel}
+        />
       ),
     },
   ];

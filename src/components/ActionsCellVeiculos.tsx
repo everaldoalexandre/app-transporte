@@ -26,15 +26,17 @@ import { User } from "@/generated/prisma";
 export function ActionsCellVeiculos({
   veiculo,
   onRefresh,
+  user,
+  userAccessLevel,
 }: {
   veiculo: VeiculoType;
   onRefresh: () => void;
+  user: User | null;
+  userAccessLevel: string | null;
 }) {
   const [veiculos, setVeiculos] = useState<VeiculoType[]>([]);
   const [veiculoEdit, setVeiculoEdit] = useState<VeiculoType | null>(null);
   const [apagarVeiculo, setApagarVeiculo] = useState<VeiculoType | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
 
   const [showDialogDetalheVeiculo, setShowDialogDetalheVeiculo] =
     useState(false);
@@ -60,26 +62,6 @@ export function ActionsCellVeiculos({
     setVeiculoEdit(veiculo);
     setShowDialogEditVeiculo(true);
   }
-
-  const carregado = useRef(false);
-
-  useEffect(() => {
-    if (carregado.current) return;
-    carregado.current = true;
-
-    console.log("Fetching user data...");
-    async function carregarUser() {
-      try {
-        const res = await fetch("/api/usuario");
-        const data = await res.json();
-        setUser(data.usuario);
-        setUserAccessLevel(data.userAccessLevel);
-      } catch (error) {
-        console.error("Erro ao carregar usuário:", error);
-      }
-    }
-    carregarUser();
-  }, []);
 
   async function saveEditVeiculo(veiculoEdit: VeiculoType) {
     if (!veiculoEdit) {

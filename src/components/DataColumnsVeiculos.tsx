@@ -34,8 +34,6 @@ import { Input } from "./ui/input";
 import { ActionsCellVeiculos } from "@/components/ActionsCellVeiculos";
 import { NovoVeiculo } from "./NovoVeiculo";
 import { VeiculoType } from "@/components/Types";
-import { NovoMotorista } from "./NovoMotorista";
-import { set } from "better-auth";
 
 export function DataTableVeiculos({
   data: initialData,
@@ -43,9 +41,9 @@ export function DataTableVeiculos({
   data: VeiculoType[];
 }) {
   const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
-  const [openDialogNovoMotorista, setOpenDialogNovoMotorista] = useState(false);
   const [veiculos, setVeiculos] = useState<VeiculoType[]>(initialData);
-  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
+  const [user, setUser] = useState(null);
+  const [userAccessLevel, setUserAccessLevel] = useState(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -56,6 +54,20 @@ export function DataTableVeiculos({
 
   useEffect(() => {
     fetchVeiculos();
+  }, []);
+
+  useEffect(() => {
+    async function carregarUser() {
+      try {
+        const res = await fetch("/api/usuario");
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
+      }
+    }
+    carregarUser();
   }, []);
 
   async function fetchVeiculos() {
@@ -104,7 +116,12 @@ export function DataTableVeiculos({
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
-        <ActionsCellVeiculos veiculo={row.original} onRefresh={fetchVeiculos} />
+        <ActionsCellVeiculos
+          veiculo={row.original}
+          onRefresh={fetchVeiculos}
+          user={user}
+          userAccessLevel={userAccessLevel}
+        />
       ),
     },
   ];

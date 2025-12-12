@@ -35,16 +35,18 @@ import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 export function ActionsCell({
   demanda,
   onRefresh,
+  user,
+  userAccessLevel,
 }: {
   demanda: DemandaType;
   onRefresh: () => void;
+  user: User | null;
+  userAccessLevel: string | null;
 }) {
   const [demandas, setDemandas] = useState<Demanda[]>([]);
   const [demandaEdit, setDemandaEdit] = useState<DemandaType | null>(null);
   const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
   const [motoristaEdit, setMotoristaEdit] = useState<Motorista | null>(null);
-  const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
 
   const [showModalDetalhesDemanda, setShowModalDetalhesDemanda] =
     useState(false);
@@ -299,20 +301,6 @@ export function ActionsCell({
 
     return () => clearTimeout(timer);
   }, [queryMotorista]);
-
-  useEffect(() => {
-    async function carregarUser() {
-      try {
-        const res = await fetch("/api/usuario");
-        const data = await res.json();
-        setUser(data.usuario);
-        setUserAccessLevel(data.userAccessLevel);
-      } catch (error) {
-        console.error("Erro ao carregar usuário:", error);
-      }
-    }
-    carregarUser();
-  }, []);
 
   return (
     <div>

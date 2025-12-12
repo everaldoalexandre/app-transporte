@@ -20,18 +20,26 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { Motorista } from "@/generated/prisma";
+import { MotoristaType } from "@/components/Types";
+import { DropMotoristaSecretaria } from "./DropdownSecretarias";
 
 export function ActionsMotorista({
   motorista,
   onRefresh,
+  user,
+  userAccessLevel,
 }: {
-  motorista: Motorista;
+  motorista: MotoristaType;
   onRefresh: () => void;
+  user: string | null;
+  userAccessLevel: string | null;
 }) {
-  const [motoristas, setMotoristas] = useState<Motorista[]>([]);
-  const [motoristaEdit, setMotoristaEdit] = useState<Motorista | null>(null);
-  const [apagarMotorista, setApagarMotorista] = useState<Motorista | null>(
+  const [motoristas, setMotoristas] = useState<MotoristaType[]>([]);
+  const [motoristaEdit, setMotoristaEdit] = useState<MotoristaType | null>(
+    null
+  );
+  const [secretariaId, setSecretariaId] = useState<string>("");
+  const [apagarMotorista, setApagarMotorista] = useState<MotoristaType | null>(
     null
   );
 
@@ -41,22 +49,23 @@ export function ActionsMotorista({
   const [showDialogDeleteMotorista, setShowDialogDeleteMotorista] =
     useState(false);
 
-  function openDialogDeleteMotorista(motorista: Motorista) {
+  function openDialogDeleteMotorista(motorista: MotoristaType) {
     setApagarMotorista(motorista);
     setShowDialogDeleteMotorista(true);
   }
 
-  function openDialogDetalheMotorista(motorista: Motorista) {
+  function openDialogDetalheMotorista(motorista: MotoristaType) {
     setMotoristaEdit(motorista);
+    setSecretariaId(motorista.secretariaId ?? "");
     setShowDialogDetalheMotorista(true);
   }
 
-  function openDialogEditMotorista(motorista: Motorista) {
+  function openDialogEditMotorista(motorista: MotoristaType) {
     setMotoristaEdit(motorista);
     setShowDialogEditMotorista(true);
   }
 
-  async function saveEditMotorista(motoristaEdit: Motorista) {
+  async function saveEditMotorista(motoristaEdit: MotoristaType) {
     if (!motoristaEdit) {
       console.error("motoristaEdit não está definido");
       return;
@@ -70,9 +79,10 @@ export function ActionsMotorista({
         },
         body: JSON.stringify({
           id: motoristaEdit.id,
-          updatedMotoristas: {
+          updatedMotorista: {
             nome: motoristaEdit.nome,
             contato: motoristaEdit.contato,
+            secretariaId: motoristaEdit.secretariaId ?? null,
           },
         }),
       });
@@ -184,11 +194,11 @@ export function ActionsMotorista({
                   value={motoristaEdit?.nome ?? ""}
                   onChange={(e) =>
                     setMotoristaEdit({
-                      ...(motoristaEdit as Motorista),
+                      ...(motoristaEdit as MotoristaType),
                       nome: e.target.value,
                     })
                   }
-                  placeholder="Placa"
+                  placeholder="Nome"
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
@@ -199,12 +209,27 @@ export function ActionsMotorista({
                   value={motoristaEdit?.contato ?? ""}
                   onChange={(e) =>
                     setMotoristaEdit({
-                      ...(motoristaEdit as Motorista),
+                      ...(motoristaEdit as MotoristaType),
                       contato: e.target.value,
                     })
                   }
-                  placeholder="Chassi"
+                  placeholder="Contato"
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                />
+              </p>
+              <p>
+                <DropMotoristaSecretaria
+                  secretariaId={motoristaEdit?.secretariaId ?? ""}
+                  setSecretariaId={(value) =>
+                    setMotoristaEdit((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            secretariaId: value,
+                          }
+                        : null
+                    )
+                  }
                 />
               </p>
             </div>
@@ -243,6 +268,10 @@ export function ActionsMotorista({
                 <p>
                   <span>Contato: </span>
                   {motoristaEdit?.contato}
+                </p>
+                <p>
+                  <span>Secretaria: </span>
+                  {motoristaEdit?.secretaria?.nome || "N/A"}
                 </p>
               </div>
             </div>

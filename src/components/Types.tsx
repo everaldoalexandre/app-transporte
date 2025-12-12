@@ -1,7 +1,15 @@
-import { Demanda, Motorista, Veiculo, VeiculoModelo } from "@/generated/prisma";
+import {
+  Demanda,
+  Motorista,
+  Secretaria,
+  Veiculo,
+  VeiculoModelo,
+} from "@/generated/prisma";
 
 export type DemandaType = Demanda & { veiculo: Veiculo | null } & {
   motorista: Motorista | null;
 };
 
-export type VeiculoType = Veiculo & { modeloVeiculo: VeiculoModelo | null };
+export type VeiculoType = Veiculo & { modelo: VeiculoModelo | null };
+
+export type MotoristaType = Motorista & { secretaria: Secretaria | null };

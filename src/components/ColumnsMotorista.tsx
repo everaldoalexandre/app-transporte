@@ -32,12 +32,18 @@ import {
 } from "./ui/table";
 import { Input } from "./ui/input";
 import { ActionsMotorista } from "@/components/ActionsMotorista";
-import { Motorista } from "@/generated/prisma";
+import { MotoristaType } from "@/components/Types";
 import { NovoMotorista } from "./NovoMotorista";
 
-export function TableMotoristas({ data: initialData }: { data: Motorista[] }) {
+export function TableMotoristas({
+  data: initialData,
+}: {
+  data: MotoristaType[];
+}) {
   const [openDialogNovoMotorista, setOpenDialogNovoMotorista] = useState(false);
-  const [motoristas, setMotoristas] = useState<Motorista[]>(initialData);
+  const [motoristas, setMotoristas] = useState<MotoristaType[]>(initialData);
+  const [user, setUser] = useState(null);
+  const [userAccessLevel, setUserAccessLevel] = useState(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -48,6 +54,20 @@ export function TableMotoristas({ data: initialData }: { data: Motorista[] }) {
 
   useEffect(() => {
     fetchMotoristas();
+  }, []);
+
+  useEffect(() => {
+    async function carregarUser() {
+      try {
+        const res = await fetch("/api/usuario");
+        const data = await res.json();
+        setUser(data.usuario);
+        setUserAccessLevel(data.userAccessLevel);
+      } catch (error) {
+        console.error("Erro ao carregar usuário:", error);
+      }
+    }
+    carregarUser();
   }, []);
 
   async function fetchMotoristas() {
@@ -64,7 +84,7 @@ export function TableMotoristas({ data: initialData }: { data: Motorista[] }) {
     }
   }
 
-  const columns: ColumnDef<Motorista>[] = [
+  const columns: ColumnDef<MotoristaType>[] = [
     {
       id: "nome",
       accessorKey: "nome",
@@ -88,18 +108,24 @@ export function TableMotoristas({ data: initialData }: { data: Motorista[] }) {
       header: "Contato",
     },
     {
+      accessorKey: "secretaria.nome",
+      header: "Secretaria",
+    },
+    {
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
         <ActionsMotorista
           motorista={row.original}
           onRefresh={fetchMotoristas}
+          user={user}
+          userAccessLevel={userAccessLevel}
         />
       ),
     },
   ];
 
-  const table = useReactTable<Motorista>({
+  const table = useReactTable<MotoristaType>({
     data: motoristas,
     columns,
     onSortingChange: setSorting,
