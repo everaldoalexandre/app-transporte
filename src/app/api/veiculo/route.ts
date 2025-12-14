@@ -16,7 +16,11 @@ async function getAuthenticatedUser() {
     where: { id: session.user.id },
     include: {
       acesso: true,
-      secretaria: true,
+      secretarias: {
+        select: {
+          secretariaId: true,
+        },
+      },
     },
   });
 
@@ -25,7 +29,7 @@ async function getAuthenticatedUser() {
   return {
     id: user.id,
     userAccessLevel: user.acesso?.[0]?.nivel ?? "usuário",
-    secretariasIds: user.secretaria?.map((s) => s.secretariaId) || [],
+    secretariasIds: user.secretarias?.map((s) => s.secretariaId) || [],
   };
 }
 
@@ -48,7 +52,7 @@ export async function GET(request: Request) {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        secretaria: {
+        secretarias: {
           include: {
             secretaria: true,
           },
@@ -66,7 +70,7 @@ export async function GET(request: Request) {
 
     const userAccessLevel =
       usuario.acesso.length > 0 ? usuario.acesso[0].nivel : "usuário";
-    const secretariasIds = usuario.secretaria.map((s) => s.secretariaId);
+    const secretariasIds = usuario.secretarias.map((s) => s.secretariaId);
 
     const veiculos = await prisma.veiculo.findMany({
       where: {
@@ -96,38 +100,20 @@ export async function POST(request: Request) {
     const user = await getAuthenticatedUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthenticated user" },
-        { status: 401 }
-      );
-    }
-
-    const userId = user.id;
-    const usuario = await prisma.user.findUnique({
-      where: { id: userId },
-      include: {
-        secretaria: true,
-      },
-    });
-
-    if (!usuario) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não encontrado" }),
         { status: 404 }
       );
     }
 
-    if (!usuario.secretaria || usuario.secretaria.length === 0) {
+    if (!user.secretariasIds || user.secretariasIds.length === 0) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
 
-    const secretariaId = usuario.secretaria[0].secretariaId;
-
-    const body = await request.json();
-    const { veiculoNovo } = body;
+    const { veiculoNovo } = await request.json();
 
     if (!veiculoNovo) {
       return new NextResponse(
@@ -145,16 +131,25 @@ export async function POST(request: Request) {
       );
     }
 
+    const secretariaId = user.secretariasIds[0];
+
     const veiculoCriado = await prisma.veiculo.create({
       data: {
-        ...veiculoNovo,
+        placaVeiculo: veiculoNovo.placaVeiculo,
+        chassiVeiculo: veiculoNovo.chassiVeiculo ?? "",
+        renavamVeiculo: veiculoNovo.renavamVeiculo ?? "",
+        proprietarioVeiculo: veiculoNovo.proprietarioVeiculo ?? "",
         crlvVeiculo: veiculoNovo.crlvVeiculo ?? "",
-        user: { connect: { id: userId } },
+        user: { connect: { id: user.id } },
         secretaria: { connect: { id: secretariaId } },
+
+        ...(veiculoNovo.modeloId && {
+          modelo: { connect: { id: veiculoNovo.modeloId } },
+        }),
       },
     });
 
-    return new Response(JSON.stringify(veiculoCriado), { status: 201 });
+    return new Response(JSON.stringify({ veiculoCriado }), { status: 201 });
   } catch (error) {
     console.error("Error processing request:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
@@ -217,7 +212,14 @@ export async function PUT(request: Request) {
 
     await prisma.veiculo.update({
       where: { id },
-      data: updatedVeiculos,
+      data: {
+        placaVeiculo: updatedVeiculos.placaVeiculo,
+        chassiVeiculo: updatedVeiculos.chassiVeiculo ?? "",
+        renavamVeiculo: updatedVeiculos.renavamVeiculo ?? "",
+        proprietarioVeiculo: updatedVeiculos.proprietarioVeiculo ?? "",
+        crlvVeiculo: updatedVeiculos.crlvVeiculo ?? "",
+        modeloId: updatedVeiculos.modeloId || null,
+      },
     });
 
     return new Response(

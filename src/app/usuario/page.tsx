@@ -1,6 +1,10 @@
 import AppSidebar from "@/components/AppSidebar";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import VeiculosTable from "@/components/VeiculosTable";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import UsuariosTable from "@/components/UsuarioTable";
 
 export default function Home() {
   return (
@@ -12,10 +16,10 @@ export default function Home() {
         </div>
         <header className="flex justify-center gap-2 transition-[width,height] duration-200 ease-in-out group-has-data-[collapsible=icon]/sidebar-wrapper:justify-center">
           <div className=" mt-6 ">
-          <VeiculosTable />
+            <UsuariosTable />
           </div>
         </header>
-      </SidebarInset> 
+      </SidebarInset>
     </SidebarProvider>
   );
 }

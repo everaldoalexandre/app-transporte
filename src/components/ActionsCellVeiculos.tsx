@@ -22,6 +22,7 @@ import {
 import { Input } from "./ui/input";
 import { VeiculoType } from "@/components/Types";
 import { User } from "@/generated/prisma";
+import { DropModeloVeiculo } from "./DropdownModeloVeiculo";
 
 export function ActionsCellVeiculos({
   veiculo,
@@ -44,9 +45,9 @@ export function ActionsCellVeiculos({
   const [showDialogDeleteVeiculo, setShowDialogDeleteVeiculo] = useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
-    ["administrador", "editor"].includes(userAccessLevel ?? "");
+    ["administrador"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["editor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
 
   function openDialogDeleteVeiculo(veiculo: VeiculoType) {
     setApagarVeiculo(veiculo);
@@ -83,6 +84,7 @@ export function ActionsCellVeiculos({
             renavamVeiculo: veiculoEdit.renavamVeiculo,
             proprietarioVeiculo: veiculoEdit.proprietarioVeiculo,
             crlvVeiculo: veiculoEdit.crlvVeiculo,
+            modeloId: veiculoEdit.modeloId || null,
           },
         }),
       });
@@ -239,6 +241,21 @@ export function ActionsCellVeiculos({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
+              <p>
+                <span>Modelo: </span>
+                <DropModeloVeiculo
+                  modeloId={veiculoEdit?.modeloId ?? ""}
+                  setModeloId={(value) =>
+                    setVeiculoEdit((prev) => {
+                      if (!prev) return prev;
+                      return {
+                        ...prev,
+                        modeloId: value,
+                      };
+                    })
+                  }
+                />
+              </p>
             </div>
           </div>
           <AlertDialogFooter>
@@ -292,6 +309,9 @@ export function ActionsCellVeiculos({
                 </p>
                 <p>
                   <span>Status: </span> {}
+                </p>
+                <p>
+                  <span>Modelo: </span> {veiculoEdit?.modelo?.modelo}
                 </p>
               </div>
             </div>

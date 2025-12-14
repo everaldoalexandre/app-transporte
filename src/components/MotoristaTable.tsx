@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { TableMotoristas } from "./ColumnsMotorista";
-import { Motorista } from "@/generated/prisma";
+import { MotoristaType } from "@/components/Types";
 
 export default function MotoristasTable() {
-  const [motoristas, setMotoristas] = useState<Motorista[]>([]);
+  const [motoristas, setMotoristas] = useState<MotoristaType[]>([]);
 
   return <TableMotoristas data={motoristas} />;
 }

@@ -44,17 +44,21 @@ export function DropModeloVeiculo({
     fetchModelos();
   }, []);
 
+  const modeloSelecionado = modelos.find((m) => m.id === modeloId);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{modeloId}</Button>
+        <Button variant="outline">
+          {modeloSelecionado?.modelo ?? "Selecione o modelo"}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Modelo Veículo</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={modeloId} onValueChange={setModeloId}>
           {modelos.map((m) => (
-            <DropdownMenuRadioItem key={m.id} value={m.modelo}>
+            <DropdownMenuRadioItem key={m.id} value={m.id}>
               {m.modelo}
             </DropdownMenuRadioItem>
           ))}

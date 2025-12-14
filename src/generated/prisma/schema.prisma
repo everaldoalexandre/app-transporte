@@ -91,12 +91,13 @@ model Secretaria {
 }
 
 model UserSecretaria {
-  user User[]
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
 
-  @@id([secretariaId])
+  @@id([userId, secretariaId])
   @@map("user_on_secretaria")
 }
 
@@ -109,11 +110,11 @@ model User {
   image         String?
   updatedAt     DateTime @default(now()) @updatedAt
 
-  acesso     Acesso[]
-  sessions   Session[]
-  accounts   Account[]
-  veiculos   Veiculo[]
-  secretaria UserSecretaria[]
+  acesso      Acesso[]
+  sessions    Session[]
+  accounts    Account[]
+  veiculos    Veiculo[]
+  secretarias UserSecretaria[]
 
   @@map("user")
 }

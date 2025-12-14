@@ -16,7 +16,11 @@ async function getAuthenticatedUser() {
     where: { id: session.user.id },
     include: {
       acesso: true,
-      secretaria: true,
+      secretarias: {
+        select: {
+          secretariaId: true,
+        },
+      },
     },
   });
 
@@ -25,12 +29,15 @@ async function getAuthenticatedUser() {
   return {
     id: user.id,
     userAccessLevel: user.acesso?.[0]?.nivel ?? "usuário",
-    secretariasIds: user.secretaria?.map((s) => s.secretariaId) || [],
+    secretariasIds: user.secretarias?.map((s) => s.secretariaId) || [],
   };
 }
 
 export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
+    const search = url.searchParams.get("search") || "";
+
     const user = await getAuthenticatedUser();
 
     if (!user) {
@@ -45,7 +52,7 @@ export async function GET(request: Request) {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        secretaria: {
+        secretarias: {
           include: {
             secretaria: true,
           },
@@ -63,11 +70,12 @@ export async function GET(request: Request) {
 
     const userAccessLevel =
       usuario.acesso.length > 0 ? usuario.acesso[0].nivel : "usuário";
-    const secretariasIds = usuario.secretaria.map((s) => s.secretariaId);
+    const secretariasIds = usuario.secretarias.map((s) => s.secretariaId);
 
     const motoristas = await prisma.motorista.findMany({
       where: {
         secretariaId: { in: secretariasIds },
+        nome: { contains: search, mode: "insensitive" },
       },
       include: {
         secretaria: true,
@@ -96,29 +104,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const userId = user.id;
-    const usuario = await prisma.user.findUnique({
-      where: { id: userId },
-      include: {
-        secretaria: true,
-      },
-    });
-
-    if (!usuario) {
+    if (!["administrador", "editor"].includes(user.userAccessLevel)) {
       return new NextResponse(
-        JSON.stringify({ error: "Usuário não encontrado" }),
-        { status: 404 }
+        JSON.stringify({
+          error: "Acesso negado. Nível de acesso insuficiente.",
+        }),
+        { status: 403 }
       );
     }
 
-    if (!usuario.secretaria || usuario.secretaria.length === 0) {
+    if (!user.secretariasIds || user.secretariasIds.length === 0) {
       return new NextResponse(
         JSON.stringify({ error: "Usuário não possui secretaria vinculada" }),
         { status: 400 }
       );
     }
-
-    const secretariaId = usuario.secretaria[0].secretariaId;
 
     const body = await request.json();
     const { motoristaNovo } = body;
@@ -127,15 +127,6 @@ export async function POST(request: Request) {
       return new NextResponse(
         JSON.stringify({ error: "Dados do motorista são obrigatórios" }),
         { status: 400 }
-      );
-    }
-
-    if (!["administrador", "editor"].includes(user.userAccessLevel)) {
-      return new NextResponse(
-        JSON.stringify({
-          error: "Acesso negado. Nível de acesso insuficiente.",
-        }),
-        { status: 403 }
       );
     }
 

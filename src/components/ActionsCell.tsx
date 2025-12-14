@@ -777,10 +777,46 @@ export function ActionsCell({
                 </p>
               </div>
               <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Motorista: </span>
-                  {demandaEdit?.motorista?.nome}
-                </p>
+                <div className="flex gap-3">
+                  <p className="gap-10">
+                    <span>Motorista: </span>
+                    {demandaEdit?.motorista?.nome}
+                  </p>
+                  <p>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            const texto = `*DEMANDA DE TRANSPORTE* 
+                            *Solicitante:* ${demandaEdit?.pessoaSolicitante || "N/A"} 
+                            *Secretaria:* ${demandaEdit?.secretariaSolicitante || "N/A"}
+                            *E-mail:* ${demandaEdit?.emailSolicitante || "N/A"}
+                            *Contato:* ${demandaEdit?.contato || "N/A"}
+                            *Destino:* ${demandaEdit?.destino || "N/A"}
+                            *Local de Saída:* ${demandaEdit?.origem || "N/A"}
+                            *Horário da Saída:* ${demandaEdit?.dataHoraIda || "N/A"}
+                            *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
+                            *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
+                            *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
+                            const textoFormatado = texto
+                              .replace(/^\s+/gm, "")
+                              .trim();
+                            const WhatsAppURL = `https://wa.me/55${demandaEdit?.motorista?.contato}?text=${encodeURIComponent(
+                              textoFormatado
+                            )}`;
+                            window.open(WhatsAppURL, "_blank");
+                          }}
+                          className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
+                        >
+                          <Send />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Enviar para o Motorista</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </p>
+                </div>
                 <p>
                   <span>Placa: </span>
                   {demandaEdit?.veiculo?.placaVeiculo}

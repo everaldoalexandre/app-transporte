@@ -20,69 +20,67 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { MotoristaType } from "@/components/Types";
+import { UsuarioType } from "@/components/Types";
 import { DropMenuSecretaria } from "./DropdownSecretarias";
 
-export function ActionsMotorista({
-  motorista,
+export function ActionsUsuario({
+  usuario,
   onRefresh,
   user,
   userAccessLevel,
 }: {
-  motorista: MotoristaType;
+  usuario: UsuarioType;
   onRefresh: () => void;
   user: string | null;
   userAccessLevel: string | null;
 }) {
-  const [motoristas, setMotoristas] = useState<MotoristaType[]>([]);
-  const [motoristaEdit, setMotoristaEdit] = useState<MotoristaType | null>(
-    null
+  const [usuarios, setUsuarios] = useState<UsuarioType[]>([]);
+  const [usuarioEdit, setUsuarioEdit] = useState<UsuarioType | null>(null);
+  const [secretariaIds, setSecretariaIds] = useState<string>(
+    usuarioEdit?.secretarias?.[0]?.secretariaId ?? ""
   );
-  const [secretariaId, setSecretariaId] = useState<string>("");
-  const [apagarMotorista, setApagarMotorista] = useState<MotoristaType | null>(
-    null
-  );
+  const [apagarUsuario, setApagarUsuario] = useState<UsuarioType | null>(null);
 
-  const [showDialogDetalheMotorista, setShowDialogDetalheMotorista] =
+  const [showDialogDetalheUsuario, setShowDialogDetalheUsuario] =
     useState(false);
-  const [showDialogEditMotorista, setShowDialogEditMotorista] = useState(false);
-  const [showDialogDeleteMotorista, setShowDialogDeleteMotorista] =
-    useState(false);
+  const [showDialogEditUsuario, setShowDialogEditUsuario] = useState(false);
+  const [showDialogDeleteUsuario, setShowDialogDeleteUsuario] = useState(false);
 
-  function openDialogDeleteMotorista(motorista: MotoristaType) {
-    setApagarMotorista(motorista);
-    setShowDialogDeleteMotorista(true);
+  function openDialogDeleteUsuario(usuario: UsuarioType) {
+    setApagarUsuario(usuario);
+    setShowDialogDeleteUsuario(true);
   }
 
-  function openDialogDetalheMotorista(motorista: MotoristaType) {
-    setMotoristaEdit(motorista);
-    setSecretariaId(motorista.secretariaId ?? "");
-    setShowDialogDetalheMotorista(true);
+  function openDialogDetalheUsuario(usuario: UsuarioType) {
+    setUsuarioEdit(usuario);
+    setSecretariaIds(usuario.secretarias?.[0].secretariaId ?? "");
+    setShowDialogDetalheUsuario(true);
   }
 
-  function openDialogEditMotorista(motorista: MotoristaType) {
-    setMotoristaEdit(motorista);
-    setShowDialogEditMotorista(true);
+  function openDialogEditUsuario(usuario: UsuarioType) {
+    setUsuarioEdit(usuario);
+    setShowDialogEditUsuario(true);
   }
 
-  async function saveEditMotorista(motoristaEdit: MotoristaType) {
-    if (!motoristaEdit) {
-      console.error("motoristaEdit não está definido");
+  async function saveEditUsuario(usuarioEdit: UsuarioType) {
+    if (!usuarioEdit) {
+      console.error("usuarioEdit não está definido");
       return;
     }
 
     try {
-      const response = await fetch(`/api/motorista`, {
+      const response = await fetch(`/api/usuario`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: motoristaEdit.id,
-          updatedMotorista: {
-            nome: motoristaEdit.nome,
-            contato: motoristaEdit.contato,
-            secretariaId: motoristaEdit.secretariaId ?? null,
+          id: usuarioEdit.id,
+          updatedUsuario: {
+            nome: usuarioEdit.name,
+            contato: usuarioEdit.email,
+            secretarias:
+              usuarioEdit.secretarias?.map((s) => s.secretariaId) || [],
           },
         }),
       });
@@ -104,9 +102,9 @@ export function ActionsMotorista({
     }
   }
 
-  async function deleteMotorista(id: string) {
+  async function deleteUsuario(id: string) {
     try {
-      const response = await fetch(`/api/motorista`, {
+      const response = await fetch(`/api/usuario`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -129,17 +127,17 @@ export function ActionsMotorista({
     }
   }
 
-  async function fetchMotoristas() {
+  async function fetchUsuarios() {
     try {
-      const response = await fetch("/api/motorista", { cache: "no-store" });
+      const response = await fetch("/api/usuario", { cache: "no-store" });
       if (!response.ok) {
-        console.error("Falha ao buscar motoristas:", response.statusText);
+        console.error("Falha ao buscar usuarios:", response.statusText);
         return;
       }
       const data = await response.json();
-      setMotoristas(data);
+      setUsuarios(data.usuarios);
     } catch (error) {
-      console.error("Erro ao buscar motoristas:", error);
+      console.error("Erro ao buscar usuarios:", error);
     }
   }
   return (
@@ -152,21 +150,17 @@ export function ActionsMotorista({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => openDialogDetalheMotorista(motorista)}
-          >
+          <DropdownMenuItem onClick={() => openDialogDetalheUsuario(usuario)}>
             <FileText />
             Detalhes
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogEditMotorista(motorista)}>
+          <DropdownMenuItem onClick={() => openDialogEditUsuario(usuario)}>
             <Eraser />
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => openDialogDeleteMotorista(motorista)}
-          >
+          <DropdownMenuItem onClick={() => openDialogDeleteUsuario(usuario)}>
             <X />
             Deletar
           </DropdownMenuItem>
@@ -175,8 +169,8 @@ export function ActionsMotorista({
       </DropdownMenu>
 
       <AlertDialog
-        open={showDialogEditMotorista}
-        onOpenChange={setShowDialogEditMotorista}
+        open={showDialogEditUsuario}
+        onOpenChange={setShowDialogEditUsuario}
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
@@ -191,11 +185,11 @@ export function ActionsMotorista({
                 <span>Nome: </span>
                 <Input
                   type="text"
-                  value={motoristaEdit?.nome ?? ""}
+                  value={usuarioEdit?.name ?? ""}
                   onChange={(e) =>
-                    setMotoristaEdit({
-                      ...(motoristaEdit as MotoristaType),
-                      nome: e.target.value,
+                    setUsuarioEdit({
+                      ...(usuarioEdit as UsuarioType),
+                      name: e.target.value,
                     })
                   }
                   placeholder="Nome"
@@ -203,29 +197,33 @@ export function ActionsMotorista({
                 />
               </p>
               <p>
-                <span>Contato: </span>
+                <span>E-mail: </span>
                 <Input
-                  type="number"
-                  value={motoristaEdit?.contato ?? ""}
+                  type="email"
+                  value={usuarioEdit?.email ?? ""}
                   onChange={(e) =>
-                    setMotoristaEdit({
-                      ...(motoristaEdit as MotoristaType),
-                      contato: e.target.value,
+                    setUsuarioEdit({
+                      ...(usuarioEdit as UsuarioType),
+                      email: e.target.value,
                     })
                   }
-                  placeholder="Contato"
+                  placeholder="E-mail"
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
               <p>
                 <DropMenuSecretaria
-                  secretariaIds={motoristaEdit?.secretariaId ?? null}
-                  setSecretariaIds={(id) =>
-                    setMotoristaEdit(
-                      motoristaEdit && id
+                  secretariaIds={
+                    usuarioEdit?.secretarias?.[0]?.secretariaId ?? null
+                  }
+                  setSecretariaIds={(ids) =>
+                    setUsuarioEdit((prev) =>
+                      prev
                         ? {
-                            ...motoristaEdit,
-                            secretariaId: id,
+                            ...prev,
+                            secretariaId: prev.secretarias?.map((s, i) =>
+                              i === 0 ? { ...s, secretariaId: ids || "" } : s
+                            ),
                           }
                         : null
                     )
@@ -238,10 +236,10 @@ export function ActionsMotorista({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                if (motoristaEdit) {
-                  saveEditMotorista(motoristaEdit);
-                  setShowDialogEditMotorista(false);
-                  setMotoristaEdit(null);
+                if (usuarioEdit) {
+                  saveEditUsuario(usuarioEdit);
+                  setShowDialogEditUsuario(false);
+                  setUsuarioEdit(null);
                 }
               }}
             >
@@ -251,35 +249,33 @@ export function ActionsMotorista({
         </AlertDialogContent>
       </AlertDialog>
       <AlertDialog
-        open={showDialogDetalheMotorista}
-        onOpenChange={setShowDialogDetalheMotorista}
+        open={showDialogDetalheUsuario}
+        onOpenChange={setShowDialogDetalheUsuario}
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Informações sobre a motorista</AlertDialogTitle>
+            <AlertDialogTitle>Informações sobre a usuario</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="bg-white p-6 rounded shadow-lg">
             <div className="flex sgrid-cols-2 gap-4">
               <div className="flex flex-col gap-2 w-1/3 justify-items-start">
                 <p>
                   <span>Nome: </span>
-                  {motoristaEdit?.nome}
+                  {usuarioEdit?.name}
                 </p>
                 <p>
                   <span>Contato: </span>
-                  {motoristaEdit?.contato}
+                  {usuarioEdit?.email}
                 </p>
                 <p>
                   <span>Secretaria: </span>
-                  {motoristaEdit?.secretaria?.nome || "N/A"}
+                  {usuarioEdit?.secretarias?.[0].secretaria.nome || "N/A"}
                 </p>
               </div>
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction
-              onClick={() => openDialogEditMotorista(motorista)}
-            >
+            <AlertDialogAction onClick={() => openDialogEditUsuario(usuario)}>
               Editar
             </AlertDialogAction>
             <AlertDialogCancel>Fechar</AlertDialogCancel>
@@ -288,22 +284,22 @@ export function ActionsMotorista({
       </AlertDialog>
 
       <AlertDialog
-        open={showDialogDeleteMotorista}
-        onOpenChange={setShowDialogDeleteMotorista}
+        open={showDialogDeleteUsuario}
+        onOpenChange={setShowDialogDeleteUsuario}
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Deseja apagar a motorista?</AlertDialogTitle>
+            <AlertDialogTitle>Deseja apagar a usuario?</AlertDialogTitle>
             <AlertDialogDescription>
-              A motorista será apagada do sistema e não poderá ser recuperada.
+              A usuario será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                if (apagarMotorista?.id) {
-                  deleteMotorista(apagarMotorista?.id);
+                if (apagarUsuario?.id) {
+                  deleteUsuario(apagarUsuario?.id);
                 } else {
                 }
               }}

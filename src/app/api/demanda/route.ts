@@ -16,7 +16,7 @@ async function getAuthenticatedUser() {
     where: { id: session.user.id },
     include: {
       acesso: true,
-      secretaria: true,
+      secretarias: true,
     },
   });
 
@@ -25,7 +25,7 @@ async function getAuthenticatedUser() {
   return {
     id: user.id,
     userAccessLevel: user.acesso?.[0]?.nivel ?? "usuário",
-    secretariasIds: user.secretaria?.map((s) => s.secretariaId) || [],
+    secretariasIds: user.secretarias?.map((s) => s.secretariaId) || [],
   };
 }
 
@@ -45,7 +45,7 @@ export async function GET() {
     const usuario = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        secretaria: {
+        secretarias: {
           include: {
             secretaria: true,
           },
@@ -64,7 +64,7 @@ export async function GET() {
 
     const userAccessLevel =
       usuario.acesso.length > 0 ? usuario.acesso[0].nivel : "usuário";
-    const secretariasIds = usuario.secretaria.map((s) => s.secretariaId);
+    const secretariasIds = usuario.secretarias.map((s) => s.secretariaId);
     const veiculosIds = usuario.veiculos.map((v) => v.id);
 
     const demandas = await prisma.demanda.findMany({

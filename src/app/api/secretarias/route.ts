@@ -5,6 +5,16 @@ export async function GET() {
   try {
     const secretarias = await prisma.secretaria.findMany({
       orderBy: { nome: "asc" },
+      include: {
+        _count: {
+          select: {
+            motorista: true,
+            users: true,
+            demandas: true,
+            veiculos: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json({ secretarias });

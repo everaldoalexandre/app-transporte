@@ -176,6 +176,7 @@ exports.Prisma.SecretariaScalarFieldEnum = {
 };
 
 exports.Prisma.UserSecretariaScalarFieldEnum = {
+  userId: 'userId',
   secretariaId: 'secretariaId'
 };
 

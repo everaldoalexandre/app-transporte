@@ -91,12 +91,13 @@ model Secretaria {
 }
 
 model UserSecretaria {
-  user User[]
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
 
-  @@id([secretariaId])
+  @@id([userId, secretariaId])
   @@map("user_on_secretaria")
 }
 
@@ -113,7 +114,7 @@ model User {
   sessions   Session[]
   accounts   Account[]
   veiculos   Veiculo[]
-  secretaria UserSecretaria[]
+  secretarias UserSecretaria[]
 
   @@map("user")
 }

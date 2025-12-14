@@ -31,17 +31,13 @@ import {
   TableRow,
 } from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsCellVeiculos } from "@/components/ActionsCellVeiculos";
-import { NovoVeiculo } from "./NovoVeiculo";
-import { VeiculoType } from "@/components/Types";
+import { ActionsUsuario } from "@/components/ActionsUsuario";
+import { UsuarioType } from "@/components/Types";
+import { NovoUsuario } from "./NovoUsuario";
 
-export function DataTableVeiculos({
-  data: initialData,
-}: {
-  data: VeiculoType[];
-}) {
-  const [openDialogNovoVeiculo, setOpenDialogNovoVeiculo] = useState(false);
-  const [veiculos, setVeiculos] = useState<VeiculoType[]>(initialData);
+export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
+  const [openDialogNovoUsuario, setOpenDialogNovoUsuario] = useState(false);
+  const [usuarios, setUsuarios] = useState<UsuarioType[]>(initialData);
   const [user, setUser] = useState(null);
   const [userAccessLevel, setUserAccessLevel] = useState(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -53,7 +49,7 @@ export function DataTableVeiculos({
   const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
-    fetchVeiculos();
+    fetchUsuarios();
   }, []);
 
   useEffect(() => {
@@ -61,7 +57,7 @@ export function DataTableVeiculos({
       try {
         const res = await fetch("/api/usuario");
         const data = await res.json();
-        setUser(data.usuario);
+        setUser(data.usuarios);
         setUserAccessLevel(data.userAccessLevel);
       } catch (error) {
         console.error("Erro ao carregar usuário:", error);
@@ -70,55 +66,54 @@ export function DataTableVeiculos({
     carregarUser();
   }, []);
 
-  async function fetchVeiculos() {
+  async function fetchUsuarios() {
     try {
-      const response = await fetch("/api/veiculo", { cache: "no-store" });
+      const response = await fetch("/api/usuario", { cache: "no-store" });
       if (!response.ok) {
-        console.error("Falha ao buscar veiculos:", response.statusText);
+        console.error("Falha ao buscar usuarios:", response.statusText);
         return;
       }
       const data = await response.json();
-      setVeiculos(data.veiculos);
-      setUserAccessLevel(data.userAccessLevel);
+      setUsuarios(data.usuarios);
     } catch (error) {
-      console.error("Erro o buscar veiculos:", error);
+      console.error("Erro o buscar usuarios:", error);
     }
   }
 
-  const columns: ColumnDef<VeiculoType>[] = [
+  const columns: ColumnDef<UsuarioType>[] = [
     {
-      id: "modelo",
-      accessorKey: "modelo.modelo",
+      id: "name",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Modelo
+            Nome
             <ArrowUpDown />
           </Button>
         );
       },
       cell: ({ row }) => (
-        <div className="">{(row.original as any).modelo?.modelo || ""}</div>
+        <div className="">{(row.original as any).name || ""}</div>
       ),
     },
     {
-      accessorKey: "placaVeiculo",
-      header: "Placa",
+      accessorKey: "email",
+      header: "E-mail",
     },
     {
-      accessorKey: "proprietarioVeiculo",
-      header: "Proprietário",
+      accessorFn: (row) => row.secretarias?.[0]?.secretaria?.nome ?? "",
+      header: "Secretaria",
     },
     {
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
-        <ActionsCellVeiculos
-          veiculo={row.original}
-          onRefresh={fetchVeiculos}
+        <ActionsUsuario
+          usuario={row.original}
+          onRefresh={fetchUsuarios}
           user={user}
           userAccessLevel={userAccessLevel}
         />
@@ -126,8 +121,8 @@ export function DataTableVeiculos({
     },
   ];
 
-  const table = useReactTable<VeiculoType>({
-    data: veiculos,
+  const table = useReactTable<UsuarioType>({
+    data: usuarios,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -145,45 +140,16 @@ export function DataTableVeiculos({
     },
   });
 
-  const filterModelo = table.getColumn("modelo");
-
-  const modeloOptions = [
-    { label: "Todos", value: "" },
-    { label: "Carro", value: "Carro" },
-    { label: "Caminhão", value: "Caminhão" },
-    { label: "Ônibus", value: "Ônibus" },
-    { label: "Vans", value: "Vans" },
-  ];
+  const filterModelo = table.getColumn("name");
 
   return (
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              {(table.getColumn("modelo")?.getFilterValue() as string) ??
-                "Todos"}
-              <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {modeloOptions.map((modelo) => (
-              <DropdownMenuItem
-                key={modelo.value}
-                onClick={() => filterModelo?.setFilterValue(modelo.value)}
-              >
-                {modelo.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
         <Input
-          placeholder="Filtre por placa"
-          value={
-            (table.getColumn("placaVeiculo")?.getFilterValue() as string) ?? ""
-          }
+          placeholder="Filtre por nome"
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("placaVeiculo")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-50"
         />
@@ -213,13 +179,13 @@ export function DataTableVeiculos({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button onClick={() => setOpenDialogNovoVeiculo(true)}>
-          Adicionar Veículo
+        <Button onClick={() => setOpenDialogNovoUsuario(true)}>
+          Cadastrar Usuario
         </Button>
-        <NovoVeiculo
-          openNovoVeiculo={openDialogNovoVeiculo}
-          openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
-          onRefresh={fetchVeiculos}
+        <NovoUsuario
+          openNovoUsuario={openDialogNovoUsuario}
+          openChangeNovoUsuario={setOpenDialogNovoUsuario}
+          onRefresh={fetchUsuarios}
         />
       </div>
       <div className="overflow-hidden rounded-md border">
@@ -265,7 +231,7 @@ export function DataTableVeiculos({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Não encontramos veículos.
+                  Não encontramos usuários.
                 </TableCell>
               </TableRow>
             )}
@@ -274,7 +240,7 @@ export function DataTableVeiculos({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredRowModel().rows.length} - Veículos
+          {table.getFilteredRowModel().rows.length} - Usuários
         </div>
         <div className="text-sm text-muted-foreground flex-1">
           {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}

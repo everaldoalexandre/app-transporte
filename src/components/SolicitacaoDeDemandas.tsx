@@ -7,6 +7,9 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { DropMenuSecretaria } from "./DropdownSecretarias";
+import { SecretariaType } from "./Types";
+import { set } from "better-auth";
 
 interface EmailConfirmacao {
   from: string;
@@ -30,6 +33,7 @@ export function SolicitacaoDemandaForm({
   const [contato, setContato] = useState("");
   const [lotacao, setLotacao] = useState("");
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
+  const [secretariaId, setSecretariaId] = useState<string | null>(null);
 
   const envioEmaill = async (email: string, nome: string, detalhe: string) => {
     try {
@@ -105,6 +109,7 @@ export function SolicitacaoDemandaForm({
         demandaDetalhe,
         pessoaSolicitante,
         secretariaSolicitante,
+        secretariaId,
         destino,
         dataHoraIda: new Date(dataHoraIda).toISOString(),
         dataHoraVolta: new Date(dataHoraVolta).toISOString(),
@@ -207,6 +212,13 @@ export function SolicitacaoDemandaForm({
                   onChange={(e) => setSecretariaSolicitante(e.target.value)}
                   className="border rounded-md p-2"
                   required
+                />
+              </div>
+              <div>
+                <span>Secretaria: </span>
+                <DropMenuSecretaria
+                  secretariaIds={secretariaId}
+                  setSecretariaIds={setSecretariaId}
                 />
               </div>
               <div className="flex flex-col gap-2">

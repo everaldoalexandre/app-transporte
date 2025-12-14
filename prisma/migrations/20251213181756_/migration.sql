@@ -1,0 +1,24 @@
+/*
+  Warnings:
+
+  - The primary key for the `user_on_secretaria` table will be changed. If it partially fails, the table could be left without primary key constraint.
+  - You are about to drop the `_UserToUserSecretaria` table. If the table is not empty, all the data it contains will be lost.
+  - Added the required column `userId` to the `user_on_secretaria` table without a default value. This is not possible if the table is not empty.
+
+*/
+-- DropForeignKey
+ALTER TABLE "public"."_UserToUserSecretaria" DROP CONSTRAINT "_UserToUserSecretaria_A_fkey";
+
+-- DropForeignKey
+ALTER TABLE "public"."_UserToUserSecretaria" DROP CONSTRAINT "_UserToUserSecretaria_B_fkey";
+
+-- AlterTable
+ALTER TABLE "user_on_secretaria" DROP CONSTRAINT "user_on_secretaria_pkey",
+ADD COLUMN     "userId" TEXT NOT NULL,
+ADD CONSTRAINT "user_on_secretaria_pkey" PRIMARY KEY ("userId", "secretariaId");
+
+-- DropTable
+DROP TABLE "public"."_UserToUserSecretaria";
+
+-- AddForeignKey
+ALTER TABLE "user_on_secretaria" ADD CONSTRAINT "user_on_secretaria_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -11,48 +11,50 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { MotoristaType } from "@/components/Types";
-import { DropMenuSecretaria } from "./DropdownSecretarias";
+import { UsuarioType } from "@/components/Types";
+import { DropMenuSecretarias } from "./DropdownSecretarias";
 
-export function NovoMotorista({
-  openNovoMotorista,
-  openChangeNovoMotorista,
+export function NovoUsuario({
+  openNovoUsuario,
+  openChangeNovoUsuario,
   onRefresh,
 }: {
-  openNovoMotorista: boolean;
-  openChangeNovoMotorista: (v: boolean) => void;
+  openNovoUsuario: boolean;
+  openChangeNovoUsuario: (v: boolean) => void;
   onRefresh: () => void;
 }) {
-  const [motorista, setMotorista] = useState<MotoristaType[]>([]);
-  const [secretariaIds, setSecretariaIds] = useState<string>("");
-  const [motoristaNovo, setMotoristaNovo] = useState({
-    nome: "",
-    contato: "",
-    secretariaId: "" as string | null,
+  const [usuario, setUsuario] = useState<UsuarioType[]>([]);
+  const [usuarioNovo, setUsuarioNovo] = useState({
+    name: "",
+    email: "",
+    secretarias: [] as string[],
   });
 
-  const [showDialogNovoMotorista, setShowDialogNovoMotorista] = useState(false);
+  const [showDialogNovoUsuario, setShowDialogNovoUsuario] = useState(false);
 
-  function openDialogNovoMotorista(motorista: MotoristaType) {
-    setMotoristaNovo(motorista);
-    setSecretariaIds(motorista?.secretariaId ?? "");
-    setShowDialogNovoMotorista(true);
+  function openDialogNovoUsuario(usuario: UsuarioType) {
+    setUsuarioNovo({
+      name: usuario.name,
+      email: usuario.email,
+      secretarias: usuario.secretarias?.map((s) => s.secretariaId) || [],
+    });
+    setShowDialogNovoUsuario(true);
   }
 
-  async function cadastroMotorista(e: React.FormEvent) {
+  async function cadastroUsuario(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      if (!motoristaNovo.nome || !motoristaNovo.contato) {
+      if (!usuarioNovo.name || !usuarioNovo.email) {
         toast.error("Preencha todos os campos obrigatórios.");
         return;
       }
-      const response = await fetch(`/api/motorista`, {
+      const response = await fetch(`/api/usuario`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ motoristaNovo }),
+        body: JSON.stringify({ usuarioNovo }),
       });
 
       if (response.status === 403) {
@@ -60,59 +62,56 @@ export function NovoMotorista({
         return;
       }
       if (!response.ok) {
-        throw new Error("Falha ao cadastrar motorista");
+        throw new Error("Falha ao cadastrar usuario");
       }
-      toast.success("Motorista cadastrado com sucesso!");
-      setMotoristaNovo({
-        nome: "",
-        contato: "",
-        secretariaId: null,
+      toast.success("Usuario cadastrado com sucesso!");
+      setUsuarioNovo({
+        name: "",
+        email: "",
+        secretarias: [],
       });
       onRefresh();
     } catch (error) {
-      console.error("Erro ao cadastrar motorista", error);
+      console.error("Erro ao cadastrar usuario", error);
     }
   }
 
   async function fetchVeiculos() {
     try {
-      const response = await fetch("/api/motorista", { cache: "no-store" });
+      const response = await fetch("/api/usuario", { cache: "no-store" });
       if (!response.ok) {
-        console.error("Falha ao carregar motoristas:", response.statusText);
+        console.error("Falha ao carregar usuarios:", response.statusText);
         return;
       }
       const data = await response.json();
-      setMotorista(data);
+      setUsuario(data);
     } catch (error) {
-      console.error("Erro ao carregar motoristas:", error);
+      console.error("Erro ao carregar usuarios:", error);
     }
   }
   return (
-    <AlertDialog
-      open={openNovoMotorista}
-      onOpenChange={openChangeNovoMotorista}
-    >
+    <AlertDialog open={openNovoUsuario} onOpenChange={openChangeNovoUsuario}>
       <AlertDialogContent className="w-full">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Gostaria de cadastrar um novo motorista?
+            Gostaria de cadastrar um novo usuario?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Preencha os campos com as Informações do motorista
+            Preencha os campos com as Informações do usuario
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form onSubmit={cadastroMotorista}>
+        <form onSubmit={cadastroUsuario}>
           <div className="flex grid-cols-2 gap-4">
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
               <p>
                 <span>Nome: </span>
                 <Input
                   type="text"
-                  value={motoristaNovo?.nome}
+                  value={usuarioNovo?.name}
                   onChange={(e) =>
-                    setMotoristaNovo((prev) => ({
+                    setUsuarioNovo((prev) => ({
                       ...prev,
-                      nome: e.target.value,
+                      name: e.target.value,
                     }))
                   }
                   placeholder="Nome"
@@ -120,32 +119,32 @@ export function NovoMotorista({
                 />
               </p>
               <p>
-                <span>Contato: </span>
+                <span>E-mail: </span>
                 <Input
-                  type="text"
-                  value={motoristaNovo?.contato}
+                  type="email"
+                  value={usuarioNovo?.email}
                   onChange={(e) =>
-                    setMotoristaNovo((prev) => ({
+                    setUsuarioNovo((prev) => ({
                       ...prev,
-                      contato: e.target.value,
+                      email: e.target.value,
                     }))
                   }
-                  placeholder="Contato"
+                  placeholder="E-mail"
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Secretaria: </span>
-                <DropMenuSecretaria
-                  secretariaIds={motoristaNovo.secretariaId}
+              <label>
+                <span className="font-medium">Secretaria(s): </span>
+                <DropMenuSecretarias
+                  secretariaIds={usuarioNovo.secretarias}
                   setSecretariaIds={(ids) =>
-                    setMotoristaNovo((prev) => ({
+                    setUsuarioNovo((prev) => ({
                       ...prev,
-                      secretariaId: ids,
+                      secretarias: ids,
                     }))
                   }
                 />
-              </p>
+              </label>
             </div>
           </div>
           <AlertDialogFooter>
