@@ -235,7 +235,7 @@ export function TableMotoristas({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Não encontramos veículos.
+                  Não encontramos motoristas.
                 </TableCell>
               </TableRow>
             )}
@@ -244,7 +244,7 @@ export function TableMotoristas({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredRowModel().rows.length} - Veículos
+          {table.getFilteredRowModel().rows.length} - Motoristas
         </div>
         <div className="text-sm text-muted-foreground flex-1">
           {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}

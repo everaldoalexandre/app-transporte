@@ -86,19 +86,19 @@ export function ActionsUsuario({
       });
 
       if (response.status === 403) {
-        toast.error("Você não tem permissão para editar este veículo.");
+        toast.error("Você não tem permissão para editar este usuário.");
         return;
       }
 
-      toast.success("Veículo atualizado com sucesso!");
+      toast.success("Usuário atualizado com sucesso!");
 
       if (!response.ok) {
-        throw new Error("Falha ao atualizar veículo");
+        throw new Error("Falha ao atualizar usuário");
       }
 
       onRefresh();
     } catch (error) {
-      console.error("Erro ao atualizar veículo:", error);
+      console.error("Erro ao atualizar usuário:", error);
     }
   }
 
@@ -113,17 +113,17 @@ export function ActionsUsuario({
       });
 
       if (response.status === 403) {
-        toast.error("Você não tem permissão para deletar este veículo.");
+        toast.error("Você não tem permissão para deletar este usuário.");
         return;
       }
 
       if (!response.ok) {
-        throw new Error("Falha ao deletar veículo");
+        throw new Error("Falha ao deletar usuário");
       }
-      toast.success("Veículo deletado com sucesso!");
+      toast.success("Usuário deletado com sucesso!");
       onRefresh();
     } catch (error) {
-      console.error("Erro ao deletar veículo:", error);
+      console.error("Erro ao deletar usuário:", error);
     }
   }
 
