@@ -31,16 +31,14 @@ import {
   TableRow,
 } from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsUsuario } from "@/components/ActionsUsuario";
-import { UsuarioType } from "@/components/Types";
-import { NovoUsuario } from "./NovoUsuario";
+import { ActionsDemandas } from "@/components/ActionsDemandas";
+import { DemandaType } from "./Types";
 
-export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
-  const [openDialogNovoUsuario, setOpenDialogNovoUsuario] = useState(false);
-  const [usuarios, setUsuarios] = useState<UsuarioType[]>(initialData);
+export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
+  const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [user, setUser] = useState(null);
   const [userAccessLevel, setUserAccessLevel] = useState(null);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -49,7 +47,7 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
-    fetchUsuarios();
+    fetchDemandas();
   }, []);
 
   useEffect(() => {
@@ -57,7 +55,7 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
       try {
         const res = await fetch("/api/usuario");
         const data = await res.json();
-        setUser(data.usuarios);
+        setUser(data.usuario);
         setUserAccessLevel(data.userAccessLevel);
       } catch (error) {
         console.error("Erro ao carregar usuário:", error);
@@ -66,54 +64,69 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
     carregarUser();
   }, []);
 
-  async function fetchUsuarios() {
+  async function fetchDemandas() {
     try {
-      const response = await fetch("/api/usuario", { cache: "no-store" });
-      if (!response.ok) {
-        console.error("Falha ao buscar usuarios:", response.statusText);
-        return;
-      }
-      const data = await response.json();
-      setUsuarios(data.usuarios);
-    } catch (error) {
-      console.error("Erro o buscar usuarios:", error);
+      const res = await fetch("/api/demanda");
+      if (!res.ok) throw new Error("Falha ao buscar demandas");
+
+      const data = await res.json();
+
+      setDemandas(data.demandas);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  const columns: ColumnDef<UsuarioType>[] = [
+  const columns: ColumnDef<DemandaType>[] = [
     {
-      id: "name",
-      accessorKey: "name",
+      accessorKey: "statusDemanda",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Nome
+            Status
             <ArrowUpDown />
           </Button>
         );
       },
       cell: ({ row }) => (
-        <div className="">{(row.original as any).name || ""}</div>
+        <div className="">{row.getValue("statusDemanda")}</div>
       ),
     },
     {
-      accessorKey: "email",
-      header: "E-mail",
+      accessorKey: "destino",
+      header: "Destino",
     },
     {
-      accessorFn: (row) => row.secretarias?.[0]?.secretaria?.nome ?? "",
-      header: "Secretaria",
+      accessorKey: "dataHoraIda",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Data/Hora Ida
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("dataHoraIda")}</div>
+      ),
+    },
+    {
+      accessorKey: "pessoaSolicitante",
+      header: "Solicitante",
     },
     {
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
-        <ActionsUsuario
-          usuario={row.original}
-          onRefresh={fetchUsuarios}
+        <ActionsDemandas
+          demanda={row.original}
+          onRefresh={fetchDemandas}
           user={user}
           userAccessLevel={userAccessLevel}
         />
@@ -121,8 +134,8 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
     },
   ];
 
-  const table = useReactTable<UsuarioType>({
-    data: usuarios,
+  const table = useReactTable<DemandaType>({
+    data: demandas,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -140,18 +153,54 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
     },
   });
 
-  const filterModelo = table.getColumn("name");
+  const column = table.getColumn("statusDemanda");
+
+  const statusOptions = [
+    { label: "Todos", value: "" },
+    { label: "Aguardando", value: "Aguardando" },
+    { label: "Agendada", value: "Agendada" },
+    { label: "Finalizada", value: "Finalizada" },
+  ];
 
   return (
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              {(table.getColumn("statusDemanda")?.getFilterValue() as string) ??
+                "Todos"}
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {statusOptions.map((status) => (
+              <DropdownMenuItem
+                key={status.value}
+                onClick={() => column?.setFilterValue(status.value)}
+              >
+                {status.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Input
-          placeholder="Filtre por nome"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filtre por destino"
+          value={(table.getColumn("destino")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("destino")?.setFilterValue(event.target.value)
           }
           className="max-w-50"
+        />
+        <Input
+          placeholder="Filtre por data"
+          value={
+            (table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("dataHoraIda")?.setFilterValue(event.target.value)
+          }
+          className="max-w-35"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -179,14 +228,6 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button onClick={() => setOpenDialogNovoUsuario(true)}>
-          Cadastrar Usuario
-        </Button>
-        <NovoUsuario
-          openNovoUsuario={openDialogNovoUsuario}
-          openChangeNovoUsuario={setOpenDialogNovoUsuario}
-          onRefresh={fetchUsuarios}
-        />
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -231,7 +272,7 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Não encontramos usuários.
+                  Não encontramos demandas.
                 </TableCell>
               </TableRow>
             )}
@@ -240,12 +281,12 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredRowModel().rows.length} - Usuários
+          {table.getFilteredRowModel().rows.length} - Demandas.
         </div>
         <div className="text-sm text-muted-foreground flex-1">
           {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
         </div>
-        <div className="space-x-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"

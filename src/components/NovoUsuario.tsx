@@ -12,7 +12,7 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { UsuarioType } from "@/components/Types";
-import { DropMenuSecretarias } from "./DropdownSecretarias";
+import { DropMenuSecretarias } from "./DropMenuSecretarias";
 
 export function NovoUsuario({
   openNovoUsuario,
@@ -62,9 +62,9 @@ export function NovoUsuario({
         return;
       }
       if (!response.ok) {
-        throw new Error("Falha ao cadastrar usuario");
+        throw new Error("Falha ao cadastrar usuário");
       }
-      toast.success("Usuario cadastrado com sucesso!");
+      toast.success("Usuário cadastrado com sucesso!");
       setUsuarioNovo({
         name: "",
         email: "",
@@ -72,7 +72,7 @@ export function NovoUsuario({
       });
       onRefresh();
     } catch (error) {
-      console.error("Erro ao cadastrar usuario", error);
+      console.error("Erro ao cadastrar usuário", error);
     }
   }
 
@@ -80,13 +80,13 @@ export function NovoUsuario({
     try {
       const response = await fetch("/api/usuario", { cache: "no-store" });
       if (!response.ok) {
-        console.error("Falha ao carregar usuarios:", response.statusText);
+        console.error("Falha ao carregar usuários:", response.statusText);
         return;
       }
       const data = await response.json();
       setUsuario(data);
     } catch (error) {
-      console.error("Erro ao carregar usuarios:", error);
+      console.error("Erro ao carregar usuários:", error);
     }
   }
   return (
@@ -94,10 +94,10 @@ export function NovoUsuario({
       <AlertDialogContent className="w-full">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Gostaria de cadastrar um novo usuario?
+            Gostaria de cadastrar um novo usuário?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Preencha os campos com as Informações do usuario
+            Preencha os campos com as informações do usuário
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={cadastroUsuario}>
@@ -149,7 +149,7 @@ export function NovoUsuario({
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type="submit">Salvar</AlertDialogAction>
+            <AlertDialogAction type="submit">Cadastrar</AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

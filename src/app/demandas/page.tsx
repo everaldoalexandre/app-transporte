@@ -1,6 +1,10 @@
 import AppSidebar from "@/components/AppSidebar";
-import DemandasTable from "@/components/DemandasTable";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import DemandasTable from "@/components/TableDemandas";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default function Home() {
   return (
@@ -12,7 +16,7 @@ export default function Home() {
         </div>
         <header className="flex justify-center gap-2 transition-[width,height] duration-200 ease-in-out group-has-data-[collapsible=icon]/sidebar-wrapper:justify-center">
           <div className=" mt-6 ">
-          <DemandasTable/>
+            <DemandasTable />
           </div>
         </header>
       </SidebarInset>

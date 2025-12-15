@@ -174,7 +174,9 @@ export async function PUT(request: Request) {
 
     if (!id || !updatedVeiculos) {
       return new Response(
-        JSON.stringify({ error: "ID and updated fields are required." }),
+        JSON.stringify({
+          error: "O ID e os campos atualizados são obrigatórios.",
+        }),
         { status: 400 }
       );
     }
@@ -188,7 +190,7 @@ export async function PUT(request: Request) {
 
     if (!veiculo) {
       return new Response(
-        JSON.stringify({ error: "Veiculo não encontrado." }),
+        JSON.stringify({ error: "Veículo não encontrado." }),
         { status: 404 }
       );
     }
@@ -199,7 +201,7 @@ export async function PUT(request: Request) {
         return new Response(
           JSON.stringify({
             error:
-              "Acesso negado. Você não pode editar veiculos de outras secretarias.",
+              "Acesso negado. Você não pode editar veículos de outras secretarias.",
           }),
           { status: 403 }
         );
@@ -223,12 +225,12 @@ export async function PUT(request: Request) {
     });
 
     return new Response(
-      JSON.stringify({ message: "Veiculo atualizado com sucesso!" }),
+      JSON.stringify({ message: "Veículo atualizado com sucesso!" }),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating demanda:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao atualizar veículos:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -249,7 +251,10 @@ export async function DELETE(request: Request) {
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "ID is mandatory" }, { status: 400 });
+      return NextResponse.json(
+        { error: "A identificação é obrigatória" },
+        { status: 400 }
+      );
     }
 
     const veiculo = await prisma.veiculo.findUnique({
@@ -261,7 +266,7 @@ export async function DELETE(request: Request) {
 
     if (!veiculo) {
       return NextResponse.json(
-        { error: "Veiculo não encontrado." },
+        { error: "Veículo não encontrado." },
         { status: 404 }
       );
     }
@@ -272,7 +277,7 @@ export async function DELETE(request: Request) {
         return NextResponse.json(
           {
             error:
-              "Acesso negado. Você não pode deletar veiculos de outras secretarias.",
+              "Acesso negado. Você não pode deletar veículos de outras secretarias.",
           },
           { status: 403 }
         );
@@ -288,11 +293,11 @@ export async function DELETE(request: Request) {
       where: { id },
     });
 
-    return NextResponse.json({ message: "Veiculo deletado com sucesso" });
+    return NextResponse.json({ message: "Veículo deletado com sucesso" });
   } catch (error) {
-    console.error("Error deleting task:", error);
+    console.error("Erro ao deletar veículo:", error);
     return NextResponse.json(
-      { error: "Erro interno ao deletar o veiculo" },
+      { error: "Erro interno ao deletar o veículo" },
       { status: 500 }
     );
   }

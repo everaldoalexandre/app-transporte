@@ -12,7 +12,7 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { MotoristaType } from "@/components/Types";
-import { DropMenuSecretaria } from "./DropdownSecretarias";
+import { DropMenuSecretaria } from "./DropMenuSecretarias";
 
 export function NovoMotorista({
   openNovoMotorista,
@@ -98,7 +98,7 @@ export function NovoMotorista({
             Gostaria de cadastrar um novo motorista?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Preencha os campos com as Informações do motorista
+            Preencha os campos com as informações do motorista
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={cadastroMotorista}>
@@ -150,7 +150,7 @@ export function NovoMotorista({
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type="submit">Salvar</AlertDialogAction>
+            <AlertDialogAction type="submit">Cadastrar</AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

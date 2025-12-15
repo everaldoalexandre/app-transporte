@@ -32,7 +32,7 @@ import { Demanda, Veiculo, Motorista, User } from "@/generated/prisma";
 import { DemandaType } from "./Types";
 import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 
-export function ActionsCell({
+export function ActionsDemandas({
   demanda,
   onRefresh,
   user,
@@ -307,7 +307,7 @@ export function ActionsCell({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
@@ -348,7 +348,7 @@ export function ActionsCell({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>Deseja editar a demanda?</AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>

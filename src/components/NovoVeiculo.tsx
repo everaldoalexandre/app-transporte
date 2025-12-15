@@ -12,7 +12,7 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { VeiculoType } from "@/components/Types";
-import { DropModeloVeiculo } from "./DropdownModeloVeiculo";
+import { DropModeloVeiculo } from "./DropMenuModeloVeiculos";
 
 export function NovoVeiculo({
   openNovoVeiculo,
@@ -68,13 +68,13 @@ export function NovoVeiculo({
         return;
       }
       if (!response.ok) {
-        throw new Error("Falha ao criar veiculo");
+        throw new Error("Falha ao criar veículo");
       }
-      toast.success("Veiculo criado com sucesso!");
+      toast.success("Veículo criado com sucesso!");
       setVeiculoNovo(veiculoNovo);
       onRefresh();
     } catch (error) {
-      console.error("Erro ao criar veiculo", error);
+      console.error("Erro ao criar veículo", error);
     }
   }
 
@@ -82,13 +82,13 @@ export function NovoVeiculo({
     try {
       const response = await fetch("/api/veiculo", { cache: "no-store" });
       if (!response.ok) {
-        console.error("Falha ao carregar veiculos:", response.statusText);
+        console.error("Falha ao carregar veículos:", response.statusText);
         return;
       }
       const data = await response.json();
       setVeiculos(data);
     } catch (error) {
-      console.error("Erro ao carregar veiculos:", error);
+      console.error("Erro ao carregar veículos:", error);
     }
   }
   return (
@@ -181,7 +181,7 @@ export function NovoVeiculo({
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type="submit">Salvar</AlertDialogAction>
+            <AlertDialogAction type="submit">Cadastrar</AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

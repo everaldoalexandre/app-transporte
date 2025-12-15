@@ -86,8 +86,8 @@ export async function GET() {
       }
     );
   } catch (error) {
-    console.error("Error ao buscar usuário:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao buscar usuário:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "Unauthenticated user" },
+        { error: "Usuário não autenticado" },
         { status: 401 }
       );
     }
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
 
     if (!usuarioNovo) {
       return new NextResponse(
-        JSON.stringify({ error: "Dados do veículo são obrigatórios" }),
+        JSON.stringify({ error: "Dados do usuário são obrigatórios" }),
         { status: 400 }
       );
     }
@@ -152,8 +152,8 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify(usuarioCriado), { status: 201 });
   } catch (error) {
-    console.error("Error processing request:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao processar solicitação:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -265,10 +265,10 @@ export async function PUT(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating usuario:", error);
+    console.error("Erro ao atualizar o usuário:", error);
     return NextResponse.json(
       {
-        error: "Internal Server Error",
+        error: "Erro interno",
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
@@ -291,7 +291,10 @@ export async function DELETE(request: Request) {
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "ID is mandatory" }, { status: 400 });
+      return NextResponse.json(
+        { error: "A identificação é obrigatória" },
+        { status: 400 }
+      );
     }
 
     const usuario = await prisma.user.findUnique({
@@ -303,7 +306,7 @@ export async function DELETE(request: Request) {
 
     if (!usuario) {
       return NextResponse.json(
-        { error: "Usuario não encontrado." },
+        { error: "Usuário não encontrado." },
         { status: 404 }
       );
     }
@@ -320,11 +323,11 @@ export async function DELETE(request: Request) {
       where: { id },
     });
 
-    return NextResponse.json({ message: "Usuario deletado com sucesso" });
+    return NextResponse.json({ message: "Usuário deletado com sucesso" });
   } catch (error) {
-    console.error("Error deleting task:", error);
+    console.error("Erro ao deletar usuário:", error);
     return NextResponse.json(
-      { error: "Erro interno ao deletar o usuario" },
+      { error: "Erro interno ao deletar o usuário" },
       { status: 500 }
     );
   }

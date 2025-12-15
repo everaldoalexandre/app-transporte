@@ -86,8 +86,8 @@ export async function GET(request: Request) {
       status: 200,
     });
   } catch (error) {
-    console.error("Error fetching motoristas:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao buscar motoristas:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "Unauthenticated user" },
+        { error: "Usuário não autenticado" },
         { status: 401 }
       );
     }
@@ -148,7 +148,7 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify(motoristaCriado), { status: 201 });
   } catch (error) {
     console.error("Error processing request:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -170,7 +170,9 @@ export async function PUT(request: Request) {
 
     if (!id || !updatedMotorista) {
       return new Response(
-        JSON.stringify({ error: "ID and updated fields are required." }),
+        JSON.stringify({
+          error: "O ID e os campos atualizados são obrigatórios.",
+        }),
         { status: 400 }
       );
     }
@@ -221,7 +223,7 @@ export async function PUT(request: Request) {
     );
   } catch (error) {
     console.error("Erro ao atualizar motorista:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -242,7 +244,10 @@ export async function DELETE(request: Request) {
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "ID is mandatory" }, { status: 400 });
+      return NextResponse.json(
+        { error: "A identificação é obrigatória" },
+        { status: 400 }
+      );
     }
 
     const motorista = await prisma.motorista.findUnique({

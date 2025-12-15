@@ -1,58 +1,61 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { toast } from "sonner";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter } from "./ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./ui/card";
 import { authClient } from "@/lib/auth-client";
 
-export function Login({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export function Login({ className, ...props }: React.ComponentProps<"div">) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !password) {
-      toast.error("Por favor, preencha todos os campos")
-      return
+      toast.error("Por favor, preencha todos os campos");
+      return;
     }
 
-    await authClient.signIn.email({
-      email,
-      password,
-      callbackURL: "/demandas",
-    }, {
-      onRequest() {
-        
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+        callbackURL: "/demandas",
       },
-      onError(ctx) {
+      {
+        onRequest() {},
+        onError(ctx) {
+          if (ctx?.error?.code?.includes("INVALID_EMAIL_OR_PASSWORD")) {
+            toast.error("Erro ao efetuar login. Verifique suas credenciais.");
+          }
+        },
+        onSuccess() {
+          toast.success("Login bem-sucedido! Redirecionando...");
 
-        if (ctx?.error?.code?.includes('INVALID_EMAIL_OR_PASSWORD')){
-          toast.error("Erro ao efetuar login. Verifique suas credenciais.")
-        }
-      },
-      onSuccess() {
-        
-        toast.success("Login bem-sucedido! Redirecionando...")
-
-        setEmail('');
-        setPassword('');
+          setEmail("");
+          setPassword("");
+        },
       }
-    })
-  }
+    );
+  };
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
+        <CardTitle>Faça login na sua conta</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Insira seu e-mail abaixo para acessar sua conta.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -78,7 +81,7 @@ export function Login({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>  
+              </div>
             </div>
             <div>
               <Button type="submit" className="w-full">
@@ -88,8 +91,7 @@ export function Login({
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex-col gap-2">
-      </CardFooter>
+      <CardFooter className="flex-col gap-2"></CardFooter>
     </Card>
-  )
+  );
 }

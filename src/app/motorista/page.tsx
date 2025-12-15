@@ -4,7 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import MotoristasTable from "@/components/MotoristaTable";
+import MotoristasTable from "@/components/TableMotorista";
 
 export default function Home() {
   return (

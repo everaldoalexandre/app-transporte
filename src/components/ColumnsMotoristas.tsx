@@ -31,7 +31,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsMotorista } from "@/components/ActionsMotorista";
+import { ActionsMotorista } from "@/components/ActionsMotoristas";
 import { MotoristaType } from "@/components/Types";
 import { NovoMotorista } from "./NovoMotorista";
 

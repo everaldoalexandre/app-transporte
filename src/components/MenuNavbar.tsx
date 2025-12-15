@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import * as React from "react";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"  
+} from "@/components/ui/navigation-menu";
 
 export function MenuCenter() {
   return (
@@ -24,7 +24,7 @@ export function MenuCenter() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 export function MenuEnd() {
@@ -38,7 +38,7 @@ export function MenuEnd() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 export function MenuEndSession() {
@@ -47,16 +47,16 @@ export function MenuEndSession() {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Logout/>
+            <Logout />
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 export function MenuNavigationCompleto() {
-  return(
+  return (
     <nav className="flex fixed top-0 w-full justify-between bg-white shadow-md p-2">
       <div className="flex justify-center w-1/3">
         <Image
@@ -69,11 +69,11 @@ export function MenuNavigationCompleto() {
         />
       </div>
       <div className="flex justify-center w-1/3">
-        <MenuCenter/>
+        <MenuCenter />
       </div>
       <div className="flex justify-center w-1/3">
-        <MenuEnd/>
+        <MenuEnd />
       </div>
     </nav>
-  )
+  );
 }

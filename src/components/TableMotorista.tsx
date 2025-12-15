@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TableMotoristas } from "./ColumnsMotorista";
+import { TableMotoristas } from "./ColumnsMotoristas";
 import { MotoristaType } from "@/components/Types";
 
 export default function MotoristasTable() {

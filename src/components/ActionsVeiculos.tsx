@@ -22,9 +22,9 @@ import {
 import { Input } from "./ui/input";
 import { VeiculoType } from "@/components/Types";
 import { User } from "@/generated/prisma";
-import { DropModeloVeiculo } from "./DropdownModeloVeiculo";
+import { DropModeloVeiculo } from "./DropMenuModeloVeiculos";
 
-export function ActionsCellVeiculos({
+export function ActionsVeiculos({
   veiculo,
   onRefresh,
   user,
@@ -136,7 +136,7 @@ export function ActionsCellVeiculos({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
@@ -174,7 +174,9 @@ export function ActionsCellVeiculos({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Deseja editar as informações do veículo?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
@@ -227,7 +229,7 @@ export function ActionsCellVeiculos({
                 />
               </p>
               <p>
-                <span>Proprietário: </span>
+                <span>Proprietário:</span>
                 <Input
                   type="text"
                   value={veiculoEdit?.proprietarioVeiculo ?? ""}
@@ -280,7 +282,7 @@ export function ActionsCellVeiculos({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Informações sobre a veiculo</AlertDialogTitle>
+            <AlertDialogTitle>Informações sobre a veículo</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="bg-white p-6 rounded shadow-lg">
             <div className="flex sgrid-cols-2 gap-4">
@@ -331,9 +333,9 @@ export function ActionsCellVeiculos({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Deseja apagar a veiculo?</AlertDialogTitle>
+            <AlertDialogTitle>Deseja apagar a veículo?</AlertDialogTitle>
             <AlertDialogDescription>
-              A veiculo será apagada do sistema e não poderá ser recuperada.
+              O veículo será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

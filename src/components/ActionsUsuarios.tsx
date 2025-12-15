@@ -21,7 +21,8 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { UsuarioType } from "@/components/Types";
-import { DropMenuSecretaria } from "./DropdownSecretarias";
+import { DropMenuSecretaria } from "./DropMenuSecretarias";
+import { User } from "@/generated/prisma";
 
 export function ActionsUsuario({
   usuario,
@@ -31,7 +32,7 @@ export function ActionsUsuario({
 }: {
   usuario: UsuarioType;
   onRefresh: () => void;
-  user: string | null;
+  user: User | null;
   userAccessLevel: string | null;
 }) {
   const [usuarios, setUsuarios] = useState<UsuarioType[]>([]);
@@ -145,7 +146,7 @@ export function ActionsUsuario({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
@@ -174,7 +175,9 @@ export function ActionsUsuario({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Você deseja editar as informações do usuário?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
@@ -254,7 +257,7 @@ export function ActionsUsuario({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Informações sobre a usuario</AlertDialogTitle>
+            <AlertDialogTitle>Informações sobre a usuário</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="bg-white p-6 rounded shadow-lg">
             <div className="flex sgrid-cols-2 gap-4">
@@ -289,9 +292,9 @@ export function ActionsUsuario({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Deseja apagar a usuario?</AlertDialogTitle>
+            <AlertDialogTitle>Deseja apagar a usuário?</AlertDialogTitle>
             <AlertDialogDescription>
-              A usuario será apagada do sistema e não poderá ser recuperada.
+              A usuário será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

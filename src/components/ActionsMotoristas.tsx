@@ -21,7 +21,8 @@ import {
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 import { MotoristaType } from "@/components/Types";
-import { DropMenuSecretaria } from "./DropdownSecretarias";
+import { DropMenuSecretaria } from "./DropMenuSecretarias";
+import { User } from "@/generated/prisma";
 
 export function ActionsMotorista({
   motorista,
@@ -31,7 +32,7 @@ export function ActionsMotorista({
 }: {
   motorista: MotoristaType;
   onRefresh: () => void;
-  user: string | null;
+  user: User | null;
   userAccessLevel: string | null;
 }) {
   const [motoristas, setMotoristas] = useState<MotoristaType[]>([]);
@@ -147,7 +148,7 @@ export function ActionsMotorista({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abir menu</span>
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
@@ -180,7 +181,9 @@ export function ActionsMotorista({
       >
         <AlertDialogContent className="w-full">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Você deseja editar as informações do motorista?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>

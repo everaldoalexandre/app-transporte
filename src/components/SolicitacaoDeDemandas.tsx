@@ -7,9 +7,7 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { DropMenuSecretaria } from "./DropdownSecretarias";
-import { SecretariaType } from "./Types";
-import { set } from "better-auth";
+import { DropMenuSecretaria } from "./DropMenuSecretarias";
 
 interface EmailConfirmacao {
   from: string;

@@ -4,7 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import UsuariosTable from "@/components/UsuarioTable";
+import UsuariosTable from "@/components/TableUsuarios";
 
 export default function Home() {
   return (

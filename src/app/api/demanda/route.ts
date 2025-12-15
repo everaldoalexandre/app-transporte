@@ -84,8 +84,8 @@ export async function GET() {
       status: 200,
     });
   } catch (error) {
-    console.error("Error fetching demandas:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao carregar demandas:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
 
     if (!novaDemanda) {
       return new Response(
-        JSON.stringify({ error: "All fields are required." }),
+        JSON.stringify({ error: "Todos os campos são obrigatórios." }),
         { status: 400 }
       );
     }
@@ -110,8 +110,8 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error processing request:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao processar solicitação:", error);
+    return new Response(JSON.stringify({ error: "Erro interno" }), {
       status: 500,
     });
   }
@@ -133,7 +133,9 @@ export async function PUT(request: Request) {
 
     if (!id || !updatedDemandas) {
       return new Response(
-        JSON.stringify({ error: "ID and updated fields are required." }),
+        JSON.stringify({
+          error: "O ID e os campos atualizados são obrigatórios.",
+        }),
         { status: 400 }
       );
     }
@@ -182,8 +184,8 @@ export async function PUT(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating demanda:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    console.error("Erro ao atualizar a demanda:", error);
+    return new Response(JSON.stringify({ error: "Erro do interno" }), {
       status: 500,
     });
   }
@@ -204,7 +206,10 @@ export async function DELETE(request: Request) {
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "ID is mandatory" }, { status: 400 });
+      return NextResponse.json(
+        { error: "A identificação é obrigatória" },
+        { status: 400 }
+      );
     }
 
     const demanda = await prisma.demanda.findUnique({
@@ -245,7 +250,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: "Demanda deletada com sucesso" });
   } catch (error) {
-    console.error("Error deleting task:", error);
+    console.error("Erro ao deletar demanda:", error);
     return NextResponse.json(
       { error: "Erro interno ao deletar a demanda" },
       { status: 500 }

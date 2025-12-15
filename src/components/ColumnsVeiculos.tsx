@@ -31,7 +31,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { Input } from "./ui/input";
-import { ActionsCellVeiculos } from "@/components/ActionsCellVeiculos";
+import { ActionsVeiculos } from "@/components/ActionsVeiculos";
 import { NovoVeiculo } from "./NovoVeiculo";
 import { VeiculoType } from "@/components/Types";
 
@@ -116,7 +116,7 @@ export function DataTableVeiculos({
       id: "actions",
       header: "Ações",
       cell: ({ row }) => (
-        <ActionsCellVeiculos
+        <ActionsVeiculos
           veiculo={row.original}
           onRefresh={fetchVeiculos}
           user={user}
@@ -152,7 +152,7 @@ export function DataTableVeiculos({
     { label: "Carro", value: "Carro" },
     { label: "Caminhão", value: "Caminhão" },
     { label: "Ônibus", value: "Ônibus" },
-    { label: "Vans", value: "Vans" },
+    { label: "Van", value: "Van" },
   ];
 
   return (
