@@ -2056,6 +2056,8 @@ export namespace Prisma {
     updatedAt: Date | null
     lotacao: number | null
     kmRodado: number | null
+    recurso: string | null
+    categoria: string | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
@@ -2077,6 +2079,8 @@ export namespace Prisma {
     updatedAt: Date | null
     lotacao: number | null
     kmRodado: number | null
+    recurso: string | null
+    categoria: string | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
@@ -2098,6 +2102,8 @@ export namespace Prisma {
     updatedAt: number
     lotacao: number
     kmRodado: number
+    recurso: number
+    categoria: number
     veiculoId: number
     motoristaId: number
     secretariaId: number
@@ -2131,6 +2137,8 @@ export namespace Prisma {
     updatedAt?: true
     lotacao?: true
     kmRodado?: true
+    recurso?: true
+    categoria?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2152,6 +2160,8 @@ export namespace Prisma {
     updatedAt?: true
     lotacao?: true
     kmRodado?: true
+    recurso?: true
+    categoria?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2173,6 +2183,8 @@ export namespace Prisma {
     updatedAt?: true
     lotacao?: true
     kmRodado?: true
+    recurso?: true
+    categoria?: true
     veiculoId?: true
     motoristaId?: true
     secretariaId?: true
@@ -2281,6 +2293,8 @@ export namespace Prisma {
     updatedAt: Date
     lotacao: number | null
     kmRodado: number | null
+    recurso: string | null
+    categoria: string | null
     veiculoId: string | null
     motoristaId: string | null
     secretariaId: string | null
@@ -2321,6 +2335,8 @@ export namespace Prisma {
     updatedAt?: boolean
     lotacao?: boolean
     kmRodado?: boolean
+    recurso?: boolean
+    categoria?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
@@ -2345,6 +2361,8 @@ export namespace Prisma {
     updatedAt?: boolean
     lotacao?: boolean
     kmRodado?: boolean
+    recurso?: boolean
+    categoria?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
@@ -2369,6 +2387,8 @@ export namespace Prisma {
     updatedAt?: boolean
     lotacao?: boolean
     kmRodado?: boolean
+    recurso?: boolean
+    categoria?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
@@ -2393,12 +2413,14 @@ export namespace Prisma {
     updatedAt?: boolean
     lotacao?: boolean
     kmRodado?: boolean
+    recurso?: boolean
+    categoria?: boolean
     veiculoId?: boolean
     motoristaId?: boolean
     secretariaId?: boolean
   }
 
-  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "kmRodado" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
+  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "kmRodado" | "recurso" | "categoria" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
   export type DemandaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
@@ -2438,6 +2460,8 @@ export namespace Prisma {
       updatedAt: Date
       lotacao: number | null
       kmRodado: number | null
+      recurso: string | null
+      categoria: string | null
       veiculoId: string | null
       motoristaId: string | null
       secretariaId: string | null
@@ -2882,6 +2906,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Demanda", 'DateTime'>
     readonly lotacao: FieldRef<"Demanda", 'Int'>
     readonly kmRodado: FieldRef<"Demanda", 'Int'>
+    readonly recurso: FieldRef<"Demanda", 'String'>
+    readonly categoria: FieldRef<"Demanda", 'String'>
     readonly veiculoId: FieldRef<"Demanda", 'String'>
     readonly motoristaId: FieldRef<"Demanda", 'String'>
     readonly secretariaId: FieldRef<"Demanda", 'String'>
@@ -14315,6 +14341,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     lotacao: 'lotacao',
     kmRodado: 'kmRodado',
+    recurso: 'recurso',
+    categoria: 'categoria',
     veiculoId: 'veiculoId',
     motoristaId: 'motoristaId',
     secretariaId: 'secretariaId'
@@ -14552,6 +14580,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
     lotacao?: IntNullableFilter<"Demanda"> | number | null
     kmRodado?: IntNullableFilter<"Demanda"> | number | null
+    recurso?: StringNullableFilter<"Demanda"> | string | null
+    categoria?: StringNullableFilter<"Demanda"> | string | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
@@ -14576,6 +14606,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lotacao?: SortOrderInput | SortOrder
     kmRodado?: SortOrderInput | SortOrder
+    recurso?: SortOrderInput | SortOrder
+    categoria?: SortOrderInput | SortOrder
     veiculoId?: SortOrderInput | SortOrder
     motoristaId?: SortOrderInput | SortOrder
     secretariaId?: SortOrderInput | SortOrder
@@ -14603,6 +14635,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
     lotacao?: IntNullableFilter<"Demanda"> | number | null
     kmRodado?: IntNullableFilter<"Demanda"> | number | null
+    recurso?: StringNullableFilter<"Demanda"> | string | null
+    categoria?: StringNullableFilter<"Demanda"> | string | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
@@ -14627,6 +14661,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lotacao?: SortOrderInput | SortOrder
     kmRodado?: SortOrderInput | SortOrder
+    recurso?: SortOrderInput | SortOrder
+    categoria?: SortOrderInput | SortOrder
     veiculoId?: SortOrderInput | SortOrder
     motoristaId?: SortOrderInput | SortOrder
     secretariaId?: SortOrderInput | SortOrder
@@ -14656,6 +14692,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Demanda"> | Date | string
     lotacao?: IntNullableWithAggregatesFilter<"Demanda"> | number | null
     kmRodado?: IntNullableWithAggregatesFilter<"Demanda"> | number | null
+    recurso?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
+    categoria?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
     veiculoId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
     motoristaId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
     secretariaId?: StringNullableWithAggregatesFilter<"Demanda"> | string | null
@@ -15286,6 +15324,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
@@ -15307,6 +15347,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
@@ -15328,6 +15370,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
@@ -15349,6 +15393,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15370,6 +15416,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
@@ -15391,6 +15439,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DemandaUncheckedUpdateManyInput = {
@@ -15409,6 +15459,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16142,6 +16194,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lotacao?: SortOrder
     kmRodado?: SortOrder
+    recurso?: SortOrder
+    categoria?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
@@ -16168,6 +16222,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lotacao?: SortOrder
     kmRodado?: SortOrder
+    recurso?: SortOrder
+    categoria?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
@@ -16189,6 +16245,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lotacao?: SortOrder
     kmRodado?: SortOrder
+    recurso?: SortOrder
+    categoria?: SortOrder
     veiculoId?: SortOrder
     motoristaId?: SortOrder
     secretariaId?: SortOrder
@@ -16692,6 +16750,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type VeiculoUpdateOneWithoutDemandasNestedInput = {
     create?: XOR<VeiculoCreateWithoutDemandasInput, VeiculoUncheckedCreateWithoutDemandasInput>
     connectOrCreate?: VeiculoCreateOrConnectWithoutDemandasInput
@@ -16720,10 +16782,6 @@ export namespace Prisma {
     delete?: SecretariaWhereInput | boolean
     connect?: SecretariaWhereUniqueInput
     update?: XOR<XOR<SecretariaUpdateToOneWithWhereWithoutDemandasInput, SecretariaUpdateWithoutDemandasInput>, SecretariaUncheckedUpdateWithoutDemandasInput>
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type SecretariaCreateNestedOneWithoutVeiculosInput = {
@@ -17801,6 +17859,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
   }
@@ -17821,6 +17881,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
   }
@@ -17957,6 +18019,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Demanda"> | Date | string
     lotacao?: IntNullableFilter<"Demanda"> | number | null
     kmRodado?: IntNullableFilter<"Demanda"> | number | null
+    recurso?: StringNullableFilter<"Demanda"> | string | null
+    categoria?: StringNullableFilter<"Demanda"> | string | null
     veiculoId?: StringNullableFilter<"Demanda"> | string | null
     motoristaId?: StringNullableFilter<"Demanda"> | string | null
     secretariaId?: StringNullableFilter<"Demanda"> | string | null
@@ -18043,6 +18107,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     secretaria?: SecretariaCreateNestedOneWithoutDemandasInput
   }
@@ -18063,6 +18129,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     secretariaId?: string | null
   }
@@ -18219,6 +18287,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculo?: VeiculoCreateNestedOneWithoutDemandasInput
     motorista?: MotoristaCreateNestedOneWithoutDemandasInput
   }
@@ -18239,6 +18309,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     motoristaId?: string | null
   }
@@ -18949,6 +19021,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     motoristaId?: string | null
     secretariaId?: string | null
   }
@@ -18969,6 +19043,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
   }
@@ -18989,6 +19065,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19009,6 +19087,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19075,6 +19155,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     secretariaId?: string | null
   }
@@ -19095,6 +19177,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     secretaria?: SecretariaUpdateOneWithoutDemandasNestedInput
   }
@@ -19115,6 +19199,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19135,6 +19221,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     secretariaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19193,6 +19281,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     lotacao?: number | null
     kmRodado?: number | null
+    recurso?: string | null
+    categoria?: string | null
     veiculoId?: string | null
     motoristaId?: string | null
   }
@@ -19234,6 +19324,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculo?: VeiculoUpdateOneWithoutDemandasNestedInput
     motorista?: MotoristaUpdateOneWithoutDemandasNestedInput
   }
@@ -19254,6 +19346,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -19274,6 +19368,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lotacao?: NullableIntFieldUpdateOperationsInput | number | null
     kmRodado?: NullableIntFieldUpdateOperationsInput | number | null
+    recurso?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: NullableStringFieldUpdateOperationsInput | string | null
     veiculoId?: NullableStringFieldUpdateOperationsInput | string | null
     motoristaId?: NullableStringFieldUpdateOperationsInput | string | null
   }

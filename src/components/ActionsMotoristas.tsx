@@ -179,7 +179,7 @@ export function ActionsMotorista({
         open={showDialogEditMotorista}
         onOpenChange={setShowDialogEditMotorista}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
           <AlertDialogHeader>
             <AlertDialogTitle>
               Você deseja editar as informações do motorista?
@@ -190,8 +190,8 @@ export function ActionsMotorista({
           </AlertDialogHeader>
           <div className="flex grid-cols-2 gap-4">
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Nome: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Nome: </span>
                 <Input
                   type="text"
                   value={motoristaEdit?.nome ?? ""}
@@ -205,8 +205,8 @@ export function ActionsMotorista({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Contato: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Contato: </span>
                 <Input
                   type="number"
                   value={motoristaEdit?.contato ?? ""}
@@ -220,7 +220,7 @@ export function ActionsMotorista({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
+              <p className="break-words whitespace-pre-wrap">
                 <DropMenuSecretaria
                   secretariaIds={motoristaEdit?.secretariaId ?? null}
                   setSecretariaIds={(id) =>
@@ -257,26 +257,24 @@ export function ActionsMotorista({
         open={showDialogDetalheMotorista}
         onOpenChange={setShowDialogDetalheMotorista}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Informações sobre a motorista</AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="bg-white p-6 rounded shadow-lg">
-            <div className="flex sgrid-cols-2 gap-4">
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Nome: </span>
-                  {motoristaEdit?.nome}
-                </p>
-                <p>
-                  <span>Contato: </span>
-                  {motoristaEdit?.contato}
-                </p>
-                <p>
-                  <span>Secretaria: </span>
-                  {motoristaEdit?.secretaria?.nome || "N/A"}
-                </p>
-              </div>
+          <div className="mt-3 flex sgrid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Nome: </span>
+                {motoristaEdit?.nome}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Contato: </span>
+                {motoristaEdit?.contato}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Secretaria: </span>
+                {motoristaEdit?.secretaria?.nome || "N/A"}
+              </p>
             </div>
           </div>
           <AlertDialogFooter>
@@ -294,10 +292,10 @@ export function ActionsMotorista({
         open={showDialogDeleteMotorista}
         onOpenChange={setShowDialogDeleteMotorista}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja apagar a motorista?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="p-5">
               A motorista será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>

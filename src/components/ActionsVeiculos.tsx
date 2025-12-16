@@ -172,7 +172,7 @@ export function ActionsVeiculos({
         open={showDialogEditVeiculo}
         onOpenChange={setShowDialogEditVeiculo}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>
               Deseja editar as informações do veículo?
@@ -183,8 +183,8 @@ export function ActionsVeiculos({
           </AlertDialogHeader>
           <div className="flex grid-cols-2 gap-4">
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Placa: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Placa: </span>
                 <Input
                   type="text"
                   value={veiculoEdit?.placaVeiculo ?? ""}
@@ -198,8 +198,8 @@ export function ActionsVeiculos({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Chassi: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Chassi: </span>
                 <Input
                   type="text"
                   value={veiculoEdit?.chassiVeiculo ?? ""}
@@ -213,8 +213,8 @@ export function ActionsVeiculos({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Renavam: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Renavam: </span>
                 <Input
                   type="text"
                   value={veiculoEdit?.renavamVeiculo ?? ""}
@@ -228,8 +228,10 @@ export function ActionsVeiculos({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Proprietário:</span>
+            </div>
+            <div>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Proprietário:</span>
                 <Input
                   type="text"
                   value={veiculoEdit?.proprietarioVeiculo ?? ""}
@@ -243,8 +245,8 @@ export function ActionsVeiculos({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Modelo: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Modelo: </span>
                 <DropModeloVeiculo
                   modeloId={veiculoEdit?.modeloId ?? ""}
                   setModeloId={(value) =>
@@ -280,44 +282,44 @@ export function ActionsVeiculos({
         open={showDialogDetalheVeiculo}
         onOpenChange={setShowDialogDetalheVeiculo}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Informações sobre a veículo</AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="bg-white p-6 rounded shadow-lg">
-            <div className="flex sgrid-cols-2 gap-4">
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Placa: </span>
-                  {veiculoEdit?.placaVeiculo}
-                </p>
-                <p>
-                  <span>Chassi: </span>
-                  {veiculoEdit?.chassiVeiculo}
-                </p>
-                <p>
-                  <span>Renavam: </span>
-                  {veiculoEdit?.renavamVeiculo}
-                </p>
-                <p>
-                  <span>Proprietário: </span>
-                  {veiculoEdit?.proprietarioVeiculo}
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>CRLV: </span>
-                  {veiculoEdit?.crlvVeiculo}
-                </p>
-                <p>
-                  <span>Status: </span> {}
-                </p>
-                <p>
-                  <span>Modelo: </span> {veiculoEdit?.modelo?.modelo}
-                </p>
-              </div>
+          <div className="mt-2 flex sgrid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Placa: </span>
+                {veiculoEdit?.placaVeiculo}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Chassi: </span>
+                {veiculoEdit?.chassiVeiculo}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Renavam: </span>
+                {veiculoEdit?.renavamVeiculo}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Proprietário: </span>
+                {veiculoEdit?.proprietarioVeiculo}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">CRLV: </span>
+                {veiculoEdit?.crlvVeiculo}
+              </p>
+              <p>
+                <span>Status: </span> {}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Modelo: </span>{" "}
+                {veiculoEdit?.modelo?.modelo}
+              </p>
             </div>
           </div>
+
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => openDialogEditVeiculo(veiculo)}>
               Editar
@@ -331,10 +333,10 @@ export function ActionsVeiculos({
         open={showDialogDeleteVeiculo}
         onOpenChange={setShowDialogDeleteVeiculo}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja apagar a veículo?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="p-5">
               O veículo será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>

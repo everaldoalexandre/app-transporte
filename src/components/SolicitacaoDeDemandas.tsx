@@ -88,7 +88,9 @@ export function SolicitacaoDemandaForm({
       !dataHoraIda ||
       !dataHoraVolta ||
       !origem ||
-      !contato
+      !contato ||
+      !lotacao ||
+      !secretariaId
     ) {
       toast.error("Por favor, preencha todos os campos.");
       return;
@@ -204,7 +206,7 @@ export function SolicitacaoDemandaForm({
                 </Label>
                 <Input
                   id="secretariaSolicitante"
-                  placeholder="Escreva a secretaria solicitante"
+                  placeholder="Informe a secretaria solicitante"
                   type="text"
                   value={secretariaSolicitante}
                   onChange={(e) => setSecretariaSolicitante(e.target.value)}
@@ -238,7 +240,10 @@ export function SolicitacaoDemandaForm({
                   placeholder="Informe um telefone ou WhatsApp para contato"
                   type="tel"
                   value={contato}
-                  onChange={(e) => setContato(e.target.value)}
+                  onChange={(e) =>
+                    setContato(e.target.value.replace(/\D/g, ""))
+                  }
+                  maxLength={11}
                   className="border rounded-md p-2"
                   required
                 />

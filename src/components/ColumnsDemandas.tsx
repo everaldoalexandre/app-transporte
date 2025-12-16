@@ -33,6 +33,9 @@ import {
 import { Input } from "./ui/input";
 import { ActionsDemandas } from "@/components/ActionsDemandas";
 import { DemandaType } from "./Types";
+import Link from "next/link";
+import { Tooltip } from "@radix-ui/react-tooltip";
+import { TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
@@ -79,6 +82,10 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
 
   const columns: ColumnDef<DemandaType>[] = [
     {
+      accessorKey: "categoria",
+      header: "Categoria",
+    },
+    {
       accessorKey: "statusDemanda",
       header: ({ column }) => {
         return (
@@ -92,12 +99,19 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         );
       },
       cell: ({ row }) => (
-        <div className="">{row.getValue("statusDemanda")}</div>
+        <div className="max-w-[100px] break-words whitespace-pre-wrap">
+          {row.getValue("statusDemanda")}
+        </div>
       ),
     },
     {
       accessorKey: "destino",
       header: "Destino",
+      cell: ({ row }) => (
+        <div className="max-w-[200px] break-words whitespace-pre-wrap">
+          {row.getValue("destino")}
+        </div>
+      ),
     },
     {
       accessorKey: "dataHoraIda",
@@ -113,7 +127,9 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("dataHoraIda")}</div>
+        <div className="max-w-[200px] break-words whitespace-pre-wrap">
+          {row.getValue("dataHoraIda")}
+        </div>
       ),
     },
     {
@@ -154,6 +170,14 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   });
 
   const column = table.getColumn("statusDemanda");
+  const column1 = table.getColumn("categoria");
+
+  const categoriaOptions = [
+    { label: "Todos", value: "" },
+    { label: "InternoEscolar", value: "InternoEscolar" },
+    { label: "InternoSeduc", value: "InternoSeduc" },
+    { label: "Externo", value: "Externo" },
+  ];
 
   const statusOptions = [
     { label: "Todos", value: "" },
@@ -165,6 +189,32 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   return (
     <div className="w-full mx-10">
       <div className="flex items-center py-4 gap-4">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  {(table.getColumn("categoria")?.getFilterValue() as string) ??
+                    "Todos"}
+                  <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {categoriaOptions.map((categoria) => (
+                  <DropdownMenuItem
+                    key={categoria.value}
+                    onClick={() => column1?.setFilterValue(categoria.value)}
+                  >
+                    {categoria.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Copiar</p>
+          </TooltipContent>
+        </Tooltip>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -228,9 +278,14 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <div>
+          <Button asChild>
+            <Link href="/SolicitacaoDemandas">Cadastrar Demanda</Link>
+          </Button>
+        </div>
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="overflow-hidden rounded-md border break-words">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

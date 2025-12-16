@@ -93,7 +93,7 @@ export function NovoVeiculo({
   }
   return (
     <AlertDialog open={openNovoVeiculo} onOpenChange={openChangeNovoVeiculo}>
-      <AlertDialogContent className="w-full">
+      <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Gostaria de adicionar um novo veículo?
@@ -103,10 +103,10 @@ export function NovoVeiculo({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={adicionarVeiculo}>
-          <div className="flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+          <div className="mt-4 flex grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 w-1/2 justify-items-start">
               <p>
-                <span>Placa: </span>
+                <span className="font-medium">Placa: </span>
                 <Input
                   type="text"
                   value={veiculoNovo?.placaVeiculo}
@@ -121,7 +121,7 @@ export function NovoVeiculo({
                 />
               </p>
               <p>
-                <span>Chassi: </span>
+                <span className="font-medium">Chassi: </span>
                 <Input
                   type="text"
                   value={veiculoNovo?.chassiVeiculo}
@@ -136,7 +136,7 @@ export function NovoVeiculo({
                 />
               </p>
               <p>
-                <span>Renavam: </span>
+                <span className="font-medium">Renavam: </span>
                 <Input
                   type="text"
                   value={veiculoNovo?.renavamVeiculo}
@@ -150,8 +150,10 @@ export function NovoVeiculo({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
+            </div>
+            <div>
               <p>
-                <span>Proprietário: </span>
+                <span className="font-medium">Proprietário: </span>
                 <Input
                   type="text"
                   value={veiculoNovo?.proprietarioVeiculo}
@@ -166,7 +168,7 @@ export function NovoVeiculo({
                 />
               </p>
               <p>
-                <span>Modelo: </span>
+                <span className="font-medium">Modelo: </span>
                 <DropModeloVeiculo
                   modeloId={veiculoNovo?.modeloId ?? ""}
                   setModeloId={(value) =>

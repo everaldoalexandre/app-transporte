@@ -24,6 +24,8 @@ model Demanda {
   updatedAt             DateTime @updatedAt
   lotacao               Int?
   kmRodado              Int?
+  recurso               String?
+  categoria             String?
 
   veiculoId String?
   veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)

@@ -91,7 +91,7 @@ export function NovoUsuario({
   }
   return (
     <AlertDialog open={openNovoUsuario} onOpenChange={openChangeNovoUsuario}>
-      <AlertDialogContent className="w-full">
+      <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Gostaria de cadastrar um novo usuário?
@@ -101,10 +101,10 @@ export function NovoUsuario({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={cadastroUsuario}>
-          <div className="flex grid-cols-2 gap-4">
+          <div className="mt-4 flex grid-cols-2 gap-4">
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
               <p>
-                <span>Nome: </span>
+                <span className="font-medium">Nome: </span>
                 <Input
                   type="text"
                   value={usuarioNovo?.name}
@@ -119,7 +119,7 @@ export function NovoUsuario({
                 />
               </p>
               <p>
-                <span>E-mail: </span>
+                <span className="font-medium">E-mail: </span>
                 <Input
                   type="email"
                   value={usuarioNovo?.email}

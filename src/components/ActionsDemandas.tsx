@@ -27,10 +27,12 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
-import { DropMenu } from "./StatusDemanda";
+import { DropMenuStatusDemanda } from "./DropMenuStatusDemanda";
 import { Demanda, Veiculo, Motorista, User } from "@/generated/prisma";
 import { DemandaType } from "./Types";
 import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
+import { DropMenuRecursoDemanda } from "./DropMenuRecursoDemanda";
+import { DropMenuCategoriaDemanda } from "./DropMenuCategoriaDemanda";
 
 export function ActionsDemandas({
   demanda,
@@ -52,6 +54,8 @@ export function ActionsDemandas({
     useState(false);
   const [showModalEditDemanda, setShowModalEditDemanda] = useState(false);
   const [showModalDeleteDemanda, setShowModalDeleteDemanda] = useState(false);
+  const [showMotoristaMenu, setShowMotoristaMenu] = useState(false);
+  const [showPlacaMenu, setShowPlacaMenu] = useState(false);
   const [showModalFinalizarDemanda, setShowModalFinalizarDemanda] =
     useState(false);
 
@@ -114,18 +118,6 @@ export function ActionsDemandas({
 
       const veiculosArray = data.veiculos || [];
 
-      if (
-        demandaEdit?.veiculo &&
-        !veiculosArray.find(
-          (v: Veiculo) =>
-            v.id === demandaEdit.veiculo?.id &&
-            demandaEdit.veiculo.placaVeiculo
-              .toLowerCase()
-              .includes(texto.toLowerCase())
-        )
-      ) {
-        veiculosArray.unshift(demandaEdit.veiculo);
-      }
       setResultadosVeiculo(veiculosArray);
     } finally {
       setLoadingPlaca(false);
@@ -138,20 +130,8 @@ export function ActionsDemandas({
       const res = await fetch(`/api/motorista?search=${texto}`);
       const data = await res.json();
 
-      const motoristasArray = data.motorista || [];
+      const motoristasArray = data.motoristas || [];
 
-      if (
-        demandaEdit?.motorista &&
-        !motoristasArray.find(
-          (m: Motorista) =>
-            m.id === demandaEdit.motorista?.id &&
-            demandaEdit.motorista.nome
-              .toLowerCase()
-              .includes(texto.toLowerCase())
-        )
-      ) {
-        motoristasArray.unshift(demandaEdit.motorista);
-      }
       setResultadosMotorista(motoristasArray);
     } finally {
       setLoadingMotorista(false);
@@ -182,7 +162,10 @@ export function ActionsDemandas({
             dataHoraVolta: demandaEdit.dataHoraVolta,
             origem: demandaEdit.origem,
             contato: demandaEdit.contato,
+            lotacao: demandaEdit.lotacao,
+            recurso: demandaEdit.recurso,
             statusDemanda: demandaEdit.statusDemanda,
+            categoria: demandaEdit.categoria,
             veiculoId: demandaEdit.veiculo?.id || null,
             motoristaId: demandaEdit.motorista?.id || null,
           },
@@ -346,17 +329,17 @@ export function ActionsDemandas({
         open={showModalEditDemanda}
         onOpenChange={setShowModalEditDemanda}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-7xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja editar a demanda?</AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex grid-cols-2 gap-4">
+          <div className="mt-2 flex grid-cols-2 gap-4">
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Solicitante: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Solicitante: </span>
                 <Input
                   type="text"
                   value={demandaEdit?.pessoaSolicitante}
@@ -371,8 +354,8 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Secretaria: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Secretaria: </span>
                 <Input
                   type="text"
                   value={demandaEdit?.secretariaSolicitante}
@@ -387,8 +370,8 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>E-mail: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">E-mail: </span>
                 <Input
                   type="text"
                   value={demandaEdit?.emailSolicitante}
@@ -403,28 +386,49 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Contato: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Contato: </span>
                 <Input
-                  type="text"
+                  type="tel"
                   value={demandaEdit?.contato}
                   onChange={(e) =>
                     setDemandaEdit((prev) =>
-                      prev ? { ...prev, contato: e.target.value } : prev
+                      prev
+                        ? {
+                            ...prev,
+                            contato: e.target.value.replace(/\D/g, ""),
+                          }
+                        : prev
                     )
                   }
+                  maxLength={11}
                   placeholder="Contato"
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span>Recurso: </span>
+                <DropMenuRecursoDemanda
+                  recurso={demandaEdit?.recurso ?? ""}
+                  setRecurso={(value) =>
+                    setDemandaEdit((prev) =>
+                      prev ? { ...prev, recurso: value } : prev
+                    )
+                  }
+                />
+              </p>
             </div>
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Motorista: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Motorista: </span>
                 <div className="relative">
                   <Input
                     type="text"
                     value={demandaEdit?.motorista?.nome || ""}
+                    onFocus={() => setShowMotoristaMenu(true)}
+                    onBlur={() => {
+                      setTimeout(() => setShowMotoristaMenu(false), 300);
+                    }}
                     onChange={async (e) => {
                       const value = e.target.value;
 
@@ -438,44 +442,32 @@ export function ActionsDemandas({
                             }
                           : prev
                       );
-
                       setQueryMotorista(value);
 
                       if (value.length >= 2) {
-                        setLoadingMotorista(true);
-                        try {
-                          const res = await fetch(
-                            `/api/motorista?search=${value}`
-                          );
-                          const data = await res.json();
-
-                          setResultadosMotorista(data.motoristas || []);
-                        } catch (err) {
-                          console.error("Erro ao buscar motorista:", err);
-                        } finally {
-                          setLoadingMotorista(false);
-                        }
+                        setShowMotoristaMenu(true);
                       } else {
                         setResultadosMotorista([]);
+                        setShowMotoristaMenu(false);
                       }
                     }}
                     placeholder="Nome do Motorista"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
 
-                  {loadingMotorista && (
+                  {showMotoristaMenu && loadingMotorista && (
                     <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
                       Buscando...
                     </div>
                   )}
 
-                  {resultadosMotorista.length > 0 && (
+                  {showMotoristaMenu && resultadosMotorista.length > 0 && (
                     <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
                       {resultadosMotorista.map((item) => (
                         <li
                           key={item.id}
                           className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => {
+                          onMouseDown={() => {
                             setMotoristaEdit(item);
                             setDemandaEdit((prev) =>
                               prev
@@ -486,7 +478,7 @@ export function ActionsDemandas({
                                 : prev
                             );
                             setQueryMotorista(item.nome);
-                            setResultadosMotorista([]);
+                            setShowMotoristaMenu(false);
                           }}
                         >
                           {item.nome}
@@ -496,12 +488,16 @@ export function ActionsDemandas({
                   )}
                 </div>
               </p>
-              <p>
-                <span>Placa: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Placa: </span>
                 <div className="relative">
                   <Input
                     type="text"
                     value={demandaEdit?.veiculo?.placaVeiculo || ""}
+                    onFocus={() => setShowPlacaMenu(true)}
+                    onBlur={() => {
+                      setTimeout(() => setShowPlacaMenu(false), 300);
+                    }}
                     onChange={async (e) => {
                       const value = e.target.value;
 
@@ -519,6 +515,7 @@ export function ActionsDemandas({
                       setQueryPlaca(value);
 
                       if (value.length >= 2) {
+                        setShowPlacaMenu(true);
                         setLoadingPlaca(true);
                         try {
                           const res = await fetch(
@@ -533,25 +530,26 @@ export function ActionsDemandas({
                         }
                       } else {
                         setResultadosVeiculo([]);
+                        setShowPlacaMenu(false);
                       }
                     }}
                     placeholder="Placa do veículo"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
 
-                  {loadingPlaca && (
+                  {showPlacaMenu && loadingPlaca && (
                     <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
                       Buscando...
                     </div>
                   )}
 
-                  {resultadosVeiculo.length > 0 && (
+                  {showPlacaMenu && resultadosVeiculo.length > 0 && (
                     <ul className="absolute bg-white border w-full rounded shadow max-h-48 overflow-auto z-50">
                       {resultadosVeiculo.map((item) => (
                         <li
                           key={item.id}
                           className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => {
+                          onMouseDown={() => {
                             setVeiculoEdit(item);
                             setDemandaEdit((prev) =>
                               prev
@@ -562,7 +560,7 @@ export function ActionsDemandas({
                                 : prev
                             );
                             setQueryPlaca(item.placaVeiculo);
-                            setResultadosVeiculo([]);
+                            setShowPlacaMenu(false);
                           }}
                         >
                           {item.placaVeiculo}
@@ -572,10 +570,39 @@ export function ActionsDemandas({
                   )}
                 </div>
               </p>
-
-              <p>
-                <span>Status: </span>
-                <DropMenu
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Lotação: </span>
+                <Input
+                  type="number"
+                  value={demandaEdit?.lotacao ?? ""}
+                  onChange={(e) =>
+                    setDemandaEdit((prev) =>
+                      prev ? { ...prev, lotacao: Number(e.target.value) } : prev
+                    )
+                  }
+                  placeholder="Lotação"
+                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                />
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">KM Rodado: </span>
+                <Input
+                  type="text"
+                  value={demandaEdit?.kmRodado ?? ""}
+                  onChange={(e) =>
+                    setDemandaEdit((prev) =>
+                      prev
+                        ? { ...prev, kmRodado: Number(e.target.value) }
+                        : prev
+                    )
+                  }
+                  placeholder="KM Rodado"
+                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                />
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Status: </span>
+                <DropMenuStatusDemanda
                   statusDemanda={demandaEdit?.statusDemanda ?? ""}
                   setStatusDemanda={(value) =>
                     setDemandaEdit((prev) =>
@@ -585,10 +612,9 @@ export function ActionsDemandas({
                 />
               </p>
             </div>
-
             <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Destino: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Destino: </span>
                 <Input
                   type="text"
                   value={demandaEdit?.destino}
@@ -601,9 +627,9 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Local de Saída: </span>
-                <input
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Local de Saída: </span>
+                <Input
                   type="text"
                   value={demandaEdit?.origem}
                   onChange={(e) =>
@@ -615,8 +641,8 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Horário da Saída: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Horário da Saída: </span>
                 <Input
                   type="datetime-local"
                   value={demandaEdit?.dataHoraIda ?? ""}
@@ -629,8 +655,8 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>Horário da Volta: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Horário da Volta: </span>
                 <Input
                   type="datetime-local"
                   value={demandaEdit?.dataHoraVolta ?? ""}
@@ -643,12 +669,33 @@ export function ActionsDemandas({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Categoria: </span>
+                <DropMenuCategoriaDemanda
+                  categoria={demandaEdit?.categoria ?? ""}
+                  setCategoria={(value) =>
+                    setDemandaEdit((prev) =>
+                      prev ? { ...prev, categoria: value } : prev
+                    )
+                  }
+                />
+              </p>
             </div>
           </div>
           <div className="flex flex-col gap-2 max-w-2xl min-w-2xl mt-2">
-            <p>
-              <span>Detalhe: </span>
-              {demandaEdit?.demandaDetalhe}
+            <p className="break-words whitespace-pre-wrap">
+              <span className="font-medium">Detalhe: </span>
+              <Input
+                type="text"
+                value={demandaEdit?.demandaDetalhe}
+                onChange={(e) =>
+                  setDemandaEdit((prev) =>
+                    prev ? { ...prev, demandaDetalhe: e.target.value } : prev
+                  )
+                }
+                placeholder="Detalhe da demanda"
+                className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+              />
             </p>
           </div>
           <AlertDialogFooter>
@@ -674,7 +721,7 @@ export function ActionsDemandas({
         open={showModalDetalhesDemanda}
         onOpenChange={setShowModalDetalhesDemanda}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-7xl">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex w-full">
               <div className="w-1/2">Informações sobre a demanda</div>
@@ -756,38 +803,37 @@ export function ActionsDemandas({
               </div>
             </AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="bg-white p-6 rounded shadow-lg">
-            <div className="flex sgrid-cols-2 gap-4">
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Solicitante: </span>
-                  {demandaEdit?.pessoaSolicitante}
+          <div className="mt-4 flex grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Solicitante: </span>
+                {demandaEdit?.pessoaSolicitante}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Secretaria: </span>
+                {demandaEdit?.secretariaSolicitante}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">E-mail: </span>
+                {demandaEdit?.emailSolicitante}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Contato: </span>
+                {demandaEdit?.contato}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <div className="flex gap-3">
+                <p className="break-words whitespace-pre-wrap gap-10">
+                  <span className="font-medium">Motorista: </span>
+                  {demandaEdit?.motorista?.nome}
                 </p>
                 <p>
-                  <span>Secretaria: </span>
-                  {demandaEdit?.secretariaSolicitante}
-                </p>
-                <p>
-                  <span>E-mail: </span>
-                  {demandaEdit?.emailSolicitante}
-                </p>
-                <p>
-                  <span>Contato: </span>
-                  {demandaEdit?.contato}
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <div className="flex gap-3">
-                  <p className="gap-10">
-                    <span>Motorista: </span>
-                    {demandaEdit?.motorista?.nome}
-                  </p>
-                  <p>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => {
-                            const texto = `*DEMANDA DE TRANSPORTE* 
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => {
+                          const texto = `*DEMANDA DE TRANSPORTE* 
                             *Solicitante:* ${demandaEdit?.pessoaSolicitante || "N/A"} 
                             *Secretaria:* ${demandaEdit?.secretariaSolicitante || "N/A"}
                             *E-mail:* ${demandaEdit?.emailSolicitante || "N/A"}
@@ -798,58 +844,71 @@ export function ActionsDemandas({
                             *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
                             *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
                             *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
-                            const textoFormatado = texto
-                              .replace(/^\s+/gm, "")
-                              .trim();
-                            const WhatsAppURL = `https://wa.me/55${demandaEdit?.motorista?.contato}?text=${encodeURIComponent(
-                              textoFormatado
-                            )}`;
-                            window.open(WhatsAppURL, "_blank");
-                          }}
-                          className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
-                        >
-                          <Send />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Enviar para o Motorista</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </p>
-                </div>
-                <p>
-                  <span>Placa: </span>
-                  {demandaEdit?.veiculo?.placaVeiculo}
+                          const textoFormatado = texto
+                            .replace(/^\s+/gm, "")
+                            .trim();
+                          const WhatsAppURL = `https://wa.me/55${demandaEdit?.motorista?.contato}?text=${encodeURIComponent(
+                            textoFormatado
+                          )}`;
+                          window.open(WhatsAppURL, "_blank");
+                        }}
+                        className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
+                      >
+                        <Send />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Enviar para o Motorista</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </p>
               </div>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Placa: </span>
+                {demandaEdit?.veiculo?.placaVeiculo}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Lotação: </span>
+                {demandaEdit?.lotacao}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Recurso: </span>
+                {demandaEdit?.recurso}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Categoria: </span>
+                {demandaEdit?.categoria}
+              </p>
+            </div>
 
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Destino: </span>
-                  {demandaEdit?.destino}
-                </p>
-                <p>
-                  <span>Local de Saída: </span> {demandaEdit?.origem}
-                </p>
-                <p>
-                  <span>Horário da Saída: </span> {demandaEdit?.dataHoraIda}
-                </p>
-                <p>
-                  <span>Horário da Volta: </span>
-                  {demandaEdit?.dataHoraVolta}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 max-w-2xl min-w-2xl mt-2">
-              <p className="font-medium">
-                <span>Detalhe: </span>
-                {demandaEdit?.demandaDetalhe}
+            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Destino: </span>
+                {demandaEdit?.destino}
               </p>
-              <p className="font-medium">
-                <span>Status: </span>
-                {demandaEdit?.statusDemanda}
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Local de Saída: </span>{" "}
+                {demandaEdit?.origem}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Horário da Saída: </span>{" "}
+                {demandaEdit?.dataHoraIda}
+              </p>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Horário da Volta: </span>
+                {demandaEdit?.dataHoraVolta}
               </p>
             </div>
+          </div>
+          <div className="flex flex-col gap-2 max-w-2xl min-w-2xl mt-2">
+            <p className="font-medium break-words whitespace-pre-wrap">
+              <span className="font-medium">Detalhe: </span>
+              {demandaEdit?.demandaDetalhe}
+            </p>
+            <p className="font-medium break-words whitespace-pre-wrap">
+              <span className="font-medium">Status: </span>
+              {demandaEdit?.statusDemanda}
+            </p>
           </div>
           <AlertDialogFooter>
             {isEditor(userAccessLevel) && (
@@ -866,10 +925,10 @@ export function ActionsDemandas({
         open={showModalDeleteDemanda}
         onOpenChange={setShowModalDeleteDemanda}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja apagar a demanda?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="p-5">
               A demanda será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -894,10 +953,10 @@ export function ActionsDemandas({
         open={showModalFinalizarDemanda}
         onOpenChange={setShowModalFinalizarDemanda}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja finalizar a demanda?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="p-5">
               Ao finalizar, a demanda terá seu status alterado para Finalizado.
             </AlertDialogDescription>
           </AlertDialogHeader>

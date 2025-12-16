@@ -13,34 +13,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function DropMenuStatusDemanda({
-  statusDemanda,
-  setStatusDemanda,
+export function DropMenuCategoriaDemanda({
+  categoria,
+  setCategoria,
 }: {
-  statusDemanda: string;
-  setStatusDemanda: (value: string) => void;
+  categoria: string;
+  setCategoria: (value: string) => void;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{statusDemanda}</Button>
+        <Button variant="outline">{categoria}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Status Demanda</DropdownMenuLabel>
+        <DropdownMenuLabel>Categoria da Demanda</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup
-          value={statusDemanda}
-          onValueChange={setStatusDemanda}
-        >
-          <DropdownMenuRadioItem value="Aguardando">
-            Aguardando
+        <DropdownMenuRadioGroup value={categoria} onValueChange={setCategoria}>
+          <DropdownMenuRadioItem value="InternoSeduc">
+            Interna - SEDUC
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Agendado">
-            Agendado
+          <DropdownMenuRadioItem value="InternoEscolar">
+            Interna - ESCOLAR
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Finalizado">
-            Finalizado
-          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Externo">Externa</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

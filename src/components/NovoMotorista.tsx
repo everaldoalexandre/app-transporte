@@ -92,7 +92,7 @@ export function NovoMotorista({
       open={openNovoMotorista}
       onOpenChange={openChangeNovoMotorista}
     >
-      <AlertDialogContent className="w-full">
+      <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Gostaria de cadastrar um novo motorista?
@@ -102,10 +102,10 @@ export function NovoMotorista({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={cadastroMotorista}>
-          <div className="flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+          <div className="mt-4 flex grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
               <p>
-                <span>Nome: </span>
+                <span className="font-medium">Nome: </span>
                 <Input
                   type="text"
                   value={motoristaNovo?.nome}
@@ -120,7 +120,7 @@ export function NovoMotorista({
                 />
               </p>
               <p>
-                <span>Contato: </span>
+                <span className="font-medium">Contato: </span>
                 <Input
                   type="text"
                   value={motoristaNovo?.contato}
@@ -135,7 +135,7 @@ export function NovoMotorista({
                 />
               </p>
               <p>
-                <span>Secretaria: </span>
+                <span className="font-medium">Secretaria: </span>
                 <DropMenuSecretaria
                   secretariaIds={motoristaNovo.secretariaId}
                   setSecretariaIds={(ids) =>

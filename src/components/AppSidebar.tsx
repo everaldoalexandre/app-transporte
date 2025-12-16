@@ -1,7 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { Car, ChevronsUpDown, Inbox, MonitorCog } from "lucide-react";
+import {
+  Car,
+  ChevronsUpDown,
+  Inbox,
+  MonitorCog,
+  UserCheck,
+  UserCog,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,23 +94,21 @@ export default function AppSidebar() {
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton>
-                        <span className="flex w-full gap-2">
-                          <MonitorCog className="w-4" />
-                          Painel
-                        </span>
+                        <MonitorCog className="w-4" />
+                        <span className="flex w-full gap-2">Painel</span>
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         <SidebarMenuButton>
                           <a href="/usuario" className="flex gap-2">
-                            <MonitorCog className="w-4" />
+                            <UserCheck className="w-4" />
                             <span>Usuário</span>
                           </a>
                         </SidebarMenuButton>
                         <SidebarMenuButton>
                           <a href="/motorista" className="flex gap-2">
-                            <MonitorCog className="w-4" />
+                            <UserCog className="w-4" />
                             <span>Motorista</span>
                           </a>
                         </SidebarMenuButton>
@@ -122,18 +127,20 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className=" flex h-15 justify-start">
+                <SidebarMenuButton className="ml-[-2] flex h-15 justify-start">
                   <AvatarIcon size={35} />
                   {state !== "collapsed" && (
-                    <div className="flex flex-col ml-2">
-                      <span>{user?.name}</span>
-                      <span className="text-xs text-gray-500">
-                        {user?.email}
-                      </span>
+                    <div className="w-full flex ml-2">
+                      <div className="flex flex-col ml-2 w-1/2">
+                        <span>{user?.name}</span>
+                        <span className="text-xs text-gray-500">
+                          {user?.email}
+                        </span>
+                      </div>
+                      <div className="flex justify-end w-1/2">
+                        <ChevronsUpDown className="ml-auto" />
+                      </div>
                     </div>
-                  )}
-                  {state !== "collapsed" && (
-                    <ChevronsUpDown className="ml-auto" />
                   )}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

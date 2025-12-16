@@ -136,6 +136,8 @@ exports.Prisma.DemandaScalarFieldEnum = {
   updatedAt: 'updatedAt',
   lotacao: 'lotacao',
   kmRodado: 'kmRodado',
+  recurso: 'recurso',
+  categoria: 'categoria',
   veiculoId: 'veiculoId',
   motoristaId: 'motoristaId',
   secretariaId: 'secretariaId'

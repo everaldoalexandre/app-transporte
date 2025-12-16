@@ -13,31 +13,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function DropMenuStatusDemanda({
-  statusDemanda,
-  setStatusDemanda,
+export function DropMenuRecursoDemanda({
+  recurso,
+  setRecurso,
 }: {
-  statusDemanda: string;
-  setStatusDemanda: (value: string) => void;
+  recurso: string;
+  setRecurso: (value: string) => void;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{statusDemanda}</Button>
+        <Button variant="outline">{recurso}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Status Demanda</DropdownMenuLabel>
+        <DropdownMenuLabel>Recurso da Demanda</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup
-          value={statusDemanda}
-          onValueChange={setStatusDemanda}
-        >
-          <DropdownMenuRadioItem value="Aguardando">
-            Aguardando
+        <DropdownMenuRadioGroup value={recurso} onValueChange={setRecurso}>
+          <DropdownMenuRadioItem value="InternoSeduc">
+            Interno - SEDUC
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Agendado">
-            Agendado
-          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Externo">Externo</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Finalizado">
             Finalizado
           </DropdownMenuRadioItem>
