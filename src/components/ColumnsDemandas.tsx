@@ -187,105 +187,105 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   ];
 
   return (
-    <div className="w-full mx-10">
-      <div className="flex items-center py-4 gap-4">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  {(table.getColumn("categoria")?.getFilterValue() as string) ??
-                    "Todos"}
-                  <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                {categoriaOptions.map((categoria) => (
-                  <DropdownMenuItem
-                    key={categoria.value}
-                    onClick={() => column1?.setFilterValue(categoria.value)}
-                  >
-                    {categoria.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Copiar</p>
-          </TooltipContent>
-        </Tooltip>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              {(table.getColumn("statusDemanda")?.getFilterValue() as string) ??
-                "Todos"}
-              <ChevronDown />
+    <div className="w-[95vw] max-w-4xl max-h-[90vh]">
+      <div className="mb-4 flex sm:flex-row grid-cols-2 gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 w-1/2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                {(table.getColumn("categoria")?.getFilterValue() as string) ??
+                  "Todos"}
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {categoriaOptions.map((categoria) => (
+                <DropdownMenuItem
+                  key={categoria.value}
+                  onClick={() => column1?.setFilterValue(categoria.value)}
+                >
+                  {categoria.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                {(table
+                  .getColumn("statusDemanda")
+                  ?.getFilterValue() as string) ?? "Todos"}
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {statusOptions.map((status) => (
+                <DropdownMenuItem
+                  key={status.value}
+                  onClick={() => column?.setFilterValue(status.value)}
+                >
+                  {status.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Input
+            placeholder="Filtre por destino"
+            value={
+              (table.getColumn("destino")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("destino")?.setFilterValue(event.target.value)
+            }
+            className="max-w-50 ml-auto"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 w-1/2">
+          <Input
+            placeholder="Filtre por data"
+            value={
+              (table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("dataHoraIda")?.setFilterValue(event.target.value)
+            }
+            className="max-w-35 ml-auto"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Colunas <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <div className="ml-auto">
+            <Button asChild>
+              <Link href="/SolicitacaoDemandas">Cadastrar Demanda</Link>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {statusOptions.map((status) => (
-              <DropdownMenuItem
-                key={status.value}
-                onClick={() => column?.setFilterValue(status.value)}
-              >
-                {status.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Input
-          placeholder="Filtre por destino"
-          value={(table.getColumn("destino")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("destino")?.setFilterValue(event.target.value)
-          }
-          className="max-w-50"
-        />
-        <Input
-          placeholder="Filtre por data"
-          value={
-            (table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("dataHoraIda")?.setFilterValue(event.target.value)
-          }
-          className="max-w-35"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Colunas <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <div>
-          <Button asChild>
-            <Link href="/SolicitacaoDemandas">Cadastrar Demanda</Link>
-          </Button>
+          </div>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-md border break-words">
-        <Table className="w-full">
+      <div className="w-full rounded-md border">
+        <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
