@@ -77,7 +77,7 @@ model Motorista {
 
 model Acesso {
   id    String @id @default(uuid())
-  nivel String
+  nivel String 
 
   user User[]
 }

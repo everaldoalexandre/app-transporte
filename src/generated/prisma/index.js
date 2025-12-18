@@ -241,7 +241,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\SEDUC\\Desktop\\Projetos\\app-transporte\\src\\generated\\prisma",
+      "value": "C:\\Users\\evera\\projects\\app-transporte\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -255,7 +255,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\SEDUC\\Desktop\\Projetos\\app-transporte\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\evera\\projects\\app-transporte\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -269,6 +269,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -279,7 +280,7 @@ const config = {
   },
   "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Demanda {\n  id                    String   @id @default(uuid())\n  emailSolicitante      String\n  demandaDetalhe        String\n  pessoaSolicitante     String\n  secretariaSolicitante String\n  destino               String\n  dataHoraIda           String\n  dataHoraVolta         String\n  origem                String\n  contato               String\n  statusDemanda         String   @default(\"Aguardando\")\n  createdAt             DateTime @default(now())\n  updatedAt             DateTime @updatedAt\n  lotacao               Int?\n  kmRodado              Int?\n  recurso               String?\n  categoria             String?\n\n  veiculoId String?\n  veiculo   Veiculo? @relation(fields: [veiculoId], references: [id], onDelete: SetNull)\n\n  motoristaId String?\n  motorista   Motorista? @relation(fields: [motoristaId], references: [id], onDelete: SetNull)\n\n  secretariaId String?\n  secretaria   Secretaria? @relation(fields: [secretariaId], references: [id], onDelete: SetNull)\n}\n\nmodel Veiculo {\n  id                  String @id @default(uuid())\n  placaVeiculo        String @unique\n  chassiVeiculo       String\n  renavamVeiculo      String\n  proprietarioVeiculo String\n  crlvVeiculo         String\n\n  secretariaId String\n  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)\n\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  modeloId String?\n  modelo   VeiculoModelo? @relation(fields: [modeloId], references: [id], onDelete: Cascade)\n\n  demandas Demanda[]\n}\n\nmodel VeiculoModelo {\n  id     String @id @default(uuid())\n  modelo String\n\n  veiculos Veiculo[]\n}\n\nmodel Motorista {\n  id      String @id @default(uuid())\n  nome    String\n  contato String\n\n  demandas Demanda[]\n\n  secretariaId String\n  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)\n}\n\nmodel Acesso {\n  id    String @id @default(uuid())\n  nivel String\n\n  user User[]\n}\n\nmodel Secretaria {\n  id   String @id @default(uuid())\n  nome String @unique\n\n  demandas  Demanda[]\n  users     UserSecretaria[]\n  veiculos  Veiculo[]\n  motorista Motorista[]\n}\n\nmodel UserSecretaria {\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  secretariaId String\n  secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)\n\n  @@id([userId, secretariaId])\n  @@map(\"user_on_secretaria\")\n}\n\nmodel User {\n  id            String   @id @default(uuid())\n  name          String\n  email         String   @unique\n  createdAt     DateTime @default(now())\n  emailVerified Boolean  @default(false)\n  image         String?\n  updatedAt     DateTime @default(now()) @updatedAt\n\n  acesso      Acesso[]\n  sessions    Session[]\n  accounts    Account[]\n  veiculos    Veiculo[]\n  secretarias UserSecretaria[]\n\n  @@map(\"user\")\n}\n\nmodel Session {\n  id        String   @id @default(uuid())\n  expiresAt DateTime\n  token     String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  ipAddress String?\n  userAgent String?\n  userId    String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id @default(uuid())\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime  @default(now())\n  updatedAt             DateTime  @updatedAt\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String   @id @default(uuid())\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @default(now()) @updatedAt\n\n  @@map(\"verification\")\n}\n",
   "inlineSchemaHash": "0a5f857395b6c2dc3e0321327168885f043ef7572fec5734293e24eea558a933",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -316,3 +317,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "src/generated/prisma/schema.prisma")
