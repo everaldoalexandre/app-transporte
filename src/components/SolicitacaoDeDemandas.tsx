@@ -152,7 +152,7 @@ export function SolicitacaoDemandaForm({
     }
   }
   return (
-    <Card>
+    <Card className="mx-4 sm:mx-auto w-full max-w-5xl">
       <CardHeader>
         <CardTitle className="flex justify-center items-center text-2xl font-bold">
           <Car className="mr-2" />
@@ -160,10 +160,10 @@ export function SolicitacaoDemandaForm({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={adicionarDemanda}>
-          <div className="flex flex-col w-full min-w-md px-6 rounded-lg">
+        <form onSubmit={adicionarDemanda} className="space-y-6">
+          <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 md:col-span-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
