@@ -10,7 +10,7 @@ export default async function CadastroForm() {
     headers: await headers(),
   });
 
-  if (!userSession) {
+  if (userSession) {
     redirect("/demandas");
   }
   return (
