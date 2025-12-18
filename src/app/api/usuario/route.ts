@@ -219,12 +219,26 @@ export async function PUT(request: Request) {
 
     const updateData: any = {};
 
+    if (updatedUsuario.acessoIds && Array.isArray(updatedUsuario.acessoIds)) {
+      updateData.acesso = {
+        set: updatedUsuario.acessoIds.map((acessoId: string) => ({
+          id: acessoId,
+        })),
+      };
+    }
+
     if (updatedUsuario.name) {
       updateData.name = updatedUsuario.name;
     }
 
     if (updatedUsuario.email) {
       updateData.email = updatedUsuario.email;
+    }
+
+    if (updatedUsuario.acessoIds?.length) {
+      updateData.acesso = {
+        set: updatedUsuario.acessoIds.map((id: string) => ({ id })),
+      };
     }
 
     if (
@@ -248,12 +262,12 @@ export async function PUT(request: Request) {
       where: { id },
       data: updateData,
       include: {
+        acesso: true,
         secretarias: {
           include: {
             secretaria: true,
           },
         },
-        acesso: true,
       },
     });
 

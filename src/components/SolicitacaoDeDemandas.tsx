@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DropMenuSecretaria } from "./DropMenuSecretarias";
@@ -47,7 +48,7 @@ export function SolicitacaoDemandaForm({
       }
 
       const emailData = {
-        from: "onboarding@resend.dev",
+        from: "no-reply@gestaotransporte.site",
         to: [email.trim()],
         subject: "Confirmação de Solicitação de Demanda",
         content: `Olá, ${nome}! Sua solicitação de demanda foi recebida com sucesso. Detalhes da demanda: ${detalhe}. Obrigado por utilizar nosso serviço!`,
@@ -143,6 +144,7 @@ export function SolicitacaoDemandaForm({
         setContato("");
         setLotacao("");
         setStatusDemanda("Aguardando");
+        setSecretariaId("");
       } else {
         toast.error("Erro ao solicitar demanda.");
       }
@@ -152,7 +154,7 @@ export function SolicitacaoDemandaForm({
     }
   }
   return (
-    <Card className="mx-4 sm:mx-auto w-full max-w-5xl">
+    <Card className="mx-4 sm:mx-auto w-full max-w-3xl">
       <CardHeader>
         <CardTitle className="flex justify-center items-center text-2xl font-bold">
           <Car className="mr-2" />
@@ -172,18 +174,6 @@ export function SolicitacaoDemandaForm({
                   value={emailSolicitante}
                   onChange={(e) => setEmailSolicitante(e.target.value)}
                   placeholder="Informe o seu e-mail"
-                  className="border rounded-md p-2"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="demand">Detalhe da Demanda</Label>
-                <Input
-                  id="demand"
-                  placeholder="Descreva sua demanda"
-                  value={demandaDetalhe}
-                  onChange={(e) => setDemandaDetalhe(e.target.value)}
-                  type="text"
                   className="border rounded-md p-2"
                   required
                 />
@@ -271,6 +261,26 @@ export function SolicitacaoDemandaForm({
                   className="border rounded-md p-2"
                   required
                 />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="demandaDetalhe">Detalhe da Demanda</Label>
+                <Textarea
+                  id="demandaDetalhe"
+                  placeholder="Descreva sua demanda"
+                  value={demandaDetalhe}
+                  maxLength={500}
+                  onChange={(e) => setDemandaDetalhe(e.target.value)}
+                  className="w-full
+                  min-h-[100px] 
+                  sm:min-h-[120px]
+                  md:min-h-[150px]
+                  lg:min-h-[180px]
+                  resize-none"
+                  required
+                />
+                <p className="texte-xs text-muted-foreground text-right">
+                  {demandaDetalhe.length}/500
+                </p>
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="datahora">Data e Hora da Ida</Label>

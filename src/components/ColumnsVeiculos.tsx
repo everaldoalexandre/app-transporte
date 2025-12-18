@@ -101,7 +101,9 @@ export function DataTableVeiculos({
         );
       },
       cell: ({ row }) => (
-        <div className="">{(row.original as any).modelo?.modelo || ""}</div>
+        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+          {(row.original as any).modelo?.modelo || ""}
+        </div>
       ),
     },
     {
@@ -222,8 +224,8 @@ export function DataTableVeiculos({
           onRefresh={fetchVeiculos}
         />
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

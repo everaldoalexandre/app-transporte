@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Uários - Sistema de Transporte",
+  title: "Usuários - Sistema de Transporte",
   description: "Pagina de usuários do sistema de transporte",
 };
 

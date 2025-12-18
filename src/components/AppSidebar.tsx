@@ -132,7 +132,7 @@ export default function AppSidebar() {
                   {state !== "collapsed" && (
                     <div className="w-full flex ml-2">
                       <div className="flex flex-col ml-2 w-1/2">
-                        <span>{user?.name}</span>
+                        <span>{user?.name?.split(" ")[0]}</span>
                         <span className="text-xs text-gray-500">
                           {user?.email}
                         </span>

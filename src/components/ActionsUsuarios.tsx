@@ -23,6 +23,7 @@ import { Input } from "./ui/input";
 import { UsuarioType } from "@/components/Types";
 import { DropMenuSecretaria } from "./DropMenuSecretarias";
 import { User } from "@/generated/prisma";
+import { DropMenuAcessos } from "./DropMenuAcessoUsuario";
 
 export function ActionsUsuario({
   usuario,
@@ -173,7 +174,7 @@ export function ActionsUsuario({
         open={showDialogEditUsuario}
         onOpenChange={setShowDialogEditUsuario}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
           <AlertDialogHeader>
             <AlertDialogTitle>
               Você deseja editar as informações do usuário?
@@ -182,10 +183,10 @@ export function ActionsUsuario({
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p>
-                <span>Nome: </span>
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">Nome: </span>
                 <Input
                   type="text"
                   value={usuarioEdit?.name ?? ""}
@@ -199,8 +200,8 @@ export function ActionsUsuario({
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>
-              <p>
-                <span>E-mail: </span>
+              <p className="break-words whitespace-pre-wrap">
+                <span className="font-medium">E-mail: </span>
                 <Input
                   type="email"
                   value={usuarioEdit?.email ?? ""}
@@ -255,26 +256,24 @@ export function ActionsUsuario({
         open={showDialogDetalheUsuario}
         onOpenChange={setShowDialogDetalheUsuario}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Informações sobre a usuário</AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="bg-white p-6 rounded shadow-lg">
-            <div className="flex sgrid-cols-2 gap-4">
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-                <p>
-                  <span>Nome: </span>
-                  {usuarioEdit?.name}
-                </p>
-                <p>
-                  <span>Contato: </span>
-                  {usuarioEdit?.email}
-                </p>
-                <p>
-                  <span>Secretaria: </span>
-                  {usuarioEdit?.secretarias?.[0].secretaria.nome || "N/A"}
-                </p>
-              </div>
+          <div className="flex mt-4 sgrid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
+              <p>
+                <span className="font-medium">Nome: </span>
+                {usuarioEdit?.name}
+              </p>
+              <p>
+                <span className="font-medium">E-mail: </span>
+                {usuarioEdit?.email}
+              </p>
+              <p>
+                <span className="font-medium">Secretaria: </span>
+                {usuarioEdit?.secretarias?.[0].secretaria.nome || "N/A"}
+              </p>
             </div>
           </div>
           <AlertDialogFooter>
@@ -290,14 +289,14 @@ export function ActionsUsuario({
         open={showDialogDeleteUsuario}
         onOpenChange={setShowDialogDeleteUsuario}
       >
-        <AlertDialogContent className="w-full">
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja apagar a usuário?</AlertDialogTitle>
             <AlertDialogDescription>
               A usuário será apagada do sistema e não poderá ser recuperada.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {

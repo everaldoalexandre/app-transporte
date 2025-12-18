@@ -33,6 +33,7 @@ import { DemandaType } from "./Types";
 import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 import { DropMenuRecursoDemanda } from "./DropMenuRecursoDemanda";
 import { DropMenuCategoriaDemanda } from "./DropMenuCategoriaDemanda";
+import { Textarea } from "./ui/textarea";
 
 export function ActionsDemandas({
   demanda,
@@ -329,374 +330,382 @@ export function ActionsDemandas({
         open={showModalEditDemanda}
         onOpenChange={setShowModalEditDemanda}
       >
-        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-7xl">
+        <AlertDialogContent className="w-[95vw] max-w-sm sm:max-w-lg xl:max-w-7xl max-h-[90vh] overflow-hidden">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja editar a demanda?</AlertDialogTitle>
             <AlertDialogDescription>
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="mt-2 flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Solicitante: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.pessoaSolicitante}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev
-                        ? { ...prev, pessoaSolicitante: e.target.value }
-                        : prev
-                    )
-                  }
-                  placeholder="Solicitante"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Secretaria: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.secretariaSolicitante}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev
-                        ? { ...prev, secretariaSolicitante: e.target.value }
-                        : prev
-                    )
-                  }
-                  placeholder="Secretaria Solicitante"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">E-mail: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.emailSolicitante}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev
-                        ? { ...prev, emailSolicitante: e.target.value }
-                        : prev
-                    )
-                  }
-                  placeholder="E-mail"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Contato: </span>
-                <Input
-                  type="tel"
-                  value={demandaEdit?.contato}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            contato: e.target.value.replace(/\D/g, ""),
-                          }
-                        : prev
-                    )
-                  }
-                  maxLength={11}
-                  placeholder="Contato"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span>Recurso: </span>
-                <DropMenuRecursoDemanda
-                  recurso={demandaEdit?.recurso ?? ""}
-                  setRecurso={(value) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, recurso: value } : prev
-                    )
-                  }
-                />
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Motorista: </span>
-                <div className="relative">
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[65vh] pr-2">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-2">
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Solicitante: </span>
                   <Input
                     type="text"
-                    value={demandaEdit?.motorista?.nome || ""}
-                    onFocus={() => setShowMotoristaMenu(true)}
-                    onBlur={() => {
-                      setTimeout(() => setShowMotoristaMenu(false), 300);
-                    }}
-                    onChange={async (e) => {
-                      const value = e.target.value;
-
+                    value={demandaEdit?.pessoaSolicitante}
+                    onChange={(e) =>
                       setDemandaEdit((prev) =>
                         prev
-                          ? {
-                              ...prev,
-                              motorista: prev.motorista
-                                ? { ...prev.motorista, nome: value }
-                                : ({ nome: value } as Motorista),
-                            }
+                          ? { ...prev, pessoaSolicitante: e.target.value }
                           : prev
-                      );
-                      setQueryMotorista(value);
-
-                      if (value.length >= 2) {
-                        setShowMotoristaMenu(true);
-                      } else {
-                        setResultadosMotorista([]);
-                        setShowMotoristaMenu(false);
-                      }
-                    }}
-                    placeholder="Nome do Motorista"
+                      )
+                    }
+                    placeholder="Solicitante"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
-
-                  {showMotoristaMenu && loadingMotorista && (
-                    <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
-                      Buscando...
-                    </div>
-                  )}
-
-                  {showMotoristaMenu && resultadosMotorista.length > 0 && (
-                    <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
-                      {resultadosMotorista.map((item) => (
-                        <li
-                          key={item.id}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onMouseDown={() => {
-                            setMotoristaEdit(item);
-                            setDemandaEdit((prev) =>
-                              prev
-                                ? {
-                                    ...prev,
-                                    motorista: item,
-                                  }
-                                : prev
-                            );
-                            setQueryMotorista(item.nome);
-                            setShowMotoristaMenu(false);
-                          }}
-                        >
-                          {item.nome}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Placa: </span>
-                <div className="relative">
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Secretaria: </span>
                   <Input
                     type="text"
-                    value={demandaEdit?.veiculo?.placaVeiculo || ""}
-                    onFocus={() => setShowPlacaMenu(true)}
-                    onBlur={() => {
-                      setTimeout(() => setShowPlacaMenu(false), 300);
-                    }}
-                    onChange={async (e) => {
-                      const value = e.target.value;
-
+                    value={demandaEdit?.secretariaSolicitante}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev
+                          ? { ...prev, secretariaSolicitante: e.target.value }
+                          : prev
+                      )
+                    }
+                    placeholder="Secretaria Solicitante"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">E-mail: </span>
+                  <Input
+                    type="text"
+                    value={demandaEdit?.emailSolicitante}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev
+                          ? { ...prev, emailSolicitante: e.target.value }
+                          : prev
+                      )
+                    }
+                    placeholder="E-mail"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Contato: </span>
+                  <Input
+                    type="tel"
+                    value={demandaEdit?.contato}
+                    onChange={(e) =>
                       setDemandaEdit((prev) =>
                         prev
                           ? {
                               ...prev,
-                              veiculo: prev.veiculo
-                                ? { ...prev.veiculo, placaVeiculo: value }
-                                : ({ placaVeiculo: value } as Veiculo),
+                              contato: e.target.value.replace(/\D/g, ""),
                             }
                           : prev
-                      );
+                      )
+                    }
+                    maxLength={11}
+                    placeholder="Contato"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span>Recurso: </span>
+                  <DropMenuRecursoDemanda
+                    recurso={demandaEdit?.recurso ?? ""}
+                    setRecurso={(value) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, recurso: value } : prev
+                      )
+                    }
+                  />
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 justify-items-start">
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Motorista: </span>
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      value={demandaEdit?.motorista?.nome || ""}
+                      onFocus={() => setShowMotoristaMenu(true)}
+                      onBlur={() => {
+                        setTimeout(() => setShowMotoristaMenu(false), 300);
+                      }}
+                      onChange={async (e) => {
+                        const value = e.target.value;
 
-                      setQueryPlaca(value);
+                        setDemandaEdit((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                motorista: prev.motorista
+                                  ? { ...prev.motorista, nome: value }
+                                  : ({ nome: value } as Motorista),
+                              }
+                            : prev
+                        );
+                        setQueryMotorista(value);
 
-                      if (value.length >= 2) {
-                        setShowPlacaMenu(true);
-                        setLoadingPlaca(true);
-                        try {
-                          const res = await fetch(
-                            `/api/veiculo?search=${value}`
-                          );
-                          const data = await res.json();
-                          setResultadosVeiculo(data.veiculos || []);
-                        } catch (err) {
-                          console.error("Erro ao buscar veículos:", err);
-                        } finally {
-                          setLoadingPlaca(false);
+                        if (value.length >= 2) {
+                          setShowMotoristaMenu(true);
+                        } else {
+                          setResultadosMotorista([]);
+                          setShowMotoristaMenu(false);
                         }
-                      } else {
-                        setResultadosVeiculo([]);
-                        setShowPlacaMenu(false);
-                      }
-                    }}
-                    placeholder="Placa do veículo"
+                      }}
+                      placeholder="Nome do Motorista"
+                      className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                    />
+
+                    {showMotoristaMenu && loadingMotorista && (
+                      <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
+                        Buscando...
+                      </div>
+                    )}
+
+                    {showMotoristaMenu && resultadosMotorista.length > 0 && (
+                      <ul className="absolute bg-white border w-full rounded shadow mt-1 max-h-48 overflow-auto z-50">
+                        {resultadosMotorista.map((item) => (
+                          <li
+                            key={item.id}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            onMouseDown={() => {
+                              setMotoristaEdit(item);
+                              setDemandaEdit((prev) =>
+                                prev
+                                  ? {
+                                      ...prev,
+                                      motorista: item,
+                                    }
+                                  : prev
+                              );
+                              setQueryMotorista(item.nome);
+                              setShowMotoristaMenu(false);
+                            }}
+                          >
+                            {item.nome}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Placa: </span>
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      value={demandaEdit?.veiculo?.placaVeiculo || ""}
+                      onFocus={() => setShowPlacaMenu(true)}
+                      onBlur={() => {
+                        setTimeout(() => setShowPlacaMenu(false), 300);
+                      }}
+                      onChange={async (e) => {
+                        const value = e.target.value;
+
+                        setDemandaEdit((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                veiculo: prev.veiculo
+                                  ? { ...prev.veiculo, placaVeiculo: value }
+                                  : ({ placaVeiculo: value } as Veiculo),
+                              }
+                            : prev
+                        );
+
+                        setQueryPlaca(value);
+
+                        if (value.length >= 2) {
+                          setShowPlacaMenu(true);
+                          setLoadingPlaca(true);
+                          try {
+                            const res = await fetch(
+                              `/api/veiculo?search=${value}`
+                            );
+                            const data = await res.json();
+                            setResultadosVeiculo(data.veiculos || []);
+                          } catch (err) {
+                            console.error("Erro ao buscar veículos:", err);
+                          } finally {
+                            setLoadingPlaca(false);
+                          }
+                        } else {
+                          setResultadosVeiculo([]);
+                          setShowPlacaMenu(false);
+                        }
+                      }}
+                      placeholder="Placa do veículo"
+                      className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                    />
+
+                    {showPlacaMenu && loadingPlaca && (
+                      <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
+                        Buscando...
+                      </div>
+                    )}
+
+                    {showPlacaMenu && resultadosVeiculo.length > 0 && (
+                      <ul className="absolute bg-white border w-full rounded shadow max-h-48 overflow-auto z-50">
+                        {resultadosVeiculo.map((item) => (
+                          <li
+                            key={item.id}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            onMouseDown={() => {
+                              setVeiculoEdit(item);
+                              setDemandaEdit((prev) =>
+                                prev
+                                  ? {
+                                      ...prev,
+                                      veiculo: item,
+                                    }
+                                  : prev
+                              );
+                              setQueryPlaca(item.placaVeiculo);
+                              setShowPlacaMenu(false);
+                            }}
+                          >
+                            {item.placaVeiculo}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Lotação: </span>
+                  <Input
+                    type="number"
+                    value={demandaEdit?.lotacao ?? ""}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev
+                          ? { ...prev, lotacao: Number(e.target.value) }
+                          : prev
+                      )
+                    }
+                    placeholder="Lotação"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
-
-                  {showPlacaMenu && loadingPlaca && (
-                    <div className="absolute bg-white border w-full px-4 py-2 text-sm text-gray-400">
-                      Buscando...
-                    </div>
-                  )}
-
-                  {showPlacaMenu && resultadosVeiculo.length > 0 && (
-                    <ul className="absolute bg-white border w-full rounded shadow max-h-48 overflow-auto z-50">
-                      {resultadosVeiculo.map((item) => (
-                        <li
-                          key={item.id}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onMouseDown={() => {
-                            setVeiculoEdit(item);
-                            setDemandaEdit((prev) =>
-                              prev
-                                ? {
-                                    ...prev,
-                                    veiculo: item,
-                                  }
-                                : prev
-                            );
-                            setQueryPlaca(item.placaVeiculo);
-                            setShowPlacaMenu(false);
-                          }}
-                        >
-                          {item.placaVeiculo}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </p>
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">KM Rodado: </span>
+                  <Input
+                    type="text"
+                    value={demandaEdit?.kmRodado ?? ""}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev
+                          ? { ...prev, kmRodado: Number(e.target.value) }
+                          : prev
+                      )
+                    }
+                    placeholder="KM Rodado"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Status: </span>
+                  <DropMenuStatusDemanda
+                    statusDemanda={demandaEdit?.statusDemanda ?? ""}
+                    setStatusDemanda={(value) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, statusDemanda: value } : prev
+                      )
+                    }
+                  />
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 justify-items-start">
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Destino: </span>
+                  <Input
+                    type="text"
+                    value={demandaEdit?.destino}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, destino: e.target.value } : prev
+                      )
+                    }
+                    placeholder="Destino"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Local de Saída: </span>
+                  <Input
+                    type="text"
+                    value={demandaEdit?.origem}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, origem: e.target.value } : prev
+                      )
+                    }
+                    placeholder="Local de Saída"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Horário da Saída: </span>
+                  <Input
+                    type="datetime-local"
+                    value={demandaEdit?.dataHoraIda ?? ""}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, dataHoraIda: e.target.value } : prev
+                      )
+                    }
+                    placeholder="Horário da Saída"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Horário da Volta: </span>
+                  <Input
+                    type="datetime-local"
+                    value={demandaEdit?.dataHoraVolta ?? ""}
+                    onChange={(e) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, dataHoraVolta: e.target.value } : prev
+                      )
+                    }
+                    placeholder="Horario da Volta"
+                    className="w-full text-gray-500 rounded mb-2 border border-gray-300"
+                  />
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Categoria: </span>
+                  <DropMenuCategoriaDemanda
+                    categoria={demandaEdit?.categoria ?? ""}
+                    setCategoria={(value) =>
+                      setDemandaEdit((prev) =>
+                        prev ? { ...prev, categoria: value } : prev
+                      )
+                    }
+                  />
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mt-2">
               <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Lotação: </span>
-                <Input
-                  type="number"
-                  value={demandaEdit?.lotacao ?? ""}
+                <span className="font-medium">Detalhe: </span>
+                <Textarea
+                  value={demandaEdit?.demandaDetalhe}
                   onChange={(e) =>
                     setDemandaEdit((prev) =>
-                      prev ? { ...prev, lotacao: Number(e.target.value) } : prev
+                      prev ? { ...prev, demandaDetalhe: e.target.value } : prev
                     )
                   }
-                  placeholder="Lotação"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">KM Rodado: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.kmRodado ?? ""}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev
-                        ? { ...prev, kmRodado: Number(e.target.value) }
-                        : prev
-                    )
-                  }
-                  placeholder="KM Rodado"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Status: </span>
-                <DropMenuStatusDemanda
-                  statusDemanda={demandaEdit?.statusDemanda ?? ""}
-                  setStatusDemanda={(value) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, statusDemanda: value } : prev
-                    )
-                  }
+                  placeholder="Detalhe da demanda"
+                  className="w-full
+                  min-h-[100px] 
+                  sm:min-h-[120px]
+                  md:min-h-[150px]
+                  lg:min-h-[180px]
+                  resize-none"
                 />
               </p>
             </div>
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Destino: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.destino}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, destino: e.target.value } : prev
-                    )
-                  }
-                  placeholder="Destino"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Local de Saída: </span>
-                <Input
-                  type="text"
-                  value={demandaEdit?.origem}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, origem: e.target.value } : prev
-                    )
-                  }
-                  placeholder="Local de Saída"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Horário da Saída: </span>
-                <Input
-                  type="datetime-local"
-                  value={demandaEdit?.dataHoraIda ?? ""}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, dataHoraIda: e.target.value } : prev
-                    )
-                  }
-                  placeholder="Horário da Saída"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Horário da Volta: </span>
-                <Input
-                  type="datetime-local"
-                  value={demandaEdit?.dataHoraVolta ?? ""}
-                  onChange={(e) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, dataHoraVolta: e.target.value } : prev
-                    )
-                  }
-                  placeholder="Horario da Volta"
-                  className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-                />
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Categoria: </span>
-                <DropMenuCategoriaDemanda
-                  categoria={demandaEdit?.categoria ?? ""}
-                  setCategoria={(value) =>
-                    setDemandaEdit((prev) =>
-                      prev ? { ...prev, categoria: value } : prev
-                    )
-                  }
-                />
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 max-w-2xl min-w-2xl mt-2">
-            <p className="break-words whitespace-pre-wrap">
-              <span className="font-medium">Detalhe: </span>
-              <Input
-                type="text"
-                value={demandaEdit?.demandaDetalhe}
-                onChange={(e) =>
-                  setDemandaEdit((prev) =>
-                    prev ? { ...prev, demandaDetalhe: e.target.value } : prev
-                  )
-                }
-                placeholder="Detalhe da demanda"
-                className="w-full text-gray-500 rounded mb-2 border border-gray-300"
-              />
-            </p>
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => closeModalEditDemanda()}>
@@ -721,7 +730,7 @@ export function ActionsDemandas({
         open={showModalDetalhesDemanda}
         onOpenChange={setShowModalDetalhesDemanda}
       >
-        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-7xl">
+        <AlertDialogContent className="w-[95vw] max-w-sm sm:max-w-lg xl:max-w-7xl max-h-[90vh] overflow-hidden">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex w-full">
               <div className="w-1/2">Informações sobre a demanda</div>
@@ -803,37 +812,38 @@ export function ActionsDemandas({
               </div>
             </AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="mt-4 flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Solicitante: </span>
-                {demandaEdit?.pessoaSolicitante}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Secretaria: </span>
-                {demandaEdit?.secretariaSolicitante}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">E-mail: </span>
-                {demandaEdit?.emailSolicitante}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Contato: </span>
-                {demandaEdit?.contato}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
-              <div className="flex gap-3">
-                <p className="break-words whitespace-pre-wrap gap-10">
-                  <span className="font-medium">Motorista: </span>
-                  {demandaEdit?.motorista?.nome}
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[65vh] pr-2">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-2">
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Solicitante: </span>
+                  {demandaEdit?.pessoaSolicitante}
                 </p>
-                <p>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={() => {
-                          const texto = `*DEMANDA DE TRANSPORTE* 
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Secretaria: </span>
+                  {demandaEdit?.secretariaSolicitante}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">E-mail: </span>
+                  {demandaEdit?.emailSolicitante}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Contato: </span>
+                  {demandaEdit?.contato}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+                <div className="flex gap-3">
+                  <p className="break-words whitespace-pre-wrap gap-10">
+                    <span className="font-medium">Motorista: </span>
+                    {demandaEdit?.motorista?.nome}
+                  </p>
+                  <p>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            const texto = `*DEMANDA DE TRANSPORTE* 
                             *Solicitante:* ${demandaEdit?.pessoaSolicitante || "N/A"} 
                             *Secretaria:* ${demandaEdit?.secretariaSolicitante || "N/A"}
                             *E-mail:* ${demandaEdit?.emailSolicitante || "N/A"}
@@ -844,73 +854,81 @@ export function ActionsDemandas({
                             *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
                             *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
                             *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
-                          const textoFormatado = texto
-                            .replace(/^\s+/gm, "")
-                            .trim();
-                          const WhatsAppURL = `https://wa.me/55${demandaEdit?.motorista?.contato}?text=${encodeURIComponent(
-                            textoFormatado
-                          )}`;
-                          window.open(WhatsAppURL, "_blank");
-                        }}
-                        className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
-                      >
-                        <Send />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Enviar para o Motorista</p>
-                    </TooltipContent>
-                  </Tooltip>
+                            const textoFormatado = texto
+                              .replace(/^\s+/gm, "")
+                              .trim();
+                            const WhatsAppURL = `https://wa.me/55${demandaEdit?.motorista?.contato}?text=${encodeURIComponent(
+                              textoFormatado
+                            )}`;
+                            window.open(WhatsAppURL, "_blank");
+                          }}
+                          className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
+                        >
+                          <Send />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Enviar para o Motorista</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </p>
+                </div>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Placa: </span>
+                  {demandaEdit?.veiculo?.placaVeiculo}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Lotação: </span>
+                  {demandaEdit?.lotacao}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Recurso: </span>
+                  {demandaEdit?.recurso}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Categoria: </span>
+                  {demandaEdit?.categoria}
                 </p>
               </div>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Placa: </span>
-                {demandaEdit?.veiculo?.placaVeiculo}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Lotação: </span>
-                {demandaEdit?.lotacao}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Recurso: </span>
-                {demandaEdit?.recurso}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Categoria: </span>
-                {demandaEdit?.categoria}
-              </p>
-            </div>
 
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Destino: </span>
+                  {demandaEdit?.destino}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Local de Saída: </span>{" "}
+                  {demandaEdit?.origem}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Horário da Saída: </span>{" "}
+                  {demandaEdit?.dataHoraIda}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Horário da Volta: </span>
+                  {demandaEdit?.dataHoraVolta}
+                </p>
+                <p className="font-medium break-words whitespace-pre-wrap">
+                  <span className="font-medium">Status: </span>
+                  {demandaEdit?.statusDemanda}
+                </p>
+              </div>
+            </div>
+            <div
+              className="flex flex-col gap-2 max-w-2xl w-full
+                  min-h-[100px] 
+                  sm:min-h-[120px]
+                  md:min-h-[150px]
+                  lg:min-h-[180px]
+                  resize-none"
+            >
               <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Destino: </span>
-                {demandaEdit?.destino}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Local de Saída: </span>{" "}
-                {demandaEdit?.origem}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Horário da Saída: </span>{" "}
-                {demandaEdit?.dataHoraIda}
-              </p>
-              <p className="break-words whitespace-pre-wrap">
-                <span className="font-medium">Horário da Volta: </span>
-                {demandaEdit?.dataHoraVolta}
+                <span className="font-medium">Detalhe: </span>
+                {demandaEdit?.demandaDetalhe}
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 max-w-2xl min-w-2xl mt-2">
-            <p className="font-medium break-words whitespace-pre-wrap">
-              <span className="font-medium">Detalhe: </span>
-              {demandaEdit?.demandaDetalhe}
-            </p>
-            <p className="font-medium break-words whitespace-pre-wrap">
-              <span className="font-medium">Status: </span>
-              {demandaEdit?.statusDemanda}
-            </p>
-          </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-2">
             {isEditor(userAccessLevel) && (
               <AlertDialogAction onClick={() => openModalEditDemanda(demanda)}>
                 Editar

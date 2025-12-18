@@ -284,7 +284,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
           </Button>
         </div>
       </div>
-      <div className="overflow-hidden rounded-md border break-words">
+      <div className="overflow-x-auto rounded-md border break-words">
         <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

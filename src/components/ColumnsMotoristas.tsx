@@ -100,7 +100,9 @@ export function TableMotoristas({
         );
       },
       cell: ({ row }) => (
-        <div className="">{(row.original as any).nome || ""}</div>
+        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+          {(row.original as any).nome || ""}
+        </div>
       ),
     },
     {
@@ -143,8 +145,6 @@ export function TableMotoristas({
       rowSelection,
     },
   });
-
-  const filterModelo = table.getColumn("nome");
 
   return (
     <div className="w-full mx-10">
@@ -192,8 +192,8 @@ export function TableMotoristas({
           onRefresh={fetchMotoristas}
         />
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

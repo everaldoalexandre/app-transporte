@@ -95,7 +95,9 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
         );
       },
       cell: ({ row }) => (
-        <div className="">{(row.original as any).name || ""}</div>
+        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+          {(row.original as any).name || ""}
+        </div>
       ),
     },
     {
@@ -187,8 +189,8 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
           onRefresh={fetchUsuarios}
         />
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

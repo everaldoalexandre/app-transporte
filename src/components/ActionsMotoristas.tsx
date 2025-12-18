@@ -237,7 +237,7 @@ export function ActionsMotorista({
               </p>
             </div>
           </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -277,7 +277,7 @@ export function ActionsMotorista({
               </p>
             </div>
           </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogAction
               onClick={() => openDialogEditMotorista(motorista)}
             >
