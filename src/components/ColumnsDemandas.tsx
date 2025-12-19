@@ -187,7 +187,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   ];
 
   return (
-    <div className="w-[95vw] max-w-4xl max-h-[90vh]">
+    <div className="mt-4 w-[95vw] max-w-4xl max-h-[90vh]">
       <div className="mb-4 flex sm:flex-row grid-cols-2 gap-3">
         <div className="flex flex-col sm:flex-row gap-2 w-1/2">
           <DropdownMenu>

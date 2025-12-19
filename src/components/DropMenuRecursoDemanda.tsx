@@ -33,9 +33,6 @@ export function DropMenuRecursoDemanda({
             Interno - SEDUC
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Externo">Externo</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Finalizado">
-            Finalizado
-          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
