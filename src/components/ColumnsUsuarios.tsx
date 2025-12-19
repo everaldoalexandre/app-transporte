@@ -95,7 +95,7 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
         );
       },
       cell: ({ row }) => (
-        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+        <div className="max-w-[200px] sm:max-w-[250px] break-words whitespace-pre-wrap">
           {(row.original as any).name || ""}
         </div>
       ),
@@ -103,6 +103,11 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
     {
       accessorKey: "email",
       header: "E-mail",
+      cell: ({ row }) => (
+        <div className="max-w-[130px] sm:max-w-[200px] break-words whitespace-pre-wrap">
+          {(row.original as any).email || ""}
+        </div>
+      ),
     },
     {
       accessorFn: (row) => row.secretarias?.[0]?.secretaria?.nome ?? "",
@@ -144,8 +149,8 @@ export function TableUsuarios({ data: initialData }: { data: UsuarioType[] }) {
   const filterModelo = table.getColumn("name");
 
   return (
-    <div className="w-full mx-10">
-      <div className="flex items-center py-4 gap-4">
+    <div className="mt-4 w-[95vw] max-w-4xl max-h-[90vh]">
+      <div className="mb-4 flex sm:flex-row grid-cols-2 gap-3">
         <Input
           placeholder="Filtre por nome"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

@@ -158,73 +158,80 @@ export function DataTableVeiculos({
   ];
 
   return (
-    <div className="w-full mx-10">
-      <div className="flex items-center py-4 gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              {(table.getColumn("modelo")?.getFilterValue() as string) ??
-                "Todos"}
-              <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {modeloOptions.map((modelo) => (
-              <DropdownMenuItem
-                key={modelo.value}
-                onClick={() => filterModelo?.setFilterValue(modelo.value)}
-              >
-                {modelo.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Input
-          placeholder="Filtre por placa"
-          value={
-            (table.getColumn("placaVeiculo")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("placaVeiculo")?.setFilterValue(event.target.value)
-          }
-          className="max-w-50"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Colunas <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button onClick={() => setOpenDialogNovoVeiculo(true)}>
-          Adicionar Veículo
-        </Button>
-        <NovoVeiculo
-          openNovoVeiculo={openDialogNovoVeiculo}
-          openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
-          onRefresh={fetchVeiculos}
-        />
+    <div className="w-[95vw] max-w-4xl max-h-[90vh]">
+      <div className="mb-4 flex sm:flex-row grid-cols-2 gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 w-1/2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                {(table.getColumn("modelo")?.getFilterValue() as string) ??
+                  "Todos"}
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {modeloOptions.map((modelo) => (
+                <DropdownMenuItem
+                  key={modelo.value}
+                  onClick={() => filterModelo?.setFilterValue(modelo.value)}
+                >
+                  {modelo.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Input
+            placeholder="Filtre por placa"
+            value={
+              (table.getColumn("placaVeiculo")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn("placaVeiculo")
+                ?.setFilterValue(event.target.value)
+            }
+            className="max-w-50"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 w-1/2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Colunas <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button onClick={() => setOpenDialogNovoVeiculo(true)}>
+            Adicionar Veículo
+          </Button>
+          <NovoVeiculo
+            openNovoVeiculo={openDialogNovoVeiculo}
+            openChangeNovoVeiculo={setOpenDialogNovoVeiculo}
+            onRefresh={fetchVeiculos}
+          />
+        </div>
       </div>
-      <div className="overflow-x-auto rounded-md border">
+      <div className="w-full rounded-md border">
         <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

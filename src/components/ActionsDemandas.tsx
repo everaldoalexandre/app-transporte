@@ -330,7 +330,7 @@ export function ActionsDemandas({
         open={showModalEditDemanda}
         onOpenChange={setShowModalEditDemanda}
       >
-        <AlertDialogContent className="w-[95vw] max-w-sm sm:max-w-lg xl:max-w-7xl max-h-[90vh] overflow-hidden">
+        <AlertDialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-hidden">
           <AlertDialogHeader>
             <AlertDialogTitle>Deseja editar a demanda?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -730,7 +730,7 @@ export function ActionsDemandas({
         open={showModalDetalhesDemanda}
         onOpenChange={setShowModalDetalhesDemanda}
       >
-        <AlertDialogContent className="w-[95vw] max-w-sm sm:max-w-lg xl:max-w-7xl max-h-[90vh] overflow-hidden">
+        <AlertDialogContent className="w-[95vw] max-w-5xl max-h-[90vh] overflow-hidden">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex w-full">
               <div className="w-1/2">Informações sobre a demanda</div>
@@ -832,7 +832,7 @@ export function ActionsDemandas({
                   {demandaEdit?.contato}
                 </p>
               </div>
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <div className="flex flex-col gap-2 justify-items-start">
                 <div className="flex gap-3">
                   <p className="break-words whitespace-pre-wrap gap-10">
                     <span className="font-medium">Motorista: </span>
@@ -891,7 +891,7 @@ export function ActionsDemandas({
                 </p>
               </div>
 
-              <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+              <div className="flex flex-col gap-2 justify-items-start">
                 <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Destino: </span>
                   {demandaEdit?.destino}

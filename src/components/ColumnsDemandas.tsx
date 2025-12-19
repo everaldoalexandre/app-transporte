@@ -108,7 +108,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
       accessorKey: "destino",
       header: "Destino",
       cell: ({ row }) => (
-        <div className="max-w-[200px] break-words whitespace-pre-wrap">
+        <div className="max-w-[200px] min-w-[100px] break-words whitespace-pre-wrap">
           {row.getValue("destino")}
         </div>
       ),
@@ -127,7 +127,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         );
       },
       cell: ({ row }) => (
-        <div className="max-w-[200px] break-words whitespace-pre-wrap">
+        <div className="max-w-[150px] break-words whitespace-pre-wrap">
           {row.getValue("dataHoraIda")}
         </div>
       ),

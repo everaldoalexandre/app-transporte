@@ -100,7 +100,7 @@ export function TableMotoristas({
         );
       },
       cell: ({ row }) => (
-        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+        <div className="max-w-[250px] break-words whitespace-pre-wrap">
           {(row.original as any).nome || ""}
         </div>
       ),
@@ -108,10 +108,20 @@ export function TableMotoristas({
     {
       accessorKey: "contato",
       header: "Contato",
+      cell: ({ row }) => (
+        <div className="max-w-[100px] break-words whitespace-pre-wrap">
+          {(row.original as any).contato || ""}
+        </div>
+      ),
     },
     {
       accessorKey: "secretaria.nome",
       header: "Secretaria",
+      cell: ({ row }) => (
+        <div className="max-w-[100px] break-words whitespace-pre-wrap">
+          {(row.original as any).secretaria.nome || ""}
+        </div>
+      ),
     },
     {
       id: "actions",
@@ -147,7 +157,7 @@ export function TableMotoristas({
   });
 
   return (
-    <div className="w-full mx-10">
+    <div className="mt-4 w-[95vw] max-w-4xl max-h-[90vh]">
       <div className="flex items-center py-4 gap-4">
         <Input
           placeholder="Filtre por nome"

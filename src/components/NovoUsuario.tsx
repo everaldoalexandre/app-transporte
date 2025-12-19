@@ -101,8 +101,8 @@ export function NovoUsuario({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={cadastroUsuario}>
-          <div className="mt-4 flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+          <div className="mt-4 flex gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
               <p>
                 <span className="font-medium">Nome: </span>
                 <Input
@@ -147,7 +147,7 @@ export function NovoUsuario({
               </label>
             </div>
           </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction type="submit">Cadastrar</AlertDialogAction>
           </AlertDialogFooter>

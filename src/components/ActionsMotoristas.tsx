@@ -188,8 +188,8 @@ export function ActionsMotorista({
               Edite os campos abaixo e clique em salvar.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Nome: </span>
                 <Input
@@ -261,8 +261,8 @@ export function ActionsMotorista({
           <AlertDialogHeader>
             <AlertDialogTitle>Informações sobre a motorista</AlertDialogTitle>
           </AlertDialogHeader>
-          <div className="mt-3 flex sgrid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+          <div className="mt-3 flex gap-4">
+            <div className="flex flex-col gap-2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Nome: </span>
                 {motoristaEdit?.nome}

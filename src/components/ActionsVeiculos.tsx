@@ -182,7 +182,7 @@ export function ActionsVeiculos({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="flex grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+            <div className="flex flex-col gap-2 w-1/2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Placa: </span>
                 <Input
@@ -229,7 +229,7 @@ export function ActionsVeiculos({
                 />
               </p>
             </div>
-            <div>
+            <div className="flex flex-col gap-2 w-1/2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Proprietário:</span>
                 <Input
@@ -262,7 +262,7 @@ export function ActionsVeiculos({
               </p>
             </div>
           </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -287,7 +287,7 @@ export function ActionsVeiculos({
             <AlertDialogTitle>Informações sobre a veículo</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="mt-2 flex sgrid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+            <div className="flex flex-col gap-2 w-1/2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Placa: </span>
                 {veiculoEdit?.placaVeiculo}
@@ -305,13 +305,13 @@ export function ActionsVeiculos({
                 {veiculoEdit?.proprietarioVeiculo}
               </p>
             </div>
-            <div className="flex flex-col gap-2 w-1/3 justify-items-start">
+            <div className="flex flex-col gap-2 w-1/2 justify-items-start">
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">CRLV: </span>
                 {veiculoEdit?.crlvVeiculo}
               </p>
               <p>
-                <span>Status: </span> {}
+                <span className="font-medium">Status: </span> {}
               </p>
               <p className="break-words whitespace-pre-wrap">
                 <span className="font-medium">Modelo: </span>{" "}
@@ -320,7 +320,7 @@ export function ActionsVeiculos({
             </div>
           </div>
 
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogAction onClick={() => openDialogEditVeiculo(veiculo)}>
               Editar
             </AlertDialogAction>

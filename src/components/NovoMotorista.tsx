@@ -148,7 +148,7 @@ export function NovoMotorista({
               </p>
             </div>
           </div>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction type="submit">Cadastrar</AlertDialogAction>
           </AlertDialogFooter>
