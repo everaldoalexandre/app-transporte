@@ -48,6 +48,11 @@ export function ActionsUsuario({
   const [showDialogEditUsuario, setShowDialogEditUsuario] = useState(false);
   const [showDialogDeleteUsuario, setShowDialogDeleteUsuario] = useState(false);
 
+  const isAdmin = (userAccessLevel: string | null) =>
+    ["administrador"].includes(userAccessLevel ?? "");
+  const isEditor = (userAccessLevel: string | null) =>
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
+
   function openDialogDeleteUsuario(usuario: UsuarioType) {
     setApagarUsuario(usuario);
     setShowDialogDeleteUsuario(true);
@@ -157,16 +162,26 @@ export function ActionsUsuario({
             Detalhes
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogEditUsuario(usuario)}>
-            <Eraser />
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogDeleteUsuario(usuario)}>
-            <X />
-            Deletar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {isEditor(userAccessLevel) && (
+            <>
+              <DropdownMenuItem onClick={() => openDialogEditUsuario(usuario)}>
+                <Eraser />
+                Editar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
+          {isAdmin(userAccessLevel) && (
+            <>
+              <DropdownMenuItem
+                onClick={() => openDialogDeleteUsuario(usuario)}
+              >
+                <X />
+                Deletar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -277,9 +292,15 @@ export function ActionsUsuario({
             </div>
           </div>
           <AlertDialogFooter className="mt-4">
-            <AlertDialogAction onClick={() => openDialogEditUsuario(usuario)}>
-              Editar
-            </AlertDialogAction>
+            {isEditor(userAccessLevel) && (
+              <>
+                <AlertDialogAction
+                  onClick={() => openDialogEditUsuario(usuario)}
+                >
+                  Editar
+                </AlertDialogAction>
+              </>
+            )}
             <AlertDialogCancel>Fechar</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

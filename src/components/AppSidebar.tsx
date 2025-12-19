@@ -55,6 +55,11 @@ export default function AppSidebar() {
   const [user, setUser] = useState<User | null>(null);
   const [userAccessLevel, setUserAccessLevel] = useState<string | null>(null);
 
+  const isAdmin = (userAccessLevel: string | null) =>
+    ["administrador"].includes(userAccessLevel ?? "");
+  const isEditor = (userAccessLevel: string | null) =>
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
+
   useEffect(() => {
     async function carregarUser() {
       try {
@@ -89,7 +94,7 @@ export default function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              {userAccessLevel === "administrador" && (
+              {isEditor(userAccessLevel) && (
                 <Collapsible defaultOpen className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
@@ -100,12 +105,16 @@ export default function AppSidebar() {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        <SidebarMenuButton>
-                          <a href="/usuario" className="flex gap-2">
-                            <UserCheck className="w-4" />
-                            <span>Usuário</span>
-                          </a>
-                        </SidebarMenuButton>
+                        {isAdmin(userAccessLevel) && (
+                          <>
+                            <SidebarMenuButton>
+                              <a href="/usuario" className="flex gap-2">
+                                <UserCheck className="w-4" />
+                                <span>Usuário</span>
+                              </a>
+                            </SidebarMenuButton>
+                          </>
+                        )}
                         <SidebarMenuButton>
                           <a href="/motorista" className="flex gap-2">
                             <UserCog className="w-4" />

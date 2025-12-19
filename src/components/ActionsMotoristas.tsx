@@ -50,6 +50,11 @@ export function ActionsMotorista({
   const [showDialogDeleteMotorista, setShowDialogDeleteMotorista] =
     useState(false);
 
+  const isAdmin = (userAccessLevel: string | null) =>
+    ["administrador"].includes(userAccessLevel ?? "");
+  const isEditor = (userAccessLevel: string | null) =>
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
+
   function openDialogDeleteMotorista(motorista: MotoristaType) {
     setApagarMotorista(motorista);
     setShowDialogDeleteMotorista(true);
@@ -160,18 +165,28 @@ export function ActionsMotorista({
             Detalhes
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDialogEditMotorista(motorista)}>
-            <Eraser />
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => openDialogDeleteMotorista(motorista)}
-          >
-            <X />
-            Deletar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {isEditor(userAccessLevel) && (
+            <>
+              <DropdownMenuItem
+                onClick={() => openDialogEditMotorista(motorista)}
+              >
+                <Eraser />
+                Editar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
+          {isAdmin(userAccessLevel) && (
+            <>
+              <DropdownMenuItem
+                onClick={() => openDialogDeleteMotorista(motorista)}
+              >
+                <X />
+                Deletar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -278,11 +293,15 @@ export function ActionsMotorista({
             </div>
           </div>
           <AlertDialogFooter className="mt-4">
-            <AlertDialogAction
-              onClick={() => openDialogEditMotorista(motorista)}
-            >
-              Editar
-            </AlertDialogAction>
+            {isAdmin(userAccessLevel) && (
+              <>
+                <AlertDialogAction
+                  onClick={() => openDialogEditMotorista(motorista)}
+                >
+                  Editar
+                </AlertDialogAction>
+              </>
+            )}
             <AlertDialogCancel>Fechar</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

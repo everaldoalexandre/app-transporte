@@ -154,7 +154,9 @@ export function DataTableVeiculos({
     { label: "Carro", value: "Carro" },
     { label: "Caminhão", value: "Caminhão" },
     { label: "Ônibus", value: "Ônibus" },
+    { label: "Micro-Ônibus", value: "Micro-Ônibus" },
     { label: "Van", value: "Van" },
+    { label: "Moto", value: "Moto" },
   ];
 
   return (
