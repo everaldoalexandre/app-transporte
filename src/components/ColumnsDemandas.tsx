@@ -34,14 +34,18 @@ import { Input } from "./ui/input";
 import { ActionsDemandas } from "@/components/ActionsDemandas";
 import { DemandaType } from "./Types";
 import Link from "next/link";
-import { Tooltip } from "@radix-ui/react-tooltip";
-import { TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { date } from "better-auth";
+import { formatDateTimeBR } from "@/lib/date";
 
 export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [user, setUser] = useState(null);
   const [userAccessLevel, setUserAccessLevel] = useState(null);
+  const [dateRange, setDateRange] = useState<{
+    from?: string;
+    to?: string;
+  }>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -115,20 +119,30 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     },
     {
       accessorKey: "dataHoraIda",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Data/Hora Ida
-            <ArrowUpDown />
-          </Button>
-        );
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Data/Hora Ida
+          <ArrowUpDown />
+        </Button>
+      ),
+      filterFn: (row, columnId, value) => {
+        if (!value?.from && !value?.to) return true;
+
+        const rowDate = new Date(row.getValue(columnId));
+        const from = value.from ? new Date(value.from + "T00:00:00") : null;
+        const to = value.to ? new Date(value.to + "T23:59:59.999") : null;
+
+        if (from && rowDate < from) return false;
+        if (to && rowDate > to) return false;
+
+        return true;
       },
       cell: ({ row }) => (
         <div className="max-w-[150px] break-words whitespace-pre-wrap">
-          {row.getValue("dataHoraIda")}
+          {formatDateTimeBR(row.getValue("dataHoraIda"))}
         </div>
       ),
     },
@@ -168,6 +182,11 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
       rowSelection,
     },
   });
+
+  function updateDateFilter(range: { from?: string; to?: string }) {
+    setDateRange(range);
+    table.getColumn("dataHoraIda")?.setFilterValue(range);
+  }
 
   const column = table.getColumn("statusDemanda");
   const column1 = table.getColumn("categoria");
@@ -242,13 +261,26 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         </div>
         <div className="flex flex-col sm:flex-row gap-2 w-1/2">
           <Input
-            placeholder="Filtre por data"
-            value={
-              (table.getColumn("dataHoraIda")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("dataHoraIda")?.setFilterValue(event.target.value)
-            }
+            type="date"
+            value={dateRange.from ?? ""}
+            onChange={(e) => {
+              updateDateFilter({
+                from: e.target.value,
+                to: dateRange.to,
+              });
+            }}
+            className="max-w-35 ml-auto"
+          />
+          <Input
+            type="date"
+            min={dateRange.from}
+            value={dateRange.to ?? ""}
+            onChange={(e) => {
+              updateDateFilter({
+                from: dateRange.from,
+                to: e.target.value,
+              });
+            }}
             className="max-w-35 ml-auto"
           />
           <DropdownMenu>

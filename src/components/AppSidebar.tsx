@@ -58,7 +58,7 @@ export default function AppSidebar() {
   const isAdmin = (userAccessLevel: string | null) =>
     ["administrador"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["administrador", "editor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor", "consultor"].includes(userAccessLevel ?? "");
 
   useEffect(() => {
     async function carregarUser() {

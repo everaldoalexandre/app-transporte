@@ -34,6 +34,7 @@ import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 import { DropMenuRecursoDemanda } from "./DropMenuRecursoDemanda";
 import { DropMenuCategoriaDemanda } from "./DropMenuCategoriaDemanda";
 import { Textarea } from "./ui/textarea";
+import { fromDatetimeLocal, toDatetimeLocal } from "@/lib/date";
 
 export function ActionsDemandas({
   demanda,
@@ -75,9 +76,9 @@ export function ActionsDemandas({
   const [loadingMotorista, setLoadingMotorista] = useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
-    ["administrador"].includes(userAccessLevel ?? "");
+    ["administrador", "consultor"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["administrador", "editor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor", "consultor"].includes(userAccessLevel ?? "");
 
   function openModalDeleteDemanda(demanda: DemandaType) {
     setDemandaDelete(demanda);
@@ -85,12 +86,20 @@ export function ActionsDemandas({
   }
 
   function openModalDetalhesDemanda(demanda: DemandaType) {
-    setDemandaEdit(demanda);
+    setDemandaEdit({
+      ...demanda,
+      dataHoraIda: toDatetimeLocal(demanda.dataHoraIda),
+      dataHoraVolta: toDatetimeLocal(demanda.dataHoraVolta),
+    });
     setShowModalDetalhesDemanda(true);
   }
 
   function openModalEditDemanda(demanda: DemandaType) {
-    setDemandaEdit(demanda);
+    setDemandaEdit({
+      ...demanda,
+      dataHoraIda: toDatetimeLocal(demanda.dataHoraIda),
+      dataHoraVolta: toDatetimeLocal(demanda.dataHoraVolta),
+    });
     setStatusDemanda(demanda.statusDemanda || "");
     setQueryPlaca(demanda.veiculo?.placaVeiculo || "");
     setQueryMotorista(demanda.motorista?.nome || "");
@@ -159,8 +168,8 @@ export function ActionsDemandas({
             pessoaSolicitante: demandaEdit.pessoaSolicitante,
             secretariaSolicitante: demandaEdit.secretariaSolicitante,
             destino: demandaEdit.destino,
-            dataHoraIda: demandaEdit.dataHoraIda,
-            dataHoraVolta: demandaEdit.dataHoraVolta,
+            dataHoraIda: fromDatetimeLocal(demandaEdit.dataHoraIda),
+            dataHoraVolta: fromDatetimeLocal(demandaEdit.dataHoraVolta),
             origem: demandaEdit.origem,
             contato: demandaEdit.contato,
             lotacao: demandaEdit.lotacao,
@@ -655,7 +664,6 @@ export function ActionsDemandas({
                         prev ? { ...prev, dataHoraIda: e.target.value } : prev
                       )
                     }
-                    placeholder="Horário da Saída"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
                 </p>
@@ -669,7 +677,6 @@ export function ActionsDemandas({
                         prev ? { ...prev, dataHoraVolta: e.target.value } : prev
                       )
                     }
-                    placeholder="Horario da Volta"
                     className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                   />
                 </p>

@@ -51,9 +51,9 @@ export function ActionsMotorista({
     useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
-    ["administrador"].includes(userAccessLevel ?? "");
+    ["administrador", "consultor"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["administrador", "editor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor", "consultor"].includes(userAccessLevel ?? "");
 
   function openDialogDeleteMotorista(motorista: MotoristaType) {
     setApagarMotorista(motorista);
