@@ -392,7 +392,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
           </Button>
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 mb-4">
         <Button
           variant="outline"
           onClick={() =>

@@ -125,6 +125,61 @@ export function ActionsDemandas({
     setShowModalFinalizarDemanda(true);
   }
 
+  function MensagemWhatsApp(demanda: DemandaType) {
+    const base = {
+      solicitante: demanda?.pessoaSolicitante || "N/A",
+      secretaria: demanda?.secretariaSolicitante || "N/A",
+      email: demanda?.emailSolicitante || "N/A",
+      contato: demanda?.contato || "N/A",
+      destino: demanda?.destino || "N/A",
+      origem: demanda?.origem || "N/A",
+      ida: demanda?.dataHoraIda || "N/A",
+      volta: demanda?.dataHoraVolta || "N/A",
+      detalhe: demanda?.demandaDetalhe || "N/A",
+      status: demanda?.statusDemanda || "N/A",
+      veiculo: demanda?.veiculo?.placaVeiculo || "N/A",
+    };
+
+    switch (demanda?.categoria) {
+      case "InternoSeduc":
+        return `
+  *🚗 DEMANDA DE VIAGEM*
+  *Solicitante:* ${base.solicitante}
+  *Secretaria:* ${base.secretaria}
+        `;
+
+      case "InternoEscolar":
+        return `
+  *🛠️ DEMANDA DE MANUTENÇÃO*
+  *Veículo:* ${base.veiculo}
+  *Solicitante:* ${base.solicitante}
+  *Detalhe:* ${base.detalhe}
+  *Status:* ${base.status}
+        `;
+
+      case "Externo":
+        return `
+  *⛽ DEMANDA DE ABASTECIMENTO*
+  *Solicitante:* ${base.solicitante}
+  *Destino:* ${base.destino}
+  *Detalhe:* ${base.detalhe}
+        `;
+
+      default:
+        return `
+  *📄 DEMANDA DE TRANSPORTE*
+  *Solicitante:* ${base.solicitante}
+  *Secretaria:* ${base.secretaria}
+  *Destino:* ${base.destino}
+  *Origem:* ${base.origem}
+  *Ida:* ${base.ida}
+  *Volta:* ${base.volta}
+  *Detalhe:* ${base.detalhe}
+  *Status:* ${base.status}
+        `;
+    }
+  }
+
   async function buscarPlacas(texto: string) {
     try {
       setLoadingPlaca(true);
@@ -906,17 +961,7 @@ export function ActionsDemandas({
                       <TooltipTrigger asChild>
                         <button
                           onClick={() => {
-                            const texto = `*DEMANDA DE TRANSPORTE* 
-                            *Solicitante:* ${demandaEdit?.pessoaSolicitante || "N/A"} 
-                            *Secretaria:* ${demandaEdit?.secretariaSolicitante || "N/A"}
-                            *E-mail:* ${demandaEdit?.emailSolicitante || "N/A"}
-                            *Contato:* ${demandaEdit?.contato || "N/A"}
-                            *Destino:* ${demandaEdit?.destino || "N/A"}
-                            *Local de Saída:* ${demandaEdit?.origem || "N/A"}
-                            *Horário da Saída:* ${demandaEdit?.dataHoraIda || "N/A"}
-                            *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
-                            *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
-                            *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
+                            const texto = MensagemWhatsApp(demanda);
                             const textoFormatado = texto
                               .replace(/^\s+/gm, "")
                               .trim();

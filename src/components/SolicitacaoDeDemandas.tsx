@@ -31,9 +31,10 @@ export function SolicitacaoDemandaForm({
   const [origem, setOrigem] = useState("");
   const [contato, setContato] = useState("");
   const [lotacao, setLotacao] = useState("");
-  const [temVolta, setTemVolta] = useState(true);
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
-  const [secretariaId, setSecretariaId] = useState<string | null>(null);
+  const [secretariaId, setSecretariaId] = useState(
+    "7280c84c-27a7-4c81-bb58-238ae42d0c63"
+  );
 
   const envioEmaill = async (email: string, nome: string, detalhe: string) => {
     try {
@@ -91,8 +92,7 @@ export function SolicitacaoDemandaForm({
       !dataHoraVolta ||
       !origem ||
       !contato ||
-      !lotacao ||
-      !secretariaId
+      !lotacao
     ) {
       toast.error("Por favor, preencha todos os campos.");
       return;
@@ -208,13 +208,6 @@ export function SolicitacaoDemandaForm({
                   onChange={(e) => setSecretariaSolicitante(e.target.value)}
                   className="border rounded-md p-2"
                   required
-                />
-              </div>
-              <div>
-                <span>Secretaria: </span>
-                <DropMenuSecretaria
-                  secretariaIds={secretariaId}
-                  setSecretariaIds={setSecretariaId}
                 />
               </div>
               <div className="flex flex-col gap-2">
