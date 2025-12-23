@@ -103,6 +103,41 @@ export async function POST(request: Request) {
       );
     }
 
+    const ida = new Date(novaDemanda.dataHoraIda);
+    const volta = new Date(novaDemanda.dataHoraVolta);
+
+    if (ida > volta) {
+      return new Response(
+        JSON.stringify({
+          error: "A data/hora da ida não pode ser maior que a da volta.",
+        }),
+        { status: 400 }
+      );
+    }
+
+    if (novaDemanda.origemDemanda === "INTERNA") {
+      const user = await getAuthenticatedUser();
+
+      if (!user) {
+        return new Response(
+          JSON.stringify({ error: "Usuário não autenticado." }),
+          { status: 401 }
+        );
+      }
+
+      if (
+        user.userAccessLevel === "secretaria" &&
+        !user.secretariasIds.includes(novaDemanda.secretariaId)
+      ) {
+        return new Response(
+          JSON.stringify({
+            error: "Você não pode criar demandas para outra secretaria.",
+          }),
+          { status: 403 }
+        );
+      }
+    }
+
     await prisma.demanda.create({ data: novaDemanda });
 
     return new Response(
@@ -138,6 +173,20 @@ export async function PUT(request: Request) {
         }),
         { status: 400 }
       );
+    }
+
+    if (updatedDemandas.dataHoraIda && updatedDemandas.dataHoraVolta) {
+      const ida = new Date(updatedDemandas.dataHoraIda);
+      const volta = new Date(updatedDemandas.dataHoraVolta);
+
+      if (ida > volta) {
+        return new Response(
+          JSON.stringify({
+            error: "A data/hora da ida não pode ser maior que a da volta.",
+          }),
+          { status: 400 }
+        );
+      }
     }
 
     const demanda = await prisma.demanda.findUnique({

@@ -9,8 +9,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrigemDemanda {
+  EXTERNA
+  INTERNA
+}
+
 model Demanda {
   id                    String   @id @default(uuid())
+  origemDemanda         OrigemDemanda @default(EXTERNA)
+  
   emailSolicitante      String
   demandaDetalhe        String
   pessoaSolicitante     String

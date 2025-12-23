@@ -35,8 +35,8 @@ export function DropMenuStatusDemanda({
           <DropdownMenuRadioItem value="Aguardando">
             Aguardando
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="Agendado">
-            Agendado
+          <DropdownMenuRadioItem value="Agendada">
+            Agendada
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Finalizado">
             Finalizado

@@ -124,6 +124,7 @@ export function SolicitacaoDemandaForm({
         statusDemanda,
         lotacao: Number(lotacao),
         kmRodado: 0,
+        origemDemanda: "EXTERNA",
       };
       const response = await fetch("/api/demanda", {
         method: "POST",

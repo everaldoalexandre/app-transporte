@@ -58,6 +58,7 @@ export function ActionsDemandas({
   const [showModalDeleteDemanda, setShowModalDeleteDemanda] = useState(false);
   const [showMotoristaMenu, setShowMotoristaMenu] = useState(false);
   const [showPlacaMenu, setShowPlacaMenu] = useState(false);
+  const [showDuplicarDemanda, setShowDuplicarDemanda] = useState(false);
   const [showModalFinalizarDemanda, setShowModalFinalizarDemanda] =
     useState(false);
 
@@ -83,6 +84,10 @@ export function ActionsDemandas({
   function openModalDeleteDemanda(demanda: DemandaType) {
     setDemandaDelete(demanda);
     setShowModalDeleteDemanda(true);
+  }
+
+  function openModalDuplicarDemanda(demanda: DemandaType) {
+    setShowDuplicarDemanda(true);
   }
 
   function openModalDetalhesDemanda(demanda: DemandaType) {
@@ -145,6 +150,49 @@ export function ActionsDemandas({
       setResultadosMotorista(motoristasArray);
     } finally {
       setLoadingMotorista(false);
+    }
+  }
+
+  async function duplicarDemanda(demanda: DemandaType) {
+    try {
+      const novaDemanda = {
+        emailSolicitante: demanda.emailSolicitante,
+        demandaDetalhe: demanda.demandaDetalhe,
+        pessoaSolicitante: demanda.pessoaSolicitante,
+        secretariaSolicitante: demanda.secretariaSolicitante,
+        secretariaId: demanda.secretariaId,
+        destino: demanda.destino,
+        origem: demanda.origem,
+        contato: demanda.contato,
+        lotacao: demanda.lotacao,
+        recurso: demanda.recurso,
+        categoria: demanda.categoria,
+        dataHoraIda: "",
+        dataHoraVolta: "",
+        statusDemanda: "Aguardando",
+        motoristaId: null,
+        veiculoId: null,
+        kmRodado: 0,
+        origemDemanda: "INTERNA",
+      };
+
+      const response = await fetch("/api/demanda", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ novaDemanda }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao duplicar demanda");
+      }
+
+      toast.success("Demanda duplicada com sucesso!");
+      onRefresh();
+    } catch (error) {
+      console.error("Erro ao duplicar demanda:", error);
+      toast.error("Erro ao duplicar demanda.");
     }
   }
 
@@ -330,6 +378,14 @@ export function ActionsDemandas({
               <DropdownMenuItem onClick={() => openModalDeleteDemanda(demanda)}>
                 <X />
                 Deletar
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => openModalDuplicarDemanda(demanda)}
+              >
+                <ClipboardPen />
+                Duplicar
               </DropdownMenuItem>
             </>
           )}
@@ -994,6 +1050,28 @@ export function ActionsDemandas({
               }}
             >
               Finalizar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={showDuplicarDemanda}
+        onOpenChange={setShowDuplicarDemanda}
+      >
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Deseja duplicar a demanda?</AlertDialogTitle>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                duplicarDemanda(demanda);
+              }}
+            >
+              Duplicar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

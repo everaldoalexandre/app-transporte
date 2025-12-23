@@ -122,6 +122,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.DemandaScalarFieldEnum = {
   id: 'id',
+  origemDemanda: 'origemDemanda',
   emailSolicitante: 'emailSolicitante',
   demandaDetalhe: 'demandaDetalhe',
   pessoaSolicitante: 'pessoaSolicitante',
@@ -242,7 +243,10 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.OrigemDemanda = exports.$Enums.OrigemDemanda = {
+  EXTERNA: 'EXTERNA',
+  INTERNA: 'INTERNA'
+};
 
 exports.Prisma.ModelName = {
   Demanda: 'Demanda',

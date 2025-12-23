@@ -70,6 +70,23 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const OrigemDemanda: {
+  EXTERNA: 'EXTERNA',
+  INTERNA: 'INTERNA'
+};
+
+export type OrigemDemanda = (typeof OrigemDemanda)[keyof typeof OrigemDemanda]
+
+}
+
+export type OrigemDemanda = $Enums.OrigemDemanda
+
+export const OrigemDemanda: typeof $Enums.OrigemDemanda
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -2042,6 +2059,7 @@ export namespace Prisma {
 
   export type DemandaMinAggregateOutputType = {
     id: string | null
+    origemDemanda: $Enums.OrigemDemanda | null
     emailSolicitante: string | null
     demandaDetalhe: string | null
     pessoaSolicitante: string | null
@@ -2065,6 +2083,7 @@ export namespace Prisma {
 
   export type DemandaMaxAggregateOutputType = {
     id: string | null
+    origemDemanda: $Enums.OrigemDemanda | null
     emailSolicitante: string | null
     demandaDetalhe: string | null
     pessoaSolicitante: string | null
@@ -2088,6 +2107,7 @@ export namespace Prisma {
 
   export type DemandaCountAggregateOutputType = {
     id: number
+    origemDemanda: number
     emailSolicitante: number
     demandaDetalhe: number
     pessoaSolicitante: number
@@ -2123,6 +2143,7 @@ export namespace Prisma {
 
   export type DemandaMinAggregateInputType = {
     id?: true
+    origemDemanda?: true
     emailSolicitante?: true
     demandaDetalhe?: true
     pessoaSolicitante?: true
@@ -2146,6 +2167,7 @@ export namespace Prisma {
 
   export type DemandaMaxAggregateInputType = {
     id?: true
+    origemDemanda?: true
     emailSolicitante?: true
     demandaDetalhe?: true
     pessoaSolicitante?: true
@@ -2169,6 +2191,7 @@ export namespace Prisma {
 
   export type DemandaCountAggregateInputType = {
     id?: true
+    origemDemanda?: true
     emailSolicitante?: true
     demandaDetalhe?: true
     pessoaSolicitante?: true
@@ -2279,6 +2302,7 @@ export namespace Prisma {
 
   export type DemandaGroupByOutputType = {
     id: string
+    origemDemanda: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -2321,6 +2345,7 @@ export namespace Prisma {
 
   export type DemandaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    origemDemanda?: boolean
     emailSolicitante?: boolean
     demandaDetalhe?: boolean
     pessoaSolicitante?: boolean
@@ -2347,6 +2372,7 @@ export namespace Prisma {
 
   export type DemandaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    origemDemanda?: boolean
     emailSolicitante?: boolean
     demandaDetalhe?: boolean
     pessoaSolicitante?: boolean
@@ -2373,6 +2399,7 @@ export namespace Prisma {
 
   export type DemandaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    origemDemanda?: boolean
     emailSolicitante?: boolean
     demandaDetalhe?: boolean
     pessoaSolicitante?: boolean
@@ -2399,6 +2426,7 @@ export namespace Prisma {
 
   export type DemandaSelectScalar = {
     id?: boolean
+    origemDemanda?: boolean
     emailSolicitante?: boolean
     demandaDetalhe?: boolean
     pessoaSolicitante?: boolean
@@ -2420,7 +2448,7 @@ export namespace Prisma {
     secretariaId?: boolean
   }
 
-  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "kmRodado" | "recurso" | "categoria" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
+  export type DemandaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "origemDemanda" | "emailSolicitante" | "demandaDetalhe" | "pessoaSolicitante" | "secretariaSolicitante" | "destino" | "dataHoraIda" | "dataHoraVolta" | "origem" | "contato" | "statusDemanda" | "createdAt" | "updatedAt" | "lotacao" | "kmRodado" | "recurso" | "categoria" | "veiculoId" | "motoristaId" | "secretariaId", ExtArgs["result"]["demanda"]>
   export type DemandaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     veiculo?: boolean | Demanda$veiculoArgs<ExtArgs>
     motorista?: boolean | Demanda$motoristaArgs<ExtArgs>
@@ -2446,6 +2474,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      origemDemanda: $Enums.OrigemDemanda
       emailSolicitante: string
       demandaDetalhe: string
       pessoaSolicitante: string
@@ -2892,6 +2921,7 @@ export namespace Prisma {
    */
   interface DemandaFieldRefs {
     readonly id: FieldRef<"Demanda", 'String'>
+    readonly origemDemanda: FieldRef<"Demanda", 'OrigemDemanda'>
     readonly emailSolicitante: FieldRef<"Demanda", 'String'>
     readonly demandaDetalhe: FieldRef<"Demanda", 'String'>
     readonly pessoaSolicitante: FieldRef<"Demanda", 'String'>
@@ -14327,6 +14357,7 @@ export namespace Prisma {
 
   export const DemandaScalarFieldEnum: {
     id: 'id',
+    origemDemanda: 'origemDemanda',
     emailSolicitante: 'emailSolicitante',
     demandaDetalhe: 'demandaDetalhe',
     pessoaSolicitante: 'pessoaSolicitante',
@@ -14510,6 +14541,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'OrigemDemanda'
+   */
+  export type EnumOrigemDemandaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemDemanda'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrigemDemanda[]'
+   */
+  export type ListEnumOrigemDemandaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemDemanda[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -14566,6 +14611,7 @@ export namespace Prisma {
     OR?: DemandaWhereInput[]
     NOT?: DemandaWhereInput | DemandaWhereInput[]
     id?: StringFilter<"Demanda"> | string
+    origemDemanda?: EnumOrigemDemandaFilter<"Demanda"> | $Enums.OrigemDemanda
     emailSolicitante?: StringFilter<"Demanda"> | string
     demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
@@ -14592,6 +14638,7 @@ export namespace Prisma {
 
   export type DemandaOrderByWithRelationInput = {
     id?: SortOrder
+    origemDemanda?: SortOrder
     emailSolicitante?: SortOrder
     demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
@@ -14621,6 +14668,7 @@ export namespace Prisma {
     AND?: DemandaWhereInput | DemandaWhereInput[]
     OR?: DemandaWhereInput[]
     NOT?: DemandaWhereInput | DemandaWhereInput[]
+    origemDemanda?: EnumOrigemDemandaFilter<"Demanda"> | $Enums.OrigemDemanda
     emailSolicitante?: StringFilter<"Demanda"> | string
     demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
@@ -14647,6 +14695,7 @@ export namespace Prisma {
 
   export type DemandaOrderByWithAggregationInput = {
     id?: SortOrder
+    origemDemanda?: SortOrder
     emailSolicitante?: SortOrder
     demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
@@ -14678,6 +14727,7 @@ export namespace Prisma {
     OR?: DemandaScalarWhereWithAggregatesInput[]
     NOT?: DemandaScalarWhereWithAggregatesInput | DemandaScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Demanda"> | string
+    origemDemanda?: EnumOrigemDemandaWithAggregatesFilter<"Demanda"> | $Enums.OrigemDemanda
     emailSolicitante?: StringWithAggregatesFilter<"Demanda"> | string
     demandaDetalhe?: StringWithAggregatesFilter<"Demanda"> | string
     pessoaSolicitante?: StringWithAggregatesFilter<"Demanda"> | string
@@ -15310,6 +15360,7 @@ export namespace Prisma {
 
   export type DemandaCreateInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -15333,6 +15384,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedCreateInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -15356,6 +15408,7 @@ export namespace Prisma {
 
   export type DemandaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -15379,6 +15432,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -15402,6 +15456,7 @@ export namespace Prisma {
 
   export type DemandaCreateManyInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -15425,6 +15480,7 @@ export namespace Prisma {
 
   export type DemandaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -15445,6 +15501,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -16121,6 +16178,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumOrigemDemandaFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrigemDemanda | EnumOrigemDemandaFieldRefInput<$PrismaModel>
+    in?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrigemDemandaFilter<$PrismaModel> | $Enums.OrigemDemanda
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -16180,6 +16244,7 @@ export namespace Prisma {
 
   export type DemandaCountOrderByAggregateInput = {
     id?: SortOrder
+    origemDemanda?: SortOrder
     emailSolicitante?: SortOrder
     demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
@@ -16208,6 +16273,7 @@ export namespace Prisma {
 
   export type DemandaMaxOrderByAggregateInput = {
     id?: SortOrder
+    origemDemanda?: SortOrder
     emailSolicitante?: SortOrder
     demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
@@ -16231,6 +16297,7 @@ export namespace Prisma {
 
   export type DemandaMinOrderByAggregateInput = {
     id?: SortOrder
+    origemDemanda?: SortOrder
     emailSolicitante?: SortOrder
     demandaDetalhe?: SortOrder
     pessoaSolicitante?: SortOrder
@@ -16273,6 +16340,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type EnumOrigemDemandaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrigemDemanda | EnumOrigemDemandaFieldRefInput<$PrismaModel>
+    in?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrigemDemandaWithAggregatesFilter<$PrismaModel> | $Enums.OrigemDemanda
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrigemDemandaFilter<$PrismaModel>
+    _max?: NestedEnumOrigemDemandaFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -16736,6 +16813,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type EnumOrigemDemandaFieldUpdateOperationsInput = {
+    set?: $Enums.OrigemDemanda
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -17458,6 +17539,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedEnumOrigemDemandaFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrigemDemanda | EnumOrigemDemandaFieldRefInput<$PrismaModel>
+    in?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrigemDemandaFilter<$PrismaModel> | $Enums.OrigemDemanda
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -17520,6 +17608,16 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumOrigemDemandaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrigemDemanda | EnumOrigemDemandaFieldRefInput<$PrismaModel>
+    in?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrigemDemanda[] | ListEnumOrigemDemandaFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrigemDemandaWithAggregatesFilter<$PrismaModel> | $Enums.OrigemDemanda
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrigemDemandaFilter<$PrismaModel>
+    _max?: NestedEnumOrigemDemandaFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -17845,6 +17943,7 @@ export namespace Prisma {
 
   export type DemandaCreateWithoutVeiculoInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -17867,6 +17966,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedCreateWithoutVeiculoInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -18005,6 +18105,7 @@ export namespace Prisma {
     OR?: DemandaScalarWhereInput[]
     NOT?: DemandaScalarWhereInput | DemandaScalarWhereInput[]
     id?: StringFilter<"Demanda"> | string
+    origemDemanda?: EnumOrigemDemandaFilter<"Demanda"> | $Enums.OrigemDemanda
     emailSolicitante?: StringFilter<"Demanda"> | string
     demandaDetalhe?: StringFilter<"Demanda"> | string
     pessoaSolicitante?: StringFilter<"Demanda"> | string
@@ -18093,6 +18194,7 @@ export namespace Prisma {
 
   export type DemandaCreateWithoutMotoristaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -18115,6 +18217,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedCreateWithoutMotoristaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -18273,6 +18376,7 @@ export namespace Prisma {
 
   export type DemandaCreateWithoutSecretariaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -18295,6 +18399,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedCreateWithoutSecretariaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -19007,6 +19112,7 @@ export namespace Prisma {
 
   export type DemandaCreateManyVeiculoInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -19029,6 +19135,7 @@ export namespace Prisma {
 
   export type DemandaUpdateWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19051,6 +19158,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19073,6 +19181,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateManyWithoutVeiculoInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19141,6 +19250,7 @@ export namespace Prisma {
 
   export type DemandaCreateManyMotoristaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -19163,6 +19273,7 @@ export namespace Prisma {
 
   export type DemandaUpdateWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19185,6 +19296,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19207,6 +19319,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateManyWithoutMotoristaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19267,6 +19380,7 @@ export namespace Prisma {
 
   export type DemandaCreateManySecretariaInput = {
     id?: string
+    origemDemanda?: $Enums.OrigemDemanda
     emailSolicitante: string
     demandaDetalhe: string
     pessoaSolicitante: string
@@ -19310,6 +19424,7 @@ export namespace Prisma {
 
   export type DemandaUpdateWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19332,6 +19447,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
@@ -19354,6 +19470,7 @@ export namespace Prisma {
 
   export type DemandaUncheckedUpdateManyWithoutSecretariaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    origemDemanda?: EnumOrigemDemandaFieldUpdateOperationsInput | $Enums.OrigemDemanda
     emailSolicitante?: StringFieldUpdateOperationsInput | string
     demandaDetalhe?: StringFieldUpdateOperationsInput | string
     pessoaSolicitante?: StringFieldUpdateOperationsInput | string
