@@ -392,6 +392,18 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
           </Button>
         </div>
       </div>
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          onClick={() =>
+            window.open(
+              `/api/demanda/export/excel?from=${dateRange.from ?? ""}&to=${dateRange.to ?? ""}`
+            )
+          }
+        >
+          Exportar Excel
+        </Button>
+      </div>
     </div>
   );
 }

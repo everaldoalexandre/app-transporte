@@ -31,6 +31,7 @@ export function SolicitacaoDemandaForm({
   const [origem, setOrigem] = useState("");
   const [contato, setContato] = useState("");
   const [lotacao, setLotacao] = useState("");
+  const [temVolta, setTemVolta] = useState(true);
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
   const [secretariaId, setSecretariaId] = useState<string | null>(null);
 
@@ -104,6 +105,10 @@ export function SolicitacaoDemandaForm({
       return;
     }
 
+    if (contato.length !== 11) {
+      toast.error("O contato deve conter 11 números.");
+      return;
+    }
     try {
       const novaDemanda = {
         emailSolicitante,
@@ -179,10 +184,10 @@ export function SolicitacaoDemandaForm({
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="pessoaSolicitante">Solicitante</Label>
+                <Label htmlFor="pessoaSolicitante">Nome do Solicitante</Label>
                 <Input
                   id="pessoaSolicitante"
-                  placeholder="Informe o nome do solicitante da pessoa solicitante"
+                  placeholder="Informe o nome da pessoa solicitante"
                   value={pessoaSolicitante}
                   onChange={(e) => setPessoaSolicitante(e.target.value)}
                   type="text"
@@ -192,11 +197,11 @@ export function SolicitacaoDemandaForm({
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="secretariaSolicitante">
-                  Secretaria Solicitante
+                  Secretaria ou Setor Solicitante
                 </Label>
                 <Input
                   id="secretariaSolicitante"
-                  placeholder="Informe a secretaria solicitante"
+                  placeholder="Informe o setor solicitante"
                   type="text"
                   value={secretariaSolicitante}
                   onChange={(e) => setSecretariaSolicitante(e.target.value)}
@@ -215,7 +220,7 @@ export function SolicitacaoDemandaForm({
                 <Label htmlFor="lotacao">Lotação</Label>
                 <Input
                   id="lotacao"
-                  placeholder="Informe o quantitativo de pessoas."
+                  placeholder="Informe o quantitativo de pessoas"
                   type="number"
                   value={lotacao}
                   onChange={(e) => setLotacao(e.target.value)}
@@ -227,12 +232,13 @@ export function SolicitacaoDemandaForm({
                 <Label htmlFor="contato">Contato</Label>
                 <Input
                   id="contato"
-                  placeholder="Informe um telefone ou WhatsApp para contato"
+                  placeholder="Informe contato de WhatsApp com DDD "
                   type="tel"
                   value={contato}
                   onChange={(e) =>
                     setContato(e.target.value.replace(/\D/g, ""))
                   }
+                  minLength={11}
                   maxLength={11}
                   className="border rounded-md p-2"
                   required
@@ -287,10 +293,11 @@ export function SolicitacaoDemandaForm({
                 <div className="flex gap-2">
                   <Input
                     id="dataHoraIda"
+                    type="datetime-local"
                     placeholder="Informe a data e horário da ida"
                     value={dataHoraIda}
                     onChange={(e) => setDataHoraIda(e.target.value)}
-                    type="datetime-local"
+                    max={dataHoraVolta || undefined}
                     className="border rounded-md p-2 mb-2"
                     required
                   />
@@ -301,10 +308,11 @@ export function SolicitacaoDemandaForm({
                 <div className="flex gap-2">
                   <Input
                     id="dataHoraVolta"
+                    type="datetime-local"
                     placeholder="Informe a data e horário da volta"
                     value={dataHoraVolta}
                     onChange={(e) => setDataHoraVolta(e.target.value)}
-                    type="datetime-local"
+                    min={dataHoraIda || undefined}
                     className="border rounded-md p-2 mb-2"
                     required
                   />
