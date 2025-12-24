@@ -17,25 +17,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Demandas",
+  title: "Demandas - Sistema de Transporte",
   description: "Página de demandas do sistema de transporte",
 };
 
-export default async function Layout({children}: {children: React.ReactNode}) {
-	const userSession = await auth.api.getSession({
-		headers: await headers()
-	})
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const userSession = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-	if (!userSession) {
-		redirect('/login')
-	}
+  if (!userSession) {
+    redirect("/login");
+  }
 
-	return (
-		<html lang="en">
-			<body>
-				<main>{children}</main>
-				<Toaster/>
-			</body>
-		</html>
-	)
+  return (
+    <html lang="en">
+      <body>
+        <main>{children}</main>
+        <Toaster />
+      </body>
+    </html>
+  );
 }

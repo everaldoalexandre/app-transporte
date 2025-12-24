@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Login - Sistema de Transporte",
   description: "Login",
 };
 

@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
   X,
   Send,
+  Copy,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -34,7 +35,11 @@ import { TooltipContent, Tooltip, TooltipTrigger } from "./ui/tooltip";
 import { DropMenuRecursoDemanda } from "./DropMenuRecursoDemanda";
 import { DropMenuCategoriaDemanda } from "./DropMenuCategoriaDemanda";
 import { Textarea } from "./ui/textarea";
-import { fromDatetimeLocal, toDatetimeLocal } from "@/lib/date";
+import {
+  formatDateTimeBR,
+  fromDatetimeLocal,
+  toDatetimeLocal,
+} from "@/lib/date";
 
 export function ActionsDemandas({
   demanda,
@@ -125,7 +130,7 @@ export function ActionsDemandas({
     setShowModalFinalizarDemanda(true);
   }
 
-  function MensagemWhatsApp(demanda: DemandaType) {
+  function mensagemWhatsApp(demanda: DemandaType) {
     const base = {
       solicitante: demanda?.pessoaSolicitante || "N/A",
       secretaria: demanda?.secretariaSolicitante || "N/A",
@@ -143,7 +148,7 @@ export function ActionsDemandas({
     switch (demanda?.categoria) {
       case "InternoSeduc":
         return `
-  *🚗 DEMANDA DE VIAGEM*
+  *🚗 DEMANDA DE *
   *Solicitante:* ${base.solicitante}
   *Secretaria:* ${base.secretaria}
         `;
@@ -222,8 +227,8 @@ export function ActionsDemandas({
         lotacao: demanda.lotacao,
         recurso: demanda.recurso,
         categoria: demanda.categoria,
-        dataHoraIda: "",
-        dataHoraVolta: "",
+        dataHoraIda: fromDatetimeLocal(demanda.dataHoraIda),
+        dataHoraVolta: fromDatetimeLocal(demanda.dataHoraVolta),
         statusDemanda: "Aguardando",
         motoristaId: null,
         veiculoId: null,
@@ -439,7 +444,7 @@ export function ActionsDemandas({
               <DropdownMenuItem
                 onClick={() => openModalDuplicarDemanda(demanda)}
               >
-                <ClipboardPen />
+                <Copy />
                 Duplicar
               </DropdownMenuItem>
             </>
@@ -827,7 +832,7 @@ export function ActionsDemandas({
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => closeModalEditDemanda()}>
-              Cancel
+              Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -933,10 +938,46 @@ export function ActionsDemandas({
           <div className="flex flex-col gap-4 overflow-y-auto max-h-[65vh] pr-2">
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               <div className="flex flex-col gap-2">
-                <p className="break-words whitespace-pre-wrap">
-                  <span className="font-medium">Solicitante: </span>
-                  {demandaEdit?.pessoaSolicitante}
-                </p>
+                <div className="flex gap-3">
+                  <p className="break-words whitespace-pre-wrap">
+                    <span className="font-medium">Solicitante: </span>
+                    {demandaEdit?.pessoaSolicitante}
+                  </p>
+                  <p>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            const texto = `*DEMANDA DE TRANSPORTE* 
+                            *Olá,* ${demandaEdit?.pessoaSolicitante || "N/A"} 
+                            Sua demanda foi agendada com sucesso, segue as informações:
+                            *Placa do Veículo:* ${demandaEdit?.veiculo?.placaVeiculo || "N/A"}
+                            *Motorista:* ${demandaEdit?.motorista?.nome || "N/A"}
+                            *Contato do Motorista:* ${demandaEdit?.motorista?.contato || "N/A"}
+                            *Destino:* ${demandaEdit?.destino || "N/A"}
+                            *Local de Saída:* ${demandaEdit?.origem || "N/A"}
+                            *Data e Horário da Saída:* ${formatDateTimeBR(demandaEdit?.dataHoraIda) || "N/A"}
+                            *Data e Horário da Volta:* ${formatDateTimeBR(demandaEdit?.dataHoraVolta) || "N/A"}
+                            *Detalhe da demanda:* ${demandaEdit?.demandaDetalhe || "N/A"}`;
+                            const textoFormatado = texto
+                              .replace(/^\s+/gm, "")
+                              .trim();
+                            const WhatsAppURL = `https://wa.me/55${demandaEdit?.contato}?text=${encodeURIComponent(
+                              textoFormatado
+                            )}`;
+                            window.open(WhatsAppURL, "_blank");
+                          }}
+                          className="px-1 py-1 rounded hover:bg-gray-300 transition-colors"
+                        >
+                          <Send />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Enviar via WhatsApp</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </p>
+                </div>
                 <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Secretaria: </span>
                   {demandaEdit?.secretariaSolicitante}
@@ -952,7 +993,7 @@ export function ActionsDemandas({
               </div>
               <div className="flex flex-col gap-2 justify-items-start">
                 <div className="flex gap-3">
-                  <p className="break-words whitespace-pre-wrap gap-10">
+                  <p className="break-words whitespace-pre-wrap">
                     <span className="font-medium">Motorista: </span>
                     {demandaEdit?.motorista?.nome}
                   </p>
@@ -961,7 +1002,7 @@ export function ActionsDemandas({
                       <TooltipTrigger asChild>
                         <button
                           onClick={() => {
-                            const texto = MensagemWhatsApp(demanda);
+                            const texto = mensagemWhatsApp(demanda);
                             const textoFormatado = texto
                               .replace(/^\s+/gm, "")
                               .trim();
@@ -1059,7 +1100,7 @@ export function ActionsDemandas({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (demandaDelete?.id) {
@@ -1088,7 +1129,7 @@ export function ActionsDemandas({
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 saveDemandaFinalizada(demandaFinalizada as DemandaType);
@@ -1109,8 +1150,8 @@ export function ActionsDemandas({
             <AlertDialogTitle>Deseja duplicar a demanda?</AlertDialogTitle>
           </AlertDialogHeader>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 duplicarDemanda(demanda);

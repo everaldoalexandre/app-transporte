@@ -173,7 +173,7 @@ function AvatarIcon({ size = 35 }: { size?: number }) {
   return (
     <div className="flex-shrink-0" style={{ width: size, height: size }}>
       <Image
-        src="/avatar.jpg"
+        src="/avatar.png"
         width={size}
         height={size}
         alt="Avatar"

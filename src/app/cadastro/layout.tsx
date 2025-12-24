@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cadastro",
+  title: "Cadastro - Sistema de Transporte",
   description: "Cadastro",
 };
 
