@@ -34,7 +34,6 @@ import { Input } from "./ui/input";
 import { ActionsDemandas } from "@/components/ActionsDemandas";
 import { DemandaType } from "./Types";
 import Link from "next/link";
-import { date } from "better-auth";
 import { formatDateTimeBR } from "@/lib/date";
 
 export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
@@ -46,9 +45,12 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     from?: string;
     to?: string;
   }>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([
+    {
+      id: "statusDemanda",
+      value: ["Aguardando"],
+    },
+  ]);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -101,6 +103,11 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
             <ArrowUpDown />
           </Button>
         );
+      },
+      filterFn: (row, columnId, filterValue) => {
+        if (!filterValue || filterValue.length === 0) return true;
+
+        return filterValue.includes(row.getValue(columnId));
       },
       cell: ({ row }) => (
         <div className="max-w-[100px] break-words whitespace-pre-wrap">
@@ -203,6 +210,10 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     { label: "Aguardando", value: "Aguardando" },
     { label: "Agendada", value: "Agendada" },
     { label: "Finalizada", value: "Finalizada" },
+    {
+      label: "Aguardando | Agendada",
+      value: ["Aguardando", "Agendada"],
+    },
   ];
 
   return (
@@ -240,7 +251,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
             <DropdownMenuContent align="start">
               {statusOptions.map((status) => (
                 <DropdownMenuItem
-                  key={status.value}
+                  key={status.label}
                   onClick={() => column?.setFilterValue(status.value)}
                 >
                   {status.label}

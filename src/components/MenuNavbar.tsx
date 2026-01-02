@@ -57,23 +57,14 @@ export function MenuEndSession() {
 
 export function MenuNavigationCompleto() {
   return (
-    <nav className="flex fixed top-0 w-full justify-between bg-white  shadow-md">
-      <div className="flex justify-start ml-4 w-1/3">
+    <nav className="flex fixed top-0 w-full py-1 justify-between bg-white  shadow-md">
+      <div className="flex justify-center w-1/3"></div>
+      <div className="flex justify-center ml-4 w-1/3">
         <Image
           src="/avatar.png"
           alt="Logo"
-          width={100}
-          height={100}
-          className="object-contain"
-          priority
-        />
-      </div>
-      <div className="flex justify-center w-1/3">
-        <Image
-          src="/banner_navbar.png"
-          alt="Logo"
-          width={350}
-          height={350}
+          width={80}
+          height={80}
           className="object-contain"
           priority
         />
