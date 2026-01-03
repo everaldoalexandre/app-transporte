@@ -148,7 +148,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         return true;
       },
       cell: ({ row }) => (
-        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+        <div className="max-w-[120px] break-words whitespace-pre-wrap">
           {formatDateTimeBR(row.getValue("dataHoraIda"))}
         </div>
       ),
@@ -156,6 +156,11 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     {
       accessorKey: "pessoaSolicitante",
       header: "Solicitante",
+      cell: ({ row }) => (
+        <div className="max-w-[150px] truncate">
+          {row.getValue("pessoaSolicitante")}
+        </div>
+      ),
     },
     {
       id: "actions",
@@ -212,7 +217,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     { label: "Finalizada", value: "Finalizada" },
     {
       label: "Aguardando | Agendada",
-      value: ["Aguardando", "Agendada"],
+      value: ["Aguardando", " | ", "Agendada"],
     },
   ];
 

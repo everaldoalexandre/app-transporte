@@ -262,6 +262,11 @@ export function ActionsDemandas({
       return;
     }
 
+    if (!demandaEdit.dataHoraIda || !demandaEdit.dataHoraVolta) {
+      toast.error("Data/Hora de Ida e Volta são obrigatórias.");
+      return;
+    }
+
     try {
       const response = await fetch(`/api/demanda`, {
         method: "PUT",

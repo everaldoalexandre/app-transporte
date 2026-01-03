@@ -8,7 +8,8 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { DropMenuSecretaria } from "./DropMenuSecretarias";
+import { AlertVerificacaoEmail } from "./AlertModelos";
+import { EmailTemplate } from "./ModeloEmail";
 
 interface EmailConfirmacao {
   from: string;
@@ -31,6 +32,7 @@ export function SolicitacaoDemandaForm({
   const [origem, setOrigem] = useState("");
   const [contato, setContato] = useState("");
   const [lotacao, setLotacao] = useState("");
+  const [alertVerificacaoEmail, setAlertVerificacaoEmail] = useState(false);
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
   const [secretariaId, setSecretariaId] = useState(
     "7280c84c-27a7-4c81-bb58-238ae42d0c63"
@@ -53,7 +55,14 @@ export function SolicitacaoDemandaForm({
         from: "no-reply@gestaotransporte.site",
         to: [email.trim()],
         subject: "Confirmação de Solicitação de Demanda",
-        content: `Olá, ${nome}! Sua solicitação de demanda foi recebida com sucesso. Detalhes da demanda: ${detalhe}. Obrigado por utilizar nosso serviço!`,
+        nome,
+        detalhe,
+        dataHoraIda: new Date(dataHoraIda).toLocaleString("pt-BR"),
+        dataHoraVolta: new Date(dataHoraVolta).toLocaleString("pt-BR"),
+        lotacao: Number(lotacao),
+        origem,
+        destino,
+        contato,
       };
 
       const response = await fetch("/api/resend", {
@@ -137,6 +146,8 @@ export function SolicitacaoDemandaForm({
       if (response.ok) {
         toast.success("Demanda solicitada com sucesso!");
 
+        setAlertVerificacaoEmail(true);
+
         await envioEmaill(emailSolicitante, pessoaSolicitante, demandaDetalhe);
 
         setEmailSolicitante("");
@@ -170,6 +181,10 @@ export function SolicitacaoDemandaForm({
       <CardContent>
         <form onSubmit={adicionarDemanda} className="space-y-6">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+            <AlertVerificacaoEmail
+              open={alertVerificacaoEmail}
+              onClose={() => setAlertVerificacaoEmail(false)}
+            />
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2 md:col-span-2">
                 <Label htmlFor="email">Email</Label>
@@ -269,7 +284,13 @@ export function SolicitacaoDemandaForm({
                   placeholder="Descreva sua demanda"
                   value={demandaDetalhe}
                   maxLength={500}
-                  onChange={(e) => setDemandaDetalhe(e.target.value)}
+                  onChange={(e) => {
+                    const texto = e.target.value;
+                    const linhas = texto.split("\n");
+                    if (linhas.length <= 8) {
+                      setDemandaDetalhe(texto);
+                    }
+                  }}
                   className="w-full
                   min-h-[100px] 
                   sm:min-h-[120px]
