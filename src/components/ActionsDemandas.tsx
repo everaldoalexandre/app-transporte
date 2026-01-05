@@ -955,7 +955,7 @@ export function ActionsDemandas({
                           onClick={() => {
                             const texto = `*DEMANDA DE TRANSPORTE* 
                             *Olá,* ${demandaEdit?.pessoaSolicitante || "N/A"} 
-                            Sua demanda foi agendada com sucesso, segue as informações:
+                            Sua demanda foi agendada com sucesso, seguem as informações:
                             *Placa do Veículo:* ${demandaEdit?.veiculo?.placaVeiculo || "N/A"}
                             *Motorista:* ${demandaEdit?.motorista?.nome || "N/A"}
                             *Contato do Motorista:* ${demandaEdit?.motorista?.contato || "N/A"}

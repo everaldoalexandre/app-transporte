@@ -109,11 +109,27 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
 
         return filterValue.includes(row.getValue(columnId));
       },
-      cell: ({ row }) => (
-        <div className="max-w-[100px] break-words whitespace-pre-wrap">
-          {row.getValue("statusDemanda")}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const status = row.getValue("statusDemanda") as string;
+
+        const statusStyles: Record<string, string> = {
+          Aguardando: "bg-yellow-100 text-gray-800 border-yellow-300",
+          Agendada: "bg-blue-100 text-gray-800 border-blue-300",
+          Finalizada: "bg-green-100 text-gray-800 border-green-300",
+          Cancelada: "bg-red-100 text-gray-800 border-red-300",
+        };
+
+        return (
+          <span
+            className={`
+          px-2 py-1 rounded-md text-xs font-semibold border
+          ${statusStyles[status] ?? "bg-gray-100 text-gray-700 border-gray-300"}
+        `}
+          >
+            {status}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "destino",
@@ -215,10 +231,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     { label: "Aguardando", value: "Aguardando" },
     { label: "Agendada", value: "Agendada" },
     { label: "Finalizada", value: "Finalizada" },
-    {
-      label: "Aguardando | Agendada",
-      value: ["Aguardando", " | ", "Agendada"],
-    },
+    { label: "Cancelada", value: "Cancelada" },
   ];
 
   return (

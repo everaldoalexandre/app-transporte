@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -8,8 +8,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { AlertVerificacaoEmail } from "./AlertModelos";
-import { EmailTemplate } from "./ModeloEmail";
+import { AlertAvisoInicial, AlertVerificacaoEmail } from "./AlertModelos";
 
 interface EmailConfirmacao {
   from: string;
@@ -33,10 +32,16 @@ export function SolicitacaoDemandaForm({
   const [contato, setContato] = useState("");
   const [lotacao, setLotacao] = useState("");
   const [alertVerificacaoEmail, setAlertVerificacaoEmail] = useState(false);
+  const [alertAvisoInicial, setAlertAvisoInicial] = useState(false);
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
   const [secretariaId, setSecretariaId] = useState(
     "7280c84c-27a7-4c81-bb58-238ae42d0c63"
   );
+  const [demandaSolicitada, setDemandaSolicitada] = useState(false);
+
+  useEffect(() => {
+    setAlertAvisoInicial(true);
+  }, []);
 
   const envioEmaill = async (email: string, nome: string, detalhe: string) => {
     try {
@@ -90,6 +95,9 @@ export function SolicitacaoDemandaForm({
 
   async function adicionarDemanda(e: React.FormEvent) {
     e.preventDefault();
+
+    if (demandaSolicitada) return;
+    setDemandaSolicitada(true);
 
     if (
       !emailSolicitante ||
@@ -168,6 +176,10 @@ export function SolicitacaoDemandaForm({
     } catch (error) {
       toast.error("Erro ao solicitar demanda.");
       console.error("Erro ao solicitar demanda:", error);
+    } finally {
+      setTimeout(() => {
+        setDemandaSolicitada(false);
+      }, 3000);
     }
   }
   return (
@@ -184,6 +196,10 @@ export function SolicitacaoDemandaForm({
             <AlertVerificacaoEmail
               open={alertVerificacaoEmail}
               onClose={() => setAlertVerificacaoEmail(false)}
+            />
+            <AlertAvisoInicial
+              open={alertAvisoInicial}
+              onClose={() => setAlertAvisoInicial(false)}
             />
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2 md:col-span-2">
@@ -337,9 +353,10 @@ export function SolicitacaoDemandaForm({
             <div className="flex justify-center mt-6">
               <Button
                 type="submit"
+                disabled={demandaSolicitada}
                 className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-900 transition"
               >
-                Solicitar Demanda
+                {demandaSolicitada ? "Enviando..." : "Solicitar Demanda"}
               </Button>
             </div>
           </div>

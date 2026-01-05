@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -40,6 +38,9 @@ export function DropMenuStatusDemanda({
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="Finalizado">
             Finalizado
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="Cancelada">
+            Cancelada
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
