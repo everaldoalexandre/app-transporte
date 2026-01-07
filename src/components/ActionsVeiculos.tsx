@@ -45,9 +45,9 @@ export function ActionsVeiculos({
   const [showDialogDeleteVeiculo, setShowDialogDeleteVeiculo] = useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
-    ["administrador", "consultor"].includes(userAccessLevel ?? "");
+    ["administrador"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["administrador", "editor", "consultor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
 
   function openDialogDeleteVeiculo(veiculo: VeiculoType) {
     setApagarVeiculo(veiculo);
@@ -321,9 +321,11 @@ export function ActionsVeiculos({
           </div>
 
           <AlertDialogFooter className="mt-4">
-            <AlertDialogAction onClick={() => openDialogEditVeiculo(veiculo)}>
-              Editar
-            </AlertDialogAction>
+            {isEditor(userAccessLevel) && (
+              <AlertDialogAction onClick={() => openDialogEditVeiculo(veiculo)}>
+                Editar
+              </AlertDialogAction>
+            )}
             <AlertDialogCancel>Fechar</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

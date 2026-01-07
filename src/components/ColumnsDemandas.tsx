@@ -52,7 +52,15 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     },
   ]);
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      categoria: true,
+      statusDemanda: true,
+      destino: true,
+      dataHoraIda: true,
+      pessoaSolicitante: true,
+      actions: true,
+      demandaDetalhe: false,
+    });
   const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
@@ -104,7 +112,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
           </Button>
         );
       },
-      filterFn: (row, columnId, filterValue) => {
+      filterFn: (row, columnId, filterValue: string[]) => {
         if (!filterValue || filterValue.length === 0) return true;
 
         return filterValue.includes(row.getValue(columnId));
@@ -113,10 +121,10 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         const status = row.getValue("statusDemanda") as string;
 
         const statusStyles: Record<string, string> = {
-          Aguardando: "bg-yellow-100 text-gray-800 border-yellow-300",
-          Agendada: "bg-blue-100 text-gray-800 border-blue-300",
-          Finalizada: "bg-green-100 text-gray-800 border-green-300",
-          Cancelada: "bg-red-100 text-gray-800 border-red-300",
+          Aguardando: "bg-yellow-100 text-gray-800 border-gray-400",
+          Agendada: "bg-blue-100 text-gray-800 border-gray-400",
+          Finalizada: "bg-green-100 text-gray-800 border-gray-400",
+          Cancelada: "bg-red-100 text-gray-800 border-gray-400",
         };
 
         return (
@@ -141,9 +149,19 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
       ),
     },
     {
+      accessorKey: "demandaDetalhe",
+      header: "Detalhe",
+      cell: ({ row }) => (
+        <div className="max-w-[500px] min-w-[100px] break-words whitespace-pre-wrap">
+          {row.getValue("demandaDetalhe")}
+        </div>
+      ),
+    },
+    {
       accessorKey: "dataHoraIda",
       header: ({ column }) => (
         <Button
+          className="max-w-[120px]"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -164,7 +182,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         return true;
       },
       cell: ({ row }) => (
-        <div className="max-w-[120px] break-words whitespace-pre-wrap">
+        <div className="max-w-[120px] flex justify-center break-words whitespace-pre-wrap">
           {formatDateTimeBR(row.getValue("dataHoraIda"))}
         </div>
       ),
@@ -227,12 +245,13 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   ];
 
   const statusOptions = [
-    { label: "Todos", value: "" },
     { label: "Aguardando", value: "Aguardando" },
     { label: "Agendada", value: "Agendada" },
     { label: "Finalizada", value: "Finalizada" },
     { label: "Cancelada", value: "Cancelada" },
   ];
+
+  const statusFilter = (column?.getFilterValue() as string[]) ?? [];
 
   return (
     <div className="mt-4 w-[95vw] max-w-4xl max-h-[90vh]">
@@ -260,23 +279,74 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
-                {(table
-                  .getColumn("statusDemanda")
-                  ?.getFilterValue() as string) ?? "Todos"}
+                {statusFilter.length
+                  ? `${statusFilter.length} Selecionado(s)`
+                  : "Status"}{" "}
                 <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {statusOptions.map((status) => (
-                <DropdownMenuItem
-                  key={status.label}
-                  onClick={() => column?.setFilterValue(status.value)}
-                >
-                  {status.label}
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  const column = table.getColumn("statusDemanda");
+                  if (!column) return;
+
+                  column.setFilterValue(statusOptions.map((s) => s.value));
+                }}
+              >
+                Selecionar todos
+              </DropdownMenuItem>
+
+              {/* Limpar todos */}
+              <DropdownMenuItem
+                onClick={() => {
+                  const column = table.getColumn("statusDemanda");
+                  if (!column) return;
+
+                  column.setFilterValue(undefined);
+                }}
+              >
+                Limpar todos
+              </DropdownMenuItem>
+
+              <div className="my-1 h-px bg-muted" />
+
+              {statusOptions.map((status) => {
+                const column = table.getColumn("statusDemanda");
+                const filterValue =
+                  (column?.getFilterValue() as string[]) ?? [];
+
+                const isChecked = filterValue.includes(status.value);
+
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={status.value}
+                    className="capitalize"
+                    checked={isChecked}
+                    onCheckedChange={(checked) => {
+                      if (!column) return;
+                      let newFilter: string[];
+
+                      if (checked) {
+                        newFilter = [...filterValue, status.value];
+                      } else {
+                        newFilter = filterValue.filter(
+                          (value) => value !== status.value
+                        );
+                      }
+
+                      column.setFilterValue(
+                        newFilter.length > 0 ? newFilter : undefined
+                      );
+                    }}
+                  >
+                    {status.label}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
+
           <Input
             placeholder="Filtre por destino"
             value={

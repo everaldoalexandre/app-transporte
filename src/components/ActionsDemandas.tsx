@@ -82,9 +82,9 @@ export function ActionsDemandas({
   const [loadingMotorista, setLoadingMotorista] = useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
-    ["administrador", "consultor"].includes(userAccessLevel ?? "");
+    ["administrador"].includes(userAccessLevel ?? "");
   const isEditor = (userAccessLevel: string | null) =>
-    ["administrador", "editor", "consultor"].includes(userAccessLevel ?? "");
+    ["administrador", "editor"].includes(userAccessLevel ?? "");
 
   function openModalDeleteDemanda(demanda: DemandaType) {
     setDemandaDelete(demanda);
@@ -138,8 +138,12 @@ export function ActionsDemandas({
       contato: demanda?.contato || "N/A",
       destino: demanda?.destino || "N/A",
       origem: demanda?.origem || "N/A",
-      ida: demanda?.dataHoraIda || "N/A",
-      volta: demanda?.dataHoraVolta || "N/A",
+      ida: demanda?.dataHoraIda
+        ? formatDateTimeBR(demanda?.dataHoraIda)
+        : "N/A",
+      volta: demanda?.dataHoraVolta
+        ? formatDateTimeBR(demanda?.dataHoraVolta)
+        : "N/A",
       detalhe: demanda?.demandaDetalhe || "N/A",
       status: demanda?.statusDemanda || "N/A",
       veiculo: demanda?.veiculo?.placaVeiculo || "N/A",
@@ -148,14 +152,14 @@ export function ActionsDemandas({
     switch (demanda?.categoria) {
       case "InternoSeduc":
         return `
-  *🚗 DEMANDA DE *
+  *🚗 DEMANDA INTERNA - SEDUC *
   *Solicitante:* ${base.solicitante}
   *Secretaria:* ${base.secretaria}
         `;
 
       case "InternoEscolar":
         return `
-  *🛠️ DEMANDA DE MANUTENÇÃO*
+  *🚗 DEMANDA INTERNA - ESCOLAR *
   *Veículo:* ${base.veiculo}
   *Solicitante:* ${base.solicitante}
   *Detalhe:* ${base.detalhe}
@@ -164,7 +168,7 @@ export function ActionsDemandas({
 
       case "Externo":
         return `
-  *⛽ DEMANDA DE ABASTECIMENTO*
+  *🚗 DEMANDA EXTERNA *
   *Solicitante:* ${base.solicitante}
   *Destino:* ${base.destino}
   *Detalhe:* ${base.detalhe}
@@ -874,8 +878,8 @@ export function ActionsDemandas({
                         *Contato:* ${demandaEdit?.contato || "N/A"}
                         *Destino:* ${demandaEdit?.destino || "N/A"}
                         *Local de Saída:* ${demandaEdit?.origem || "N/A"}
-                        *Horário da Saída:* ${demandaEdit?.dataHoraIda || "N/A"}
-                        *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
+                        *Data e Horário da Saída:* ${demandaEdit?.dataHoraIda ? formatDateTimeBR(demandaEdit?.dataHoraIda) : "N/A"}
+                        *Data e Horário da Volta:* ${demandaEdit?.dataHoraVolta ? formatDateTimeBR(demandaEdit?.dataHoraVolta) : "N/A"}
                         *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
                         *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
                         const textoFormatado = texto
@@ -916,8 +920,8 @@ export function ActionsDemandas({
                             *Contato:* ${demandaEdit?.contato || "N/A"}
                             *Destino:* ${demandaEdit?.destino || "N/A"}
                             *Local de Saída:* ${demandaEdit?.origem || "N/A"}
-                            *Horário da Saída:* ${demandaEdit?.dataHoraIda || "N/A"}
-                            *Horário da Volta:* ${demandaEdit?.dataHoraVolta || "N/A"}
+                            *Data e Horário da Saída:* ${formatDateTimeBR(demandaEdit?.dataHoraIda) || "N/A"}
+                            *Data e Horário da Volta:* ${formatDateTimeBR(demandaEdit?.dataHoraVolta) || "N/A"}
                             *Detalhe:* ${demandaEdit?.demandaDetalhe || "N/A"}
                             *Status:* ${demandaEdit?.statusDemanda || "N/A"}`;
                         const textoFormatado = texto
@@ -1056,11 +1060,15 @@ export function ActionsDemandas({
                 </p>
                 <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Horário da Saída: </span>{" "}
-                  {demandaEdit?.dataHoraIda}
+                  {demandaEdit?.dataHoraIda
+                    ? formatDateTimeBR(demandaEdit?.dataHoraIda)
+                    : "N/A"}
                 </p>
                 <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Horário da Volta: </span>
-                  {demandaEdit?.dataHoraVolta}
+                  {demandaEdit?.dataHoraIda
+                    ? formatDateTimeBR(demandaEdit?.dataHoraVolta)
+                    : "N/A"}{" "}
                 </p>
                 <p className="font-medium break-words whitespace-pre-wrap">
                   <span className="font-medium">Status: </span>
