@@ -91,39 +91,61 @@ export function DataTableVeiculos({
       accessorKey: "modelo.modelo",
       header: ({ column }) => {
         return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Modelo
-            <ArrowUpDown />
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Modelo
+              <ArrowUpDown />
+            </Button>
+          </div>
         );
       },
       cell: ({ row }) => (
-        <div className="max-w-[150px] break-words whitespace-pre-wrap">
+        <div className="flex justify-center break-words whitespace-pre-wrap">
           {(row.original as any).modelo?.modelo || ""}
         </div>
       ),
     },
     {
       accessorKey: "placaVeiculo",
-      header: "Placa",
+      header: () => {
+        return <div className="flex justify-center">Placa</div>;
+      },
+      cell: ({ row }) => (
+        <div className="flex justify-center break-words whitespace-pre-wrap">
+          {row.getValue("placaVeiculo")}
+        </div>
+      ),
     },
     {
       accessorKey: "proprietarioVeiculo",
-      header: "Proprietário",
+      header: () => {
+        return <div className="flex justify-center">Proprietário</div>;
+      },
+      cell: ({ row }) => (
+        <div className="flex justify-center break-words whitespace-pre-wrap">
+          {row.getValue("proprietarioVeiculo")}
+        </div>
+      ),
     },
     {
       id: "actions",
-      header: "Ações",
+      header: () => {
+        return <div className="flex justify-center">Ações</div>;
+      },
       cell: ({ row }) => (
-        <ActionsVeiculos
-          veiculo={row.original}
-          onRefresh={fetchVeiculos}
-          user={user}
-          userAccessLevel={userAccessLevel}
-        />
+        <div className="flex justify-center">
+          <ActionsVeiculos
+            veiculo={row.original}
+            onRefresh={fetchVeiculos}
+            user={user}
+            userAccessLevel={userAccessLevel}
+          />
+        </div>
       ),
     },
   ];

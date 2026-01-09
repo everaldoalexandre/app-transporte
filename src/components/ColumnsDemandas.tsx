@@ -297,7 +297,6 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
                 Selecionar todos
               </DropdownMenuItem>
 
-              {/* Limpar todos */}
               <DropdownMenuItem
                 onClick={() => {
                   const column = table.getColumn("statusDemanda");
@@ -416,7 +415,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         </div>
       </div>
       <div className="w-full rounded-md border">
-        <Table className="">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
