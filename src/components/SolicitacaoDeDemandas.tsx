@@ -9,6 +9,7 @@ import { Textarea } from "./ui/textarea";
 import { Car } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { AlertAvisoInicial, AlertVerificacaoEmail } from "./AlertModelos";
+import CaptchaTurnstile from "./Turnstile";
 
 interface EmailConfirmacao {
   from: string;
@@ -33,6 +34,7 @@ export function SolicitacaoDemandaForm({
   const [lotacao, setLotacao] = useState("");
   const [alertVerificacaoEmail, setAlertVerificacaoEmail] = useState(false);
   const [alertAvisoInicial, setAlertAvisoInicial] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const [statusDemanda, setStatusDemanda] = useState("Aguardando");
   const [secretariaId, setSecretariaId] = useState(
     "7280c84c-27a7-4c81-bb58-238ae42d0c63"
@@ -148,7 +150,7 @@ export function SolicitacaoDemandaForm({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ novaDemanda }),
+        body: JSON.stringify({ novaDemanda, captchaToken: token }),
       });
 
       if (response.ok) {
@@ -350,10 +352,11 @@ export function SolicitacaoDemandaForm({
                 </div>
               </div>
             </div>
+            <CaptchaTurnstile onVerify={(t) => setToken(t)} />
             <div className="flex justify-center mt-6">
               <Button
                 type="submit"
-                disabled={demandaSolicitada}
+                disabled={!token || demandaSolicitada}
                 className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-900 transition"
               >
                 {demandaSolicitada ? "Enviando..." : "Solicitar Demanda"}
