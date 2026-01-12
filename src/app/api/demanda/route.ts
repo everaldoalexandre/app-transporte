@@ -94,35 +94,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { novaDemanda, captchaToken } = body;
-
-    if (!captchaToken) {
-      return new Response(
-        JSON.stringify({ error: "Validação de segurança obrigatória." }),
-        { status: 400 }
-      );
-    }
-
-    const captchaResponse = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          secret: process.env.TURNSTILE_SECRET_KEY!,
-          response: captchaToken,
-        }),
-      }
-    );
-
-    const captchaResult = await captchaResponse.json();
-
-    if (!captchaResult.success) {
-      return new Response(
-        JSON.stringify({ error: "Falha na validação de segurança." }),
-        { status: 403 }
-      );
-    }
+    const { novaDemanda } = body;
 
     if (!novaDemanda) {
       return new Response(
