@@ -56,9 +56,6 @@ model Veiculo {
   secretariaId String
   secretaria   Secretaria @relation(fields: [secretariaId], references: [id], onDelete: Cascade)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   modeloId String?
   modelo   VeiculoModelo? @relation(fields: [modeloId], references: [id], onDelete: Cascade)
 
@@ -67,7 +64,7 @@ model Veiculo {
 
 model VeiculoModelo {
   id     String @id @default(uuid())
-  modelo String
+  modelo String @unique
 
   veiculos Veiculo[]
 }
@@ -123,11 +120,23 @@ model User {
   acesso     Acesso[]
   sessions   Session[]
   accounts   Account[]
-  veiculos   Veiculo[]
   secretarias UserSecretaria[]
+  passwordResets PasswordReset[]
 
   @@map("user")
 }
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
 
 model Session {
   id        String   @id @default(uuid())
@@ -150,13 +159,14 @@ model Account {
   providerId            String
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  password              String?
+
   accessToken           String?
   refreshToken          String?
   idToken               String?
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
   scope                 String?
-  password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 

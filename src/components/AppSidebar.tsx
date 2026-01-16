@@ -37,6 +37,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Button } from "./ui/button";
 
 const items = [
   {
@@ -157,7 +158,7 @@ export default function AppSidebar() {
                 side="right"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem className="flex justify-center">
+                <DropdownMenuItem className="flex flex-col justify-center">
                   <Logout />
                 </DropdownMenuItem>
               </DropdownMenuContent>

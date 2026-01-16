@@ -9,6 +9,8 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from");
   const to = searchParams.get("to");
+  const statusDemanda = searchParams.getAll("statusDemanda");
+  const categoria = searchParams.get("categoria");
 
   const where: Prisma.DemandaWhereInput = {};
 
@@ -17,6 +19,16 @@ export async function GET(req: Request) {
       ...(from && { gte: `${from}T00:00:00` }),
       ...(to && { lte: `${to}T23:59:59.999` }),
     };
+  }
+
+  if (statusDemanda.length > 0) {
+    where.statusDemanda = {
+      in: statusDemanda,
+    };
+  }
+
+  if (categoria && categoria !== "") {
+    where.categoria = categoria;
   }
 
   const demandas = await prisma.demanda.findMany({

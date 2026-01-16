@@ -181,6 +181,38 @@ export function DataTableVeiculos({
     { label: "Moto", value: "Moto" },
   ];
 
+  function buildExportUrl() {
+    const params = new URLSearchParams();
+
+    table.getState().columnFilters.forEach((filter) => {
+      if (!filter.value) return;
+
+      if (filter.id === "modelo") {
+        const valores = Array.isArray(filter.value)
+          ? filter.value
+          : [filter.value];
+
+        valores.forEach((v) => {
+          if (typeof v === "object" && v !== null) {
+            params.append("modelo", String(v.id));
+          } else {
+            params.append("modelo", String(v));
+          }
+        });
+
+        return;
+      }
+
+      if (Array.isArray(filter.value)) {
+        filter.value.forEach((v) => params.append(filter.id, String(v)));
+      } else {
+        params.append(filter.id, String(filter.value));
+      }
+    });
+
+    return `/api/veiculo/export/excel?${params.toString()}`;
+  }
+
   return (
     <div className="mt-4 w-[95vw] max-w-4xl max-h-[90vh]">
       <div className="mb-4 flex sm:flex-row grid-cols-2 gap-3">
@@ -330,6 +362,11 @@ export function DataTableVeiculos({
             Próximo
           </Button>
         </div>
+      </div>
+      <div className="flex gap-2 mb-4">
+        <Button variant="outline" onClick={() => window.open(buildExportUrl())}>
+          Exportar Excel
+        </Button>
       </div>
     </div>
   );

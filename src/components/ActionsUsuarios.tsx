@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Eraser, FileText, MoreHorizontal, X } from "lucide-react";
+import { Eraser, FileText, KeySquare, MoreHorizontal, X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,6 @@ import { Input } from "./ui/input";
 import { UsuarioType } from "@/components/Types";
 import { DropMenuSecretaria } from "./DropMenuSecretarias";
 import { User } from "@/generated/prisma";
-import { DropMenuAcessos } from "./DropMenuAcessoUsuario";
 
 export function ActionsUsuario({
   usuario,
@@ -42,11 +41,16 @@ export function ActionsUsuario({
     usuarioEdit?.secretarias?.[0]?.secretariaId ?? ""
   );
   const [apagarUsuario, setApagarUsuario] = useState<UsuarioType | null>(null);
+  const [recuperarSenha, setRecuperarSenha] = useState<UsuarioType | null>(
+    null
+  );
 
   const [showDialogDetalheUsuario, setShowDialogDetalheUsuario] =
     useState(false);
   const [showDialogEditUsuario, setShowDialogEditUsuario] = useState(false);
   const [showDialogDeleteUsuario, setShowDialogDeleteUsuario] = useState(false);
+  const [showDialogRecuperarSenha, setShowDialogRecuperarSenha] =
+    useState(false);
 
   const isAdmin = (userAccessLevel: string | null) =>
     ["administrador"].includes(userAccessLevel ?? "");
@@ -56,6 +60,11 @@ export function ActionsUsuario({
   function openDialogDeleteUsuario(usuario: UsuarioType) {
     setApagarUsuario(usuario);
     setShowDialogDeleteUsuario(true);
+  }
+
+  function openDialogRecuperarSenha(usuario: UsuarioType) {
+    setRecuperarSenha(usuario);
+    setShowDialogRecuperarSenha(true);
   }
 
   function openDialogDetalheUsuario(usuario: UsuarioType) {
@@ -134,6 +143,30 @@ export function ActionsUsuario({
     }
   }
 
+  async function novaSenha(email: string) {
+    try {
+      const response = await fetch("/api/auth/reset-password/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.status === 403) {
+        toast.error("Você não tem permissão para esta ação.");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("Falha ao solicitar redefinição de senha");
+      }
+
+      toast.success("E-mail de recuperação enviado com sucesso!");
+      onRefresh();
+    } catch (error) {
+      console.error("Erro ao solicitar redefinição de senha:", error);
+    }
+  }
+
   async function fetchUsuarios() {
     try {
       const response = await fetch("/api/usuario", { cache: "no-store" });
@@ -180,6 +213,12 @@ export function ActionsUsuario({
                 Deletar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => openDialogRecuperarSenha(usuario)}
+              >
+                <KeySquare />
+                Recuperar Senha
+              </DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>
@@ -323,11 +362,39 @@ export function ActionsUsuario({
               onClick={() => {
                 if (apagarUsuario?.id) {
                   deleteUsuario(apagarUsuario?.id);
-                } else {
                 }
               }}
             >
               Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog
+        open={showDialogRecuperarSenha}
+        onOpenChange={setShowDialogRecuperarSenha}
+      >
+        <AlertDialogContent className="max-w-sm sm:max-w-lg xl:max-w-1xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Você deseja alterar a senha do usuário?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Um e-mail será enviado para o usuário com as instruções para
+              redefinição de senha.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (recuperarSenha?.email) {
+                  novaSenha(recuperarSenha?.email);
+                  setShowDialogRecuperarSenha(false);
+                }
+              }}
+            >
+              Enviar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -43,7 +43,11 @@ export function NovoMotorista({
     e.preventDefault();
 
     try {
-      if (!motoristaNovo.nome || !motoristaNovo.contato) {
+      if (
+        !motoristaNovo.nome ||
+        !motoristaNovo.contato ||
+        !motoristaNovo.secretariaId
+      ) {
         toast.error("Preencha todos os campos obrigatórios.");
         return;
       }
@@ -122,15 +126,18 @@ export function NovoMotorista({
               <p>
                 <span className="font-medium">Contato: </span>
                 <Input
-                  type="text"
+                  type="tel"
                   value={motoristaNovo?.contato}
                   onChange={(e) =>
                     setMotoristaNovo((prev) => ({
                       ...prev,
-                      contato: e.target.value,
+                      contato: e.target.value.replace(/\D/g, ""),
                     }))
                   }
+                  minLength={11}
+                  maxLength={11}
                   placeholder="Contato"
+                  required
                   className="w-full text-gray-500 rounded mb-2 border border-gray-300"
                 />
               </p>

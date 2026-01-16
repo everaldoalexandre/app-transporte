@@ -52,7 +52,6 @@ export function ActionsDemandas({
   user: User | null;
   userAccessLevel: string | null;
 }) {
-  const [demandas, setDemandas] = useState<Demanda[]>([]);
   const [demandaEdit, setDemandaEdit] = useState<DemandaType | null>(null);
   const [veiculoEdit, setVeiculoEdit] = useState<Veiculo | null>(null);
   const [motoristaEdit, setMotoristaEdit] = useState<Motorista | null>(null);
@@ -371,18 +370,6 @@ export function ActionsDemandas({
       onRefresh();
     } catch (error) {
       console.error("Erro ao deletar demanda:", error);
-    }
-  }
-
-  async function fetchDemandas() {
-    try {
-      const res = await fetch("/api/demanda");
-      if (!res.ok) throw new Error("Falha ao buscar demandas");
-
-      const data = await res.json();
-      setDemandas(data.demandas);
-    } catch (err) {
-      console.error(err);
     }
   }
 
@@ -1051,12 +1038,12 @@ export function ActionsDemandas({
 
               <div className="flex flex-col gap-2 justify-items-start">
                 <p className="break-words whitespace-pre-wrap">
-                  <span className="font-medium">Destino: </span>
-                  {demandaEdit?.destino}
-                </p>
-                <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Local de Saída: </span>{" "}
                   {demandaEdit?.origem}
+                </p>
+                <p className="break-words whitespace-pre-wrap">
+                  <span className="font-medium">Destino: </span>
+                  {demandaEdit?.destino}
                 </p>
                 <p className="break-words whitespace-pre-wrap">
                   <span className="font-medium">Horário da Saída: </span>{" "}

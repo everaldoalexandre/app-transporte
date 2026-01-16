@@ -152,7 +152,6 @@ exports.Prisma.VeiculoScalarFieldEnum = {
   proprietarioVeiculo: 'proprietarioVeiculo',
   crlvVeiculo: 'crlvVeiculo',
   secretariaId: 'secretariaId',
-  userId: 'userId',
   modeloId: 'modeloId'
 };
 
@@ -193,6 +192,14 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PasswordResetScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -209,13 +216,13 @@ exports.Prisma.AccountScalarFieldEnum = {
   accountId: 'accountId',
   providerId: 'providerId',
   userId: 'userId',
+  password: 'password',
   accessToken: 'accessToken',
   refreshToken: 'refreshToken',
   idToken: 'idToken',
   accessTokenExpiresAt: 'accessTokenExpiresAt',
   refreshTokenExpiresAt: 'refreshTokenExpiresAt',
   scope: 'scope',
-  password: 'password',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -257,6 +264,7 @@ exports.Prisma.ModelName = {
   Secretaria: 'Secretaria',
   UserSecretaria: 'UserSecretaria',
   User: 'User',
+  PasswordReset: 'PasswordReset',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'

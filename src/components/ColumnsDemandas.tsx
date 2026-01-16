@@ -35,9 +35,26 @@ import { ActionsDemandas } from "@/components/ActionsDemandas";
 import { DemandaType } from "./Types";
 import Link from "next/link";
 import { formatDateTimeBR } from "@/lib/date";
+import useSWR, { mutate } from "swr";
+
+const fetcher = async (url: string) => {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error("Erro ao buscar demandas");
+  const data = await res.json();
+  return data.demandas;
+};
 
 export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
-  const [demandas, setDemandas] = useState<DemandaType[]>(initialData);
+  const { data: demandas = initialData, isLoading } = useSWR<DemandaType[]>(
+    "/api/demanda",
+    fetcher,
+    {
+      refreshInterval: 5 * 60 * 1000,
+      revalidateOnFocus: true,
+      dedupingInterval: 30_000,
+    }
+  );
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [user, setUser] = useState(null);
   const [userAccessLevel, setUserAccessLevel] = useState(null);
@@ -64,10 +81,6 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   useEffect(() => {
-    fetchDemandas();
-  }, []);
-
-  useEffect(() => {
     async function carregarUser() {
       try {
         const res = await fetch("/api/usuario");
@@ -80,19 +93,6 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
     }
     carregarUser();
   }, []);
-
-  async function fetchDemandas() {
-    try {
-      const res = await fetch("/api/demanda");
-      if (!res.ok) throw new Error("Falha ao buscar demandas");
-
-      const data = await res.json();
-
-      setDemandas(data.demandas);
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   const columns: ColumnDef<DemandaType>[] = [
     {
@@ -202,7 +202,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
       cell: ({ row }) => (
         <ActionsDemandas
           demanda={row.original}
-          onRefresh={fetchDemandas}
+          onRefresh={() => mutate("/api/demanda")}
           user={user}
           userAccessLevel={userAccessLevel}
         />
@@ -232,6 +232,25 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
   function updateDateFilter(range: { from?: string; to?: string }) {
     setDateRange(range);
     table.getColumn("dataHoraIda")?.setFilterValue(range);
+  }
+
+  function buildExportUrl() {
+    const params = new URLSearchParams();
+
+    if (dateRange.from) params.append("from", dateRange.from);
+    if (dateRange.to) params.append("to", dateRange.to);
+
+    table.getState().columnFilters.forEach((filter) => {
+      if (!filter.value) return;
+
+      if (Array.isArray(filter.value)) {
+        filter.value.forEach((v) => params.append(filter.id, String(v)));
+      } else {
+        params.append(filter.id, String(filter.value));
+      }
+    });
+
+    return `/api/demanda/export/excel?${params.toString()}`;
   }
 
   const column = table.getColumn("statusDemanda");
@@ -491,14 +510,7 @@ export function DataTableDemo({ data: initialData }: { data: DemandaType[] }) {
         </div>
       </div>
       <div className="flex gap-2 mb-4">
-        <Button
-          variant="outline"
-          onClick={() =>
-            window.open(
-              `/api/demanda/export/excel?from=${dateRange.from ?? ""}&to=${dateRange.to ?? ""}`
-            )
-          }
-        >
+        <Button variant="outline" onClick={() => window.open(buildExportUrl())}>
           Exportar Excel
         </Button>
       </div>
