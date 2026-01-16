@@ -1,5 +1,5 @@
-"use client";
 export const dynamic = "force-dynamic";
+("use client");
 
 import { MenuNavigationCompleto } from "@/components/MenuNavbar";
 import ResetPasswordPage from "@/components/NovaSenha";
