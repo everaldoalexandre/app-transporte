@@ -79,7 +79,6 @@ export async function GET(request: Request) {
       },
       include: {
         secretaria: true,
-        user: true,
         modelo: true,
       },
     });
@@ -140,7 +139,6 @@ export async function POST(request: Request) {
         renavamVeiculo: veiculoNovo.renavamVeiculo ?? "",
         proprietarioVeiculo: veiculoNovo.proprietarioVeiculo ?? "",
         crlvVeiculo: veiculoNovo.crlvVeiculo ?? "",
-        user: { connect: { id: user.id } },
         secretaria: { connect: { id: secretariaId } },
 
         ...(veiculoNovo.modeloId && {
