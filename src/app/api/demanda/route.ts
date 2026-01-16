@@ -50,7 +50,6 @@ export async function GET() {
             secretaria: true,
           },
         },
-        veiculos: true,
         acesso: true,
       },
     });
@@ -65,21 +64,31 @@ export async function GET() {
     const userAccessLevel =
       usuario.acesso.length > 0 ? usuario.acesso[0].nivel : "usuário";
     const secretariasIds = usuario.secretarias.map((s) => s.secretariaId);
-    const veiculosIds = usuario.veiculos.map((v) => v.id);
 
     const demandas = await prisma.demanda.findMany({
       where: {
         OR: [
-          { veiculoId: { in: veiculosIds } },
-          { secretariaId: { in: secretariasIds } },
+          {
+            secretariaId: {
+              in: secretariasIds,
+            },
+          },
+          {
+            veiculo: {
+              secretariaId: {
+                in: secretariasIds,
+              },
+            },
+          },
         ],
       },
       include: {
         veiculo: true,
-        motorista: true,
         secretaria: true,
+        motorista: true,
       },
     });
+
     return new Response(JSON.stringify({ demandas, userAccessLevel }), {
       status: 200,
     });
